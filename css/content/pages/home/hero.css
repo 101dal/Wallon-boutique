@@ -10,10 +10,16 @@
     overflow: hidden;
 }
 
+#home h1 {
+    z-index: 1;
+}
+
 #home img {
     position: absolute;
     top:0;
     opacity: 0.5;
     object-fit: fill;
     z-index: 1;
+    filter: brightness(110%);
+    filter: contrast(110%);
 }

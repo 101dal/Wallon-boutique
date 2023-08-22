@@ -19,7 +19,7 @@ nav {
     font-weight: bold;
     height: 80px;
     /* Increase the height of the navbar */
-    z-index: 100;
+    z-index: 10;
 }
 
 .logo {
@@ -81,7 +81,7 @@ nav a:hover {
     cursor: pointer;
     padding: 10px;
     position: relative;
-    z-index: 102;
+    z-index: 101;
 }
 
 .mobile-menu-button.open {
@@ -135,9 +135,8 @@ nav a:hover {
     width: 100%;
     text-align: center;
     border-top: 1px solid #ddd;
-    z-index: 100;
     /* Place menu above other content */
-    z-index: 101;
+    z-index: 100;
 }
 
 .mobile-menu-list.open {
