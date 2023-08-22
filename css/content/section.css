@@ -1,0 +1,13 @@
+/* Set a minimum height for all sections */
+section {
+    width: -webkit-fill-available;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+section.navbar-spacing {
+    padding-top: 120px;
+    min-height: calc(100vh - 120px);
+}

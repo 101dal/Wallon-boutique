@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atw Wallon - Home</title>
+    <!-- The javascript for device detection  -->
+    <script src="javascript/device_too_small.js"></script>
+    <!-- Add your CSS -->
+    <!-- Utility classes -->
+    <link rel="stylesheet" href="css/colors.css">
+    <link rel="stylesheet" href="css/font.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/scroll.css">
+    <!-- Page related classes -->
+    <link rel="stylesheet" href="css/content/section.css">
+    <link rel="stylesheet" href="css/content/pages/home/hero.css">
+    <link rel="stylesheet" href="css/content/pages/home/best_selling.css">
+    <link rel="stylesheet" href="css/content/pages/home/testimonials.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav>
+        <div class="logo">
+            <img src="images/logo.jpg" alt="Wallon Logo">
+        </div>
+        <ul class="centered-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+        </ul>
+        <div class="right-elements">
+            <a href="cart.html">Shopping Cart</a>
+            <a href="login.html">Login</a>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="mobile-menu">
+            <div class="mobile-menu-button">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="mobile-menu-list">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="cart.html">Shopping Cart</a></li>
+                <li><a href="login.html">Login</a></li>
+                <!-- Add more menu items here -->
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="navbar-spacing">
+        <img src="images/wallon_image.jpg" alt="Wallon Image">
+        <h1>Welcome to The Wallon Atw Store</h1>
+    </section>
+
+    <!-- Best Selling Products Section -->
+    <section id="shop">
+        <h2 class="fade-in">Best Selling Products</h2>
+        <div class="product-container fade-in">
+            <div class="product">
+                <img src="images/OIP (1).jpeg" alt="Product 1">
+                <div class="text1 product-name">Product Name 1</div>
+            </div>
+            <div class="product">
+                <img src="images/OIP.jpeg" alt="Product 2">
+                <div class="text1 product-name">Product Name 2</div>
+            </div>
+            <!-- Add more products here -->
+        </div>
+    </section>
+
+
+
+    <!-- Testimonials Section -->
+    <section id="testimonials">
+        <h2 class="fade-in">What Our Customers Say</h2>
+        <div class="testimonial-slider fade-in">
+            <div class="testimonial">
+                <p class="text3">"I absolutely love the selection of clothes on this website. The quality is outstanding
+                    and the
+                    prices are great. Highly recommended!"</p>
+                <div class="star-rating">
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                </div>
+                <p class="text2 testimonial-author">- Sarah Johnson</p>
+            </div>
+            <div class="testimonial">
+                <p class="text3">"I've never seen a high shool offering such stylish clothing options. The convenience
+                    of online
+                    shopping makes it even better!"</p>
+                <div class="star-rating">
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                </div>
+                <p class="text2 testimonial-author">- David Martinez</p>
+            </div>
+            <div class="testimonial">
+                <p class="text3">"The e-commerce platform is easy to use, and the checkout process is seamless. I've
+                    become a loyal
+                    customer since my first purchase!"</p>
+                <div class="star-rating">
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                </div>
+                <p class="text2 testimonial-author">- Emily Williams</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="social-media">
+            <a href="#">Facebook</a>
+            <a href="#">Instagram</a>
+            <a href="#">ENT</a>
+            <a href="#">PRONOTE</a>
+        </div>
+        <p class="footer-copyright">© 2023 Wallon E-Commerce. All rights reserved.</p>
+    </footer>
+
+    <!-- Add your scripts here if needed -->
+    <script src="javascript/scroll_fade_in.js"></script>
+    <script src="javascript/menu.js"></script>
+    <script src="javascript/define_navbar_text_color.js"></script>
+    <script>
+        const navbarElement = document.getElementById('home');
+        calculateAndApplyInvertedTextColor(navbarElement);
+    </script>
+</body>
+
+</html>

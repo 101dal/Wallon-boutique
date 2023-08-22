@@ -1,0 +1,71 @@
+/* Reset some default styles */
+body {
+    user-select: none;
+}
+
+body,
+h1,
+h2,
+h3,
+p {
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-family: 'Lobster';
+    font-size: 5vw;
+}
+
+h2 {
+    font-family: 'Caveat', 'DancingScript';
+    font-size: 4vw;
+}
+
+.text1 {
+    font-family: 'DancingScript', 'Caveat';
+    font-size: 1.2vw;
+}
+
+.text2 {
+    font-family: 'DancingScript', 'Caveat';
+    font-weight: bold;
+    font-size: 1.4vw;
+}
+
+.text3 {
+    font-family: 'Caveat', 'Caveat';
+    font-weight: bold;
+    font-size: 1.6vw;
+}
+
+/* Add a class to define fade elements */
+.fade-in {
+    opacity: 0;
+    /* Initial state */
+    transform: translate(0, 40vh);
+    /* Initial position */
+    transition: all 1s;
+    /* Animation properties */
+}
+
+.fade-in.active {
+    opacity: 1;
+    /* Active state */
+    transform: translate(0, 0);
+    /* Active position */
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 3rem;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    .text1 {
+        font-size: 1.5rem;
+    }
+}

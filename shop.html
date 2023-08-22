@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atw Wallon - Home</title>
+    <!-- The javascript for device detection  -->
+    <script src="javascript/device_too_small.js"></script>
+    <!-- Add your CSS -->
+    <link rel="stylesheet" href="css/font.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/content/section.css">
+    <link rel="stylesheet" href="css/content/pages/shop/shop.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav>
+        <div class="logo">
+            <img src="logo.png" alt="Wallon Logo">
+        </div>
+        <ul class="centered-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+        </ul>
+        <div class="right-elements">
+            <a href="cart.html">Shopping Cart</a>
+            <a href="login.html">Login</a>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="mobile-menu">
+            <div class="mobile-menu-button">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="mobile-menu-list">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="cart.html">Shopping Cart</a></li>
+                <li><a href="login.html">Login</a></li>
+                <!-- Add more menu items here -->
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Featured Products Section -->
+    <section id="featured-products" class="navbar-spacing">
+        <h2 class="text2">Featured Products</h2>
+        <div class="product-container">
+            <div class="product">
+                <img src="images/OIP (1).jpeg" alt="Product 1">
+                <div class="product-name text1">Product 1</div>
+            </div>
+            <div class="product">
+                <img src="images/R (1).jpeg" alt="Product 2">
+                <div class="product-name text1">Product 2</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Best Selling Products Section -->
+    <section id="best-selling-products">
+        <h2 class="text2">Best Selling Products</h2>
+        <div class="product-container">
+            <div class="product">
+                <img src="images/R.jpeg" alt="Product 3">
+                <div class="product-name text1">Product 3</div>
+            </div>
+            <div class="product">
+                <img src="images/R (1).jpeg" alt="Product 4">
+                <div class="product-name text1">Product 4</div>
+            </div>
+            <div class="product">
+                <img src="images/OIP (1).jpeg" alt="Product 5">
+                <div class="product-name text1">Product 5</div>
+            </div>
+            <div class="product">
+                <img src="images/OIP.jpeg" alt="Product 6">
+                <div class="product-name text1">Product 6</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products">
+        <h2 class="text2">All Products</h2>
+        <div class="product-container">
+            <!-- Example Product Item 1 -->
+            <div class="product">
+                <img src="images/R (1).jpeg" alt="Product 7">
+                <div class="product-name text1 text1">Product 7</div>
+                <div class="product-price text1">$29.99</div>
+            </div>
+
+            <!-- Example Product Item 2 -->
+            <div class="product">
+                <img src="images/OIP (1).jpeg" alt="Product 8">
+                <div class="product-name text1">Product 8</div>
+                <div class="product-price text1">$49.99</div>
+            </div>
+
+            <!-- Add more example product items here -->
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+        <div class="social-media">
+            <a href="#">Facebook</a>
+            <a href="#">Instagram</a>
+            <a href="#">ENT</a>
+            <a href="#">PRONOTE</a>
+        </div>
+        <p class="footer-copyright">© 2023 Wallon E-Commerce. All rights reserved.</p>
+    </footer>
+
+    <!-- Add your scripts here if needed -->
+    <script src="javascript/scroll_fade_in.js"></script>
+    <script src="javascript/menu.js"></script>
+    <script src="javascript/define_navbar_text_color.js"></script>
+    <script>
+        const navbarElement = document.getElementById('shop');
+        calculateAndApplyInvertedTextColor(navbarElement);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+/* Import the fonts */
+@font-face {
+    font-family: 'Lobster';
+    src: url('../fonts/Lobster-Regular.ttf') format('truetype')
+}
+
+@font-face {
+    font-family: 'Caveat';
+    src: url('../fonts/Caveat-VariableFont_wght.ttf') format('truetype')
+}
+
+@font-face {
+    font-family: 'DancingScript';
+    src: url('../fonts/DancingScript-VariableFont_wght.ttf') format('truetype')
+}
