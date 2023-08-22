@@ -1,7 +1,0 @@
-div#image {
-    position: absolute;
-    top:0;
-    opacity: 0.5;
-    object-fit: fill;
-    z-index: 1;
-}
