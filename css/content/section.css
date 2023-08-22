@@ -5,6 +5,8 @@ section {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    position: relative;
+    z-index: 2;
 }
 
 section.navbar-spacing {

@@ -1,6 +1,7 @@
 /* Reset some default styles */
 body {
     user-select: none;
+    z-index: 0;
 }
 
 body,
