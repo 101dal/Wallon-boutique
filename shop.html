@@ -4,14 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atw Wallon - Home</title>
+    <title>Atw Wallon - Shop</title>
     <!-- The javascript for device detection  -->
     <script src="javascript/device_too_small.js"></script>
     <!-- Add your CSS -->
+    <link rel="stylesheet" href="css/colors.css">
     <link rel="stylesheet" href="css/font.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/scroll.css">
+    <!-- Page related classes -->
     <link rel="stylesheet" href="css/content/section.css">
     <link rel="stylesheet" href="css/content/pages/shop/shop.css">
 </head>
@@ -20,7 +23,7 @@
     <!-- Navbar -->
     <nav>
         <div class="logo">
-            <img src="logo.png" alt="Wallon Logo">
+            <img src="images/logo.jpg" alt="Wallon Logo">
         </div>
         <ul class="centered-links">
             <li><a href="index.html">Home</a></li>
@@ -88,6 +91,23 @@
     <!-- Products Section -->
     <section id="products">
         <h2 class="text2">All Products</h2>
+
+        <!-- Add search bar -->
+        <div class="search-bar">
+            <input type="text" id="product-search" class="text2" placeholder="Search products...">
+        </div>
+
+        <!-- Add sorting options -->
+        <div class="sort-options">
+            <label for="sort-options" class="text2">Sort by:</label>
+            <select id="sort-options">
+                <option value="price-asc">Price Ascending</option>
+                <option value="price-desc">Price Descending</option>
+                <option value="name-asc">Name A-Z</option>
+                <option value="name-desc">Name Z-A</option>
+            </select>
+        </div>
+
         <div class="product-container">
             <!-- Example Product Item 1 -->
             <div class="product">
@@ -123,8 +143,9 @@
     <script src="javascript/scroll_fade_in.js"></script>
     <script src="javascript/menu.js"></script>
     <script src="javascript/define_navbar_text_color.js"></script>
+    <script src="javascript/pages/shop/search.js"></script>
     <script>
-        const navbarElement = document.getElementById('shop');
+        const navbarElement = document.getElementById('featured-products');
         calculateAndApplyInvertedTextColor(navbarElement);
     </script>
 </body>

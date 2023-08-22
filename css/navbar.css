@@ -44,23 +44,15 @@ nav {
 }
 
 nav a {
+    text-shadow: 0 0 1px var(--navbar-text-color);
     text-decoration: none;
     color: var(--navbar-text-color);
+    transition: color 0.3s;
 }
 
 /* Add a glinting effect on hover */
 nav a:hover {
-    animation: glint 0.7s infinite alternate;
-}
-
-@keyframes glint {
-    0% {
-        color: var(--navbar-text-color);
-    }
-
-    100% {
-        color: var(--navbar-text-hover-color);
-    }
+    color: var(--navbar-text-hover-color);
 }
 
 .right-elements {

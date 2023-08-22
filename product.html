@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atw Wallon - Product {NAME}</title>
+    <!-- The javascript for device detection  -->
+    <script src="javascript/device_too_small.js"></script>
+    <!-- Add your CSS -->
+    <link rel="stylesheet" href="css/colors.css">
+    <link rel="stylesheet" href="css/font.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/scroll.css">
+    <!-- Page related classes -->
+    <link rel="stylesheet" href="css/content/section.css">
+    <link rel="stylesheet" href="css/content/pages/product/product.css">
+</head>
+
+
+<body>
+    <!-- Navbar -->
+    <nav>
+        <div class="logo">
+            <img src="images/logo.jpg" alt="Wallon Logo">
+        </div>
+        <ul class="centered-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+        </ul>
+        <div class="right-elements">
+            <a href="cart.html">Shopping Cart</a>
+            <a href="login.html">Login</a>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="mobile-menu">
+            <div class="mobile-menu-button">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="mobile-menu-list">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="cart.html">Shopping Cart</a></li>
+                <li><a href="login.html">Login</a></li>
+                <!-- Add more menu items here -->
+            </ul>
+        </div>
+    </nav>
+
+    <section id="product" class="navbar-spacing" style="background-color: white;">
+        <div class="product-slider">
+            <!-- Slider with product images -->
+            <img src="image1.jpg" alt="Product Image 1">
+            <img src="image2.jpg" alt="Product Image 2">
+            <img src="image3.jpg" alt="Product Image 3">
+            <!-- Add more images as needed -->
+        </div>
+
+        <div class="product-details">
+            <h1>Product Name</h1>
+            <p class="price">$99.99</p>
+            <p class="description">Product description goes here...</p>
+            <!-- Other product information like sizes, fabric quality, etc. -->
+
+            <!-- Product options -->
+            <div class="product-options">
+                <label for="size">Size:</label>
+                <select id="size" name="size">
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                </select>
+
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" name="amount" value="1" min="1">
+            </div>
+
+            <!-- Add to cart button -->
+            <button class="add-to-cart">Add to Cart</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="social-media">
+            <a href="#">Facebook</a>
+            <a href="#">Instagram</a>
+            <a href="#">ENT</a>
+            <a href="#">PRONOTE</a>
+        </div>
+        <p class="footer-copyright">© 2023 Wallon E-Commerce. All rights reserved.</p>
+    </footer>
+
+    <!-- Add your scripts here if needed -->
+    <script src="javascript/scroll_fade_in.js"></script>
+    <script src="javascript/menu.js"></script>
+    <script src="javascript/define_navbar_text_color.js"></script>
+    <script>
+        const navbarElement = document.getElementById('product');
+        calculateAndApplyInvertedTextColor(navbarElement);
+    </script>
+</body>
+
+</html>

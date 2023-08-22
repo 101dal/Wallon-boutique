@@ -25,19 +25,19 @@ h2 {
 
 .text1 {
     font-family: 'DancingScript', 'Caveat';
-    font-size: 1.2vw;
+    font-size: 1.2rem;
 }
 
 .text2 {
     font-family: 'DancingScript', 'Caveat';
     font-weight: bold;
-    font-size: 1.4vw;
+    font-size: 1.4rem;
 }
 
 .text3 {
     font-family: 'Caveat', 'Caveat';
     font-weight: bold;
-    font-size: 1.6vw;
+    font-size: 1.6rem;
 }
 
 /* Add a class to define fade elements */
@@ -64,9 +64,5 @@ h2 {
 
     h2 {
         font-size: 2rem;
-    }
-
-    .text1 {
-        font-size: 1.5rem;
     }
 }
