@@ -1,0 +1,182 @@
+.cart-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+    min-height: calc(80vh - 200px);
+}
+
+.cart-content {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 2rem;
+}
+
+.cart-items {
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.cart-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.cart-item img {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+}
+
+.item-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.item-details p {
+    color: #666;
+    margin: 0;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.quantity-btn {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #000;
+}
+
+.quantity-input {
+    width: 40px;
+    text-align: center;
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+}
+
+.cart-summary {
+    padding: 1rem;
+}
+
+.add-discount {
+    color: var(--accent);
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.validate-order {
+    width: 100%;
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.order-note,
+.payment-note {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 1rem;
+    line-height: 1.4;
+}
+
+.item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.delete-btn {
+    background: none;
+    border: none;
+    color: #ff4444;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.delete-btn:hover {
+    color: #cc0000;
+}
+
+.promo-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.promo-modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.promo-input {
+    width: 100%;
+    padding: 0.75rem;
+    margin: 1rem 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.modal-buttons button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.apply-promo {
+    background: var(--accent);
+    color: white;
+}
+
+.close-modal {
+    background: #eee;
+    color: #666;
+}
+
+.contact-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}

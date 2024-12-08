@@ -1,0 +1,55 @@
+<link rel="stylesheet" href="/css/panier.css">
+
+<h1>Votre panier</h1>
+
+<% let total = 0 %>
+
+<div class="cart-content">
+    <div class="cart-items">
+        <% if (carts.status === 200 && carts.content.length > 0) { %>
+            <% carts.content.forEach(cart => { 
+                total += cart.price; // Calcul du sous-total pour chaque produit
+            %>
+                <div class="cart-item">
+                    <img src="http://localhost:3000/api/v1/images?product_id=<%= cart.product_id %>&image_id=0" alt="Produit" />
+                    <div class="item-details">
+                        <div class="item-header">
+                            <h3>Produit ID: <%= cart.product_id %></h3>
+                            <button class="delete-btn" data-cart-id="<%= cart.id %>">
+                                <ion-icon name="trash-outline"></ion-icon>
+                            </button>
+                        </div>
+                        <p>Référence : <%= cart.product_id %></p>
+                        <p>Couleur : <%= cart.color %></p>
+                        <p>Taille : <%= cart.size %></p>
+                        <p>Quantité : <%= cart.quantity %></p>
+                        <p>Prix : <%= cart.price %>€</p>
+                    </div>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <div class="empty-cart">
+                <p>Votre panier est vide</p>
+            </div>
+        <% } %>
+    </div>
+
+    <div class="cart-summary">
+        <div class="summary-line">
+            <span>Remises :</span>
+            <button class="add-discount">Ajouter</button>
+        </div>
+        <div class="summary-line total">
+            <span>Total :</span>
+            <span><%= total > 0 ? total.toFixed(2) : '0.00' %>€</span> <!-- Affiche le total ou 0 si vide -->
+        </div>
+        <button class="validate-order">
+            <ion-icon name="mail-outline" style="color: white"></ion-icon>
+            Valider la commande
+        </button>
+        <p class="order-note">La validation vous permettra d'obtenir un bon de commande à présenter le jour de la récupération de votre commande.</p>
+        <p class="payment-note">Le paiement aura lieu en chèque ou en espèce au même moment.</p>
+    </div>
+</div>
+
+<script src="/scripts/cart.js"></script>
