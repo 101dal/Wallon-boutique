@@ -10,9 +10,32 @@
     <div class="profile-sections">
         <section class="orders-section">
             <h3><ion-icon name="bag-check-outline"></ion-icon>Mes commandes</h3>
-            <div class="order-placeholder">
-                <p>Aucune commande pour le moment</p>
-            </div>
+
+            <% if (orders.status === 200) { %>
+                <div class="orders-list">
+                    <% orders.forEach(order => { %>
+                        <div class="order-item">
+                            <h4>Commande ID: <%= order.id %></h4>
+                            <p>Status: <%= order.status %></p>
+                            <p>Date de création: <%= new Date(order.createdAt).toLocaleDateString() %></p>
+                            <div class="order-products">
+                                <% order.products.forEach(product => { %>
+                                    <div class="product-item">
+                                        <p>Produit ID: <%= product.product_id %> - Taille: <%= product.size %> - Couleur: <%= product.color %> - Quantité: <%= product.quantity %></p>
+                                    </div>
+                                <% }) %>
+                            </div>
+                            <a href="http://localhost:3000/api/v1/orders/pdf/<%= order.id %>" class="generate-pdf-btn" target="_blank">
+                                <button>Générer PDF</button>
+                            </a>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } else { %>
+                <div class="order-placeholder">
+                    <p>Aucune commande pour le moment</p>
+                </div>
+            <% } %>
         </section>
 
         <section class="settings-section">

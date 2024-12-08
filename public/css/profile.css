@@ -1,3 +1,4 @@
+/* Profil */
 .profile-container {
     max-width: 1200px;
     margin: 2rem auto;
@@ -34,6 +35,7 @@
     font-size: 1rem;
 }
 
+/* Section des commandes et paramètres */
 .profile-sections {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -60,15 +62,59 @@ section h3 ion-icon {
     font-size: 1.4rem;
 }
 
-.order-placeholder {
-    text-align: center;
-    padding: 2rem;
-    color: var(--text);
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 4px;
+/* Commandes */
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
+.order-item {
+    padding: 1.5rem;
+    background: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.order-item h4 {
+    font-size: 1.4rem;
+    color: var(--text);
+    margin-bottom: 1rem;
+}
+
+.order-item p {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.order-products {
+    margin-bottom: 1rem;
+}
+
+.product-item {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 1rem;
+    color: var(--text);
+}
+
+.generate-pdf-btn button {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.generate-pdf-btn button:hover {
+    background: darken(var(--accent), 10%);
+}
+
+/* Paramètres */
 .settings-options {
     display: flex;
     flex-direction: column;
@@ -101,6 +147,17 @@ section h3 ion-icon {
     color: #ff4444;
 }
 
+/* Placeholders */
+.order-placeholder {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text);
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+}
+
+/* Responsive */
 @media screen and (max-width: 768px) {
     .profile-sections {
         grid-template-columns: 1fr;
