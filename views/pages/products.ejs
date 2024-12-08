@@ -1,0 +1,43 @@
+<link rel="stylesheet" href="/css/products.css">
+
+<div class="categories">
+    <button class="category-link active" data-category="all">
+        <ion-icon name="grid-outline"></ion-icon>Tous
+    </button>
+    <button class="category-link" data-category="viennoiseries">
+        <ion-icon name="game-controller-outline"></ion-icon>Viennoiseries
+    </button>
+    <button class="category-link" data-category="tasses">
+        <ion-icon name="cafe-outline"></ion-icon>Tasses
+    </button>
+    <button class="category-link" data-category="tshirts">
+        <ion-icon name="shirt-outline"></ion-icon>T-shirts
+    </button>
+    <button class="category-link" data-category="pulls">
+        <ion-icon name="shirt-outline"></ion-icon>Pulls
+    </button>
+</div>
+
+<div class="products-grid">
+
+    <% if (products.status === 200) { %>
+        <% products.content.forEach(product => { %>
+            <div class="product-card visible" data-category="<%= product.type %>">
+                <img src="http://localhost:3000/api/v1/images?product_id=<%=product.id%>&image_id=<%=product.url[0]%>" alt="<%= product.name%>" />
+                <h3><%= product.name%></h3>
+                <p class="price"><%= product.price.toFixed(2) %>€</p>
+                <div class="product-details">
+                <p class="description"><%= product.description %></p>
+                <button class="add-to-cart" id="product_<%= product.id %>">
+                    <ion-icon name="cart-outline"></ion-icon>
+                    Ajouter au panier
+                </button>
+                </div>
+            </div>
+        <% }) %>
+    <% } else { %>
+        <p>Aucun produit disponible pour le moment.</p>
+    <% } %>
+</div>
+
+<script src="/scripts/product.js"></script>

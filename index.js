@@ -40,6 +40,17 @@ app.get("/", (req, res) => {
 });
 
 
+app.get("/products", async (req, res) => {
+    // Get a list of all the products
+    const response = await fetch(`http://localhost:3000/api/v1/products`, {
+        method: 'GET',
+    });
+    const products = await response.json();
+
+    res.render("pages/products", { active: "products", container: "product", products: products })
+});
+
+
 app.get("/contact", (req, res) => {
     res.render("pages/contact", { active: "contact", container: "contact" })
 });
@@ -71,7 +82,7 @@ app.get("/profile", async (req, res) => {
     });
     const orders = await response.json();
 
-    res.render("pages/profile", { active: "profile", container: "profile", infos, orders });
+    res.render("pages/profile", { active: "profile", container: "profile", infos: infos.content, orders });
 });
 
 app.get("/panier", async (req, res) => {
