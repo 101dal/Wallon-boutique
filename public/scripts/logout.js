@@ -10,5 +10,5 @@ async function logout_request() {
 
 document.querySelector(".logout").addEventListener("click", async () => {
     await logout_request();
-    window.location = "/"
+    window.location = "/?disconnected=true"
 });

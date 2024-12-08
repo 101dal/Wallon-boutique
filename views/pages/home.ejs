@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="/css/home.css">
+
 <% if (registered) { %>
     <h1 class="login-success">Login Successful</h1>
     <script>
@@ -6,6 +8,22 @@
             // Vérifie si le paramètre "registered" est présent dans l'URL
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.has('registered')) {
+                // Supprime le paramètre de l'URL sans recharger la page
+                const newUrl = window.location.origin + window.location.pathname;
+                window.history.replaceState({}, document.title, newUrl);
+            }
+        });
+    </script>
+<% } %>
+
+<% if (disconnected) { %>
+    <h1 class="logout-success">Logout Successful</h1>
+    <script>
+        // Supprime le params de l'URL après la redirection
+        document.addEventListener("DOMContentLoaded", () => {
+            // Vérifie si le paramètre "registered" est présent dans l'URL
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('disconnected')) {
                 // Supprime le paramètre de l'URL sans recharger la page
                 const newUrl = window.location.origin + window.location.pathname;
                 window.history.replaceState({}, document.title, newUrl);

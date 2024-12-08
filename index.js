@@ -37,7 +37,8 @@ app.use(async (req, res, next) => {
 // LITE DE TOUTES LES ROUTES
 app.get("/", (req, res) => {
     const registered = req.query.registered === 'true';
-    res.render("pages/home", { active: "home", registered });
+    const disconnected = req.query.disconnected === 'true';
+    res.render("pages/home", { active: "home", registered, disconnected });
 });
 
 
