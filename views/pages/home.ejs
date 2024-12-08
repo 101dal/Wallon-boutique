@@ -1,0 +1,60 @@
+<% if (registered) { %>
+    <h1 class="login-success">Login Successful</h1>
+    <script>
+        // Supprime le params de l'URL après la redirection
+        document.addEventListener("DOMContentLoaded", () => {
+            // Vérifie si le paramètre "registered" est présent dans l'URL
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('registered')) {
+                // Supprime le paramètre de l'URL sans recharger la page
+                const newUrl = window.location.origin + window.location.pathname;
+                window.history.replaceState({}, document.title, newUrl);
+            }
+        });
+    </script>
+<% } %>
+
+<div class="slider">
+    <div class="slider-container">
+        <img src="/images/home/slide1.png" alt="Image du lycée 1" class="slide active" />
+        <img src="/images/home/slide2.png" alt="Image du lycée 2" class="slide" />
+        <img src="/images/home/slide3.png" alt="Image du lycée 3" class="slide" />
+    </div>
+    <div class="slider-nav">
+        <button class="slider-dot active" data-index="0"></button>
+        <button class="slider-dot" data-index="1"></button>
+        <button class="slider-dot" data-index="2"></button>
+    </div>
+</div>
+
+<div class="welcome-section">
+    <h1>Boutique en ligne du lycée Henri Wallon</h1>
+    <p>Retrouvez tous nos goodies !</p>
+</div>
+
+<div class="best-sellers">
+    <h2>Nos best sellers</h2>
+    <div class="products">
+        <div class="product">
+            <img src="/images/home/product2.png" alt="T-shirt blanc" />
+            <div class="product-info">
+                <h3>T-shirt blanc</h3>
+                <p>15.99€</p>
+            </div>
+        </div>
+        <div class="product">
+            <img src="/images/home/product1.png" alt="Mug du lycée" />
+            <div class="product-info">
+                <h3>Mug du lycée</h3>
+                <p>9.99€</p>
+            </div>
+        </div>
+        <div class="product">
+            <img src="/images/home/product3.png" alt="Sweatshirt noir" />
+            <div class="product-info">
+                <h3>Sweatshirt noir</h3>
+                <p>29.99€</p>
+            </div>
+        </div>
+    </div>
+</div>

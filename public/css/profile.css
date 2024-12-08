@@ -1,0 +1,108 @@
+.profile-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.profile-content {
+    background: var(--card-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.profile-header ion-icon {
+    font-size: 6rem;
+    color: var(--accent);
+    margin-bottom: 1rem;
+}
+
+.profile-header h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+}
+
+.user-info {
+    color: #666;
+    font-size: 1rem;
+}
+
+.profile-sections {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.orders-section,
+.settings-section {
+    padding: 1.5rem;
+    background: var(--background);
+    border-radius: 8px;
+}
+
+section h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+}
+
+section h3 ion-icon {
+    font-size: 1.4rem;
+}
+
+.order-placeholder {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text);
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+}
+
+.settings-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.settings-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: var(--card-bg);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--text);
+    transition: all 0.3s ease;
+}
+
+.settings-btn:hover {
+    color: var(--accent);
+}
+
+.settings-btn.logout {
+    color: #ff4444;
+}
+
+.settings-btn.logout:hover {
+    background: rgba(255, 68, 68, 0.1);
+    color: #ff4444;
+}
+
+@media screen and (max-width: 768px) {
+    .profile-sections {
+        grid-template-columns: 1fr;
+    }
+}
