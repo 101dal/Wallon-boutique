@@ -59,11 +59,10 @@ async function updateProduct_request(name, description, colors, sizes, price, in
     });
     const data = await response.json();
     return data;
- }
- 
- // Fonction pour ouvrir le dialogue de modification
+}
+
+// Fonction pour ouvrir le dialogue de modification
 function openEditDialog(productId) {
-    // Trouver la carte du produit à partir de l'ID
     const productCard = document.querySelector(`#product_change_${productId}`).closest(".product-card");
 
     // Préremplir les champs du formulaire de modification
@@ -90,11 +89,18 @@ document.querySelectorAll("[id^=product_change_]").forEach(button => {
     });
 });
 
-// Fermer le dialogue
+// Fermer le dialogue via le bouton de fermeture
 document.querySelector(".close-btn").addEventListener("click", () => {
     document.getElementById("edit-product-dialog").classList.add("hidden");
 });
 
+// Fermer le dialogue en cliquant hors du contenu
+document.querySelector(".modal").addEventListener("click", event => {
+    const modalContent = document.querySelector(".modal-content");
+    if (!modalContent.contains(event.target)) {
+        document.getElementById("edit-product-dialog").classList.add("hidden");
+    }
+});
 
 // Gestion de la soumission du formulaire de modification
 document.getElementById("edit-product-form").addEventListener("submit", async event => {
