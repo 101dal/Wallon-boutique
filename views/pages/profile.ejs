@@ -3,8 +3,11 @@
 <div class="profile-content">
     <div class="profile-header">
         <ion-icon name="person-circle-outline"></ion-icon>
-        <h2><%= infos.firstName %> <%= infos.lastName %></h2>
-        <p class="user-info"><%= `${infos.level} ${infos.classe?infos.classe:""}` %> • <%= infos.email %></p>
+        <h2><%= profile.firstName %> <%= profile.lastName %></h2>
+        <p class="user-info"><%= `${profile.level} ${profile.classe?profile.classe:""}` %> • <%= profile.email %></p>
+        <% if (profile.role !== "REGULAR") { %>
+            <a href="/dashboard" class="generate-pdf-btn"><button style="padding:10px; margin: 5px;">Dashboard</button></a>
+        <% } %>
     </div>
 
     <div class="profile-sections">

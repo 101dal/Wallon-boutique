@@ -1,0 +1,88 @@
+<link rel="stylesheet" href="/css/dashboard/products.css">
+
+<section class="add-product">
+    <h2><ion-icon name="add-circle-outline"></ion-icon> Ajouter un produit</h2>
+    <form id="add-product-form">
+        <label for="product-name">Nom du produit :</label>
+        <input type="text" id="product-name" name="product-name" placeholder="Entrez le nom" required />
+
+        <label for="product-type">Type du produit :</label>
+        <input type="text" id="product-type" name="product-type" placeholder="Entrez le type" required />
+
+        <label for="product-price">Prix :</label>
+        <input type="number" id="product-price" name="product-price" placeholder="Entrez le prix" required />
+
+        <label for="product-description">Description :</label>
+        <textarea id="product-description" name="product-description" placeholder="Entrez la description"></textarea>
+
+        <label for="product-inventory">Quantité :</label>
+        <input type="number" min="0" id="product-inventory" name="product-inventory" placeholder="Entrez la quantité disponible" required />
+
+        <label for="product-colors">Couleurs du produit (optionnel) :</label>
+        <input type="text" id="product-colors" name="product-colors"
+            placeholder="Entrez les couleurs séparées par des virgules" />
+
+        <label for="product-sizes">Tailles du produit (optionnel) :</label>
+        <input type="text" id="product-sizes" name="product-sizes"
+            placeholder="Entrez les tailles séparées par des virgules" />
+
+        <label for="product-images">Images du produit :</label>
+        <input type="file" id="product-images" name="product-images" multiple accept="image/*"/>
+
+        <button type="submit">Ajouter le produit</button>
+    </form>
+</section>
+
+<section class="product-list">
+    <h2><ion-icon name="list-outline"></ion-icon> Tous les produits</h2>
+    <% if (products.status === 200) { %>
+        <% products.content.forEach(product => { %>
+            <div class="product-card" product_id="<%= product.id%>">
+                <h3><%= product.name%></h3>
+                <p class="price">Prix: <%= product.price.toFixed(2) %>€</p>
+                <p class="description">Description: <%= product.description %></p>
+                <button id="product_change_<%= product.id %>">Modifier</button>
+                <button id="product_delete_<%= product.id %>" class="delete">Supprimer</button>
+            </div>
+        <% }) %>
+    <% } else { %>
+        <p>Aucun produit disponible pour le moment.</p>
+    <% } %>
+</section>
+
+<div id="edit-product-dialog" class="modal hidden">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Modifier le produit</h2>
+        <form id="edit-product-form">
+            <label for="edit-product-name">Nom du produit :</label>
+            <input type="text" id="edit-product-name" name="edit-product-name" required />
+
+            <label for="edit-product-type">Type du produit :</label>
+            <input type="text" id="edit-product-type" name="edit-product-type" required />
+
+            <label for="edit-product-price">Prix :</label>
+            <input type="number" id="edit-product-price" name="edit-product-price" required />
+
+            <label for="edit-product-description">Description :</label>
+            <textarea id="edit-product-description" name="edit-product-description"></textarea>
+
+            <label for="edit-product-inventory">Quantité :</label>
+            <input type="number" id="edit-product-inventory" name="edit-product-inventory" min="0" required />
+
+            <label for="edit-product-colors">Couleurs du produit :</label>
+            <input type="text" id="edit-product-colors" name="edit-product-colors" />
+
+            <label for="edit-product-sizes">Tailles du produit :</label>
+            <input type="text" id="edit-product-sizes" name="edit-product-sizes" />
+
+            <label for="edit-product-images">Images du produit :</label>
+            <input type="file" id="edit-product-images" name="edit-product-images" multiple accept="image/*" />
+
+            <button type="submit">Enregistrer les modifications</button>
+        </form>
+    </div>
+</div>
+
+
+<script src="/scripts/dashboard/products.js"></script>

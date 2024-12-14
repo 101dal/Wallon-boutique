@@ -1,0 +1,54 @@
+<link rel="stylesheet" href="/css/product-details.css">
+
+<div class="product-header">
+    <div class="product-images">
+        <% product.content.url.forEach((imageId, index) => { %>
+            <img class="thumbnail <%= index === 0 ? 'active' : '' %>" src="http://localhost:3000/api/v1/images?product_id=<%= product.content.id %>&image_id=<%= imageId %>" alt="<%= product.content.name %>" data-index="<%= index %>" />
+        <% }); %>
+    </div>
+    <img class="product-image" src="http://localhost:3000/api/v1/images?product_id=<%=product.content.id%>&image_id=<%=product.content.url[0]%>" alt="<%= product.content.name%>" id="main-image" />
+    <div class="product-infos">
+        <h1 class="product-name"><%= product.content.name %></h1>
+        <p class="product-description"><%= product.content.description %></p>
+        <p class="product-price"><%= product.content.price.toFixed(2) %>€</p>
+        <% if (logged) { %>
+            <button class="add-to-cart" id="product_<%= product.content.id %>">
+                <ion-icon name="cart-outline"></ion-icon>
+                Ajouter au panier
+            </button>
+        <% } %>
+    </div>
+</div>
+
+<div class="reviews-section">
+    <h2>Laisser un avis</h2>
+    <% if (logged) { %>
+        <form class="review-form" action="/api/v1/reviews" method="POST">
+            <textarea name="review" placeholder="Écrivez votre avis ici..." required></textarea>
+            <input type="hidden" name="product_id" value="<%= product.content.id %>">
+            <button type="submit" class="submit-review">Envoyer</button>
+        </form>
+    <% } else { %>
+        <p>Veuillez vous connecter pour laisser un avis.</p>
+    <% } %>
+
+    <br>
+    <h2>Avis des utilisateurs</h2>
+    <div class="reviews-list">
+        <% if (reviews.status === "200") { %>
+            <% reviews.content.forEach(review => { %>
+                <div class="review">
+                    <p class="review-author">Par <%= review.author %>:</p>
+                    <p class="review-content">"<%= review.content %>"</p>
+                    <p class="review-date"><%= new Date(review.date).toLocaleDateString() %></p>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <p>Aucun avis pour le moment.</p>
+        <% } %>
+    </div>
+
+    
+</div>
+
+<script src="/scripts/product-details.js"></script>

@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lycée Henri Wallon</title>
     <link rel="stylesheet" href="/css/style.css" />
+    <script src="/scripts/theme/theme_load.js"></script>
 </head>
 
 <body>
@@ -23,7 +24,7 @@
             <li><a href="/contact" <% if (active === "contact") { %>class="active"<% } %>><ion-icon name="call-outline"></ion-icon>Contact</a></li>
             <% if (logged) { %>
                 <li><a href="/panier" <% if (active === "panier") { %>class="active"<% } %>><ion-icon name="bag-handle-outline"></ion-icon>Votre panier</a></li>
-                <li><a href="/profile" <% if (active === "profile") { %>class="active"<% } %>><ion-icon name="person-outline"></ion-icon>Profile</a></li>
+                <li><a href="/profile" <% if (active === "profile") { %>class="active"<% } %>><ion-icon name="person-outline"></ion-icon><%= profile.firstName%></a></li>
             <% } else { %>
                 <li><a href="/login" <% if (active === "login") { %>class="active"<% } %>><ion-icon name="person-outline"></ion-icon>Connexion</a></li>
             <% } %>
@@ -66,7 +67,7 @@
     </footer>
 
     <script src="/scripts/main.js"></script>
-    <script src="/scripts/theme.js"></script>
+    <script src="/scripts/theme/theme_change.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>

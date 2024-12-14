@@ -25,6 +25,7 @@ app.use(async (req, res, next) => {
     const data = await response.json();
 
     res.locals.logged = data.status === 200;
+    res.locals.profile = data.content;
 
     next();
 })
@@ -47,8 +48,23 @@ app.get("/products", async (req, res) => {
     });
     const products = await response.json();
 
-    res.render("pages/products", { active: "products", container: "product", products: products })
+    res.render("pages/products", { active: "products", container: "product", products })
 });
+
+app.get("/products/:id", async (req, res) => {
+    let response = await fetch(`http://localhost:3000/api/v1/products/get/${req.params.id}`, {
+        method: 'GET'
+    });
+    const product = await response.json();
+
+    response = await fetch(`http://localhost:3000/api/v1/reviews/product/${req.params.id}`, {
+        method: 'GET',
+    });
+    const reviews = await response.json();
+
+
+    res.render("pages/product-details", { active: "product-detail", container: "product-detail", product, reviews })
+})
 
 
 app.get("/contact", (req, res) => {
@@ -68,21 +84,17 @@ app.get("/profile", async (req, res) => {
         res.redirect("/login");
     }
 
-    // Make the request to the api to get the user's information
-    let response = await fetch(`http://localhost:3000/api/v1/users/me`, {
-        method: 'GET',
-        headers: { 'Cookie': `token_cookie=${req.cookies.token_cookie}` }
-    });
-    const infos = await response.json();
+    // If the user is an admin then you redirect him to 
 
     // Get the user's orders
+    let response;
     response = await fetch(`http://localhost:3000/api/v1/orders/history`, {
         method: 'GET',
         headers: { 'Cookie': `token_cookie=${req.cookies.token_cookie}` }
     });
     const orders = await response.json();
 
-    res.render("pages/profile", { active: "profile", container: "profile", infos: infos.content, orders });
+    res.render("pages/profile", { active: "profile", container: "profile", orders });
 });
 
 app.get("/panier", async (req, res) => {
@@ -101,7 +113,40 @@ app.get("/panier", async (req, res) => {
     res.render("pages/panier", { active: "panier", container: "cart", carts: carts })
 });
 
+app.get("/dashboard", async (req, res) => {
+    if (!res.locals.logged) {
+        res.redirect("/login");
+    }
 
+    if (res.locals.profile.role === "ADMIN") {
+        res.render("pages/dashboard/dashboard-admin", { active: "dashboard-admin", container: "dashboard" });
+    } else if (res.locals.profile.role === "EMPLOYEE") {
+        res.render("pages/dashboard/dashboard-employee", { active: "dashboard-employee", container: "dashboard" });
+    } else {
+        res.redirect("/profile");
+    }
+
+});
+
+app.get("/dashboard/:type", async (req, res) => {
+    if (!res.locals.logged) {
+        res.redirect("/login");
+    }
+
+    if (res.locals.profile.role !== "ADMIN") {
+        res.redirect("/profile");
+    }
+
+    if (req.params.type === "products") {
+        // Get a list of all the products
+        const response = await fetch(`http://localhost:3000/api/v1/products`, {
+            method: 'GET',
+        });
+        const products = await response.json();
+
+        res.render("pages/dashboard/dashboard-products", { active: "dashboard-admin", container: "products", products });
+    }
+})
 
 
 // Démarrage du serveur

@@ -24,3 +24,16 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const productCards = document.querySelectorAll('.product-card');
+
+    productCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const productId = card.getAttribute('data-product-id');
+            if (productId) {
+                window.location.href = `/products/${productId}`;
+            }
+        });
+    });
+});

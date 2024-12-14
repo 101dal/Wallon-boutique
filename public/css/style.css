@@ -64,6 +64,7 @@ button.category-link {
 
 .nav-links li a,
 .nav-links li ion-icon {
+  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 0.5rem;

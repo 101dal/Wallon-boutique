@@ -19,19 +19,14 @@
 </div>
 
 <div class="products-grid">
-
     <% if (products.status === 200) { %>
         <% products.content.forEach(product => { %>
-            <div class="product-card visible" data-category="<%= product.type %>">
-                <img src="http://localhost:3000/api/v1/images?product_id=<%=product.id%>&image_id=<%=product.url[0]%>" alt="<%= product.name%>" />
-                <h3><%= product.name%></h3>
+            <div class="product-card visible" data-category="<%= product.type %>" data-product-id="<%= product.id %>">
+                <img src="http://localhost:3000/api/v1/images?product_id=<%= product.id %>&image_id=<%= product.url[0] %>" alt="<%= product.name %>" />
+                <h3><%= product.name %></h3>
                 <p class="price"><%= product.price.toFixed(2) %>€</p>
                 <div class="product-details">
-                <p class="description"><%= product.description %></p>
-                <button class="add-to-cart" id="product_<%= product.id %>">
-                    <ion-icon name="cart-outline"></ion-icon>
-                    Ajouter au panier
-                </button>
+                    <p class="description"><%= product.description %></p>
                 </div>
             </div>
         <% }) %>
@@ -39,5 +34,6 @@
         <p>Aucun produit disponible pour le moment.</p>
     <% } %>
 </div>
+
 
 <script src="/scripts/product.js"></script>

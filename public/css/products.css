@@ -42,6 +42,7 @@
 }
 
 .product-card {
+    cursor: pointer;
     background: var(--card-bg);
     border-radius: 8px;
     overflow: hidden;
