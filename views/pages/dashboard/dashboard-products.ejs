@@ -19,70 +19,104 @@
         <input type="number" min="0" id="product-inventory" name="product-inventory" placeholder="Entrez la quantité disponible" required />
 
         <label for="product-colors">Couleurs du produit (optionnel) :</label>
-        <input type="text" id="product-colors" name="product-colors"
-            placeholder="Entrez les couleurs séparées par des virgules" />
+        <input type="text" id="product-colors" name="product-colors" placeholder="Entrez les couleurs séparées par des virgules" />
 
         <label for="product-sizes">Tailles du produit (optionnel) :</label>
-        <input type="text" id="product-sizes" name="product-sizes"
-            placeholder="Entrez les tailles séparées par des virgules" />
+        <input type="text" id="product-sizes" name="product-sizes" placeholder="Entrez les tailles séparées par des virgules" />
 
         <label for="product-images">Images du produit :</label>
-        <input type="file" id="product-images" name="product-images" multiple accept="image/*"/>
+        <input type="file" id="product-images" name="product-images" multiple accept="image/*" />
 
         <button type="submit">Ajouter le produit</button>
     </form>
 </section>
 
-<section class="product-list">
-    <h2><ion-icon name="list-outline"></ion-icon> Tous les produits</h2>
-    <% if (products.status === 200) { %>
-        <% products.content.forEach(product => { %>
-            <div class="product-card" product_id="<%= product.id%>">
-                <h3><%= product.name%></h3>
-                <p class="price">Prix: <%= product.price.toFixed(2) %>€</p>
-                <p class="description">Description: <%= product.description %></p>
-                <button id="product_change_<%= product.id %>">Modifier</button>
-                <button id="product_delete_<%= product.id %>" class="delete">Supprimer</button>
-            </div>
-        <% }) %>
-    <% } else { %>
-        <p>Aucun produit disponible pour le moment.</p>
-    <% } %>
+<section class="product-management">
+    <h2>Gestion des produits</h2>
+
+    <div class="product-filters">
+        <label for="filter-name">Nom :</label>
+        <input type="text" id="filter-name" placeholder="Filtrer par nom" />
+
+        <label for="filter-type">Type :</label>
+        <input type="text" id="filter-type" placeholder="Filtrer par type" />
+
+        <label for="filter-price-min">Prix min :</label>
+        <input type="number" id="filter-price-min" placeholder="Min" />
+
+        <label for="filter-price-max">Prix max :</label>
+        <input type="number" id="filter-price-max" placeholder="Max" />
+
+        <label for="filter-sort">Trier par :</label>
+        <select id="filter-sort">
+            <option value="name" selected>Nom</option> <!-- Ajout de selected ici pour le tri par défaut -->
+            <option value="price">Prix</option>
+            <option value="type">Type</option>
+        </select>
+
+        <button id="apply-filters">Appliquer</button>
+    </div>
+
+    <div class="product-list">
+        <% if (products.status === 200) { %>
+            <% 
+                // Tri des produits par ordre alphabétique par nom
+                products.content.sort((a, b) => {
+                    return a.name.localeCompare(b.name); // Trie alphabétiquement par le nom du produit
+                });
+
+                products.content.forEach(product => { 
+            %>
+                <div class="product-item" data-product-id="<%= product.id %>">
+                    <div class="products-info">
+                        <label>Nom :
+                            <input type="text" value="<%= product.name %>" class="product-name" />
+                        </label>
+                        <label>Description :
+                            <textarea class="product-description"><%= product.description %></textarea>
+                        </label>
+                        <label>Couleurs :
+                            <input type="text" value="<%= product.colors ? product.colors.join(', ') : '' %>" class="product-colors" />
+                        </label>
+                        <label>Tailles :
+                            <input type="text" value="<%= product.sizes ? product.sizes.join(', ') : '' %>" class="product-sizes" />
+                        </label>
+                        <label>Prix :
+                            <input type="number" min="0" step="0.01" value="<%= product.price %>" class="product-price" />
+                        </label>
+                        <label>Quantité :
+                            <input type="number" min="0" value="<%= product.inventory %>" class="product-inventory" />
+                        </label>
+                        <label>Type :
+                            <input type="text" value="<%= product.type %>" class="product-type" />
+                        </label>
+                    </div>
+                    <div class="product-actions">
+                        <button class="view-images" data-product-id="<%= product.id %>" images_ids="<%= JSON.stringify(product.url) %>">Voir les images</button>
+                        <button class="save-product" data-product-id="<%= product.id %>"><ion-icon name="save-outline"></ion-icon></button>
+                        <button class="delete-product" data-product-id="<%= product.id %>"><ion-icon name="trash-outline"></ion-icon></button>
+                    </div>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <p>Aucun produit disponible pour le moment.</p>
+        <% } %>
+    </div>
 </section>
 
-<div id="edit-product-dialog" class="modal hidden">
+
+<div id="modal" class="modal hidden">
     <div class="modal-content">
         <span class="close-btn">&times;</span>
-        <h2>Modifier le produit</h2>
-        <form id="edit-product-form">
-            <label for="edit-product-name">Nom du produit :</label>
-            <input type="text" id="edit-product-name" name="edit-product-name" required />
-
-            <label for="edit-product-type">Type du produit :</label>
-            <input type="text" id="edit-product-type" name="edit-product-type" required />
-
-            <label for="edit-product-price">Prix :</label>
-            <input type="number" id="edit-product-price" name="edit-product-price" required />
-
-            <label for="edit-product-description">Description :</label>
-            <textarea id="edit-product-description" name="edit-product-description"></textarea>
-
-            <label for="edit-product-inventory">Quantité :</label>
-            <input type="number" id="edit-product-inventory" name="edit-product-inventory" min="0" required />
-
-            <label for="edit-product-colors">Couleurs du produit :</label>
-            <input type="text" id="edit-product-colors" name="edit-product-colors" />
-
-            <label for="edit-product-sizes">Tailles du produit :</label>
-            <input type="text" id="edit-product-sizes" name="edit-product-sizes" />
-
-            <label for="edit-product-images">Images du produit :</label>
-            <input type="file" id="edit-product-images" name="edit-product-images" multiple accept="image/*" />
-
-            <button type="submit">Enregistrer les modifications</button>
-        </form>
+        <h2>Images du produit</h2>
+        <div id="image-list" class="image-list"></div>
+        <label>Ajouter de nouvelles images :
+            <input type="file" id="new-images" multiple accept="image/*">
+        </label>
+        <button id="upload-images">Sauvegarder les images</button>
     </div>
 </div>
 
-
-<script src="/scripts/dashboard/products.js"></script>
+<script src="/scripts/dashboard/products_create.js"></script>
+<script src="/scripts/dashboard/products_modify.js"></script>
+<script src="/scripts/dashboard/products_search.js"></script>

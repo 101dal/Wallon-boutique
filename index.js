@@ -57,6 +57,10 @@ app.get("/products/:id", async (req, res) => {
     });
     const product = await response.json();
 
+    if(product.status !== 200) {
+        res.redirect("/products");
+    }
+
     response = await fetch(`http://localhost:3000/api/v1/reviews/product/${req.params.id}`, {
         method: 'GET',
     });
