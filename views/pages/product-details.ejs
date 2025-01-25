@@ -1,5 +1,14 @@
 <link rel="stylesheet" href="/css/product-details.css">
 
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span id="modal-close" class="modal-close">&times;</span>
+        <h2>Produit ajouté au panier !</h2>
+        <p>Votre produit a été ajouté avec succès à votre panier.</p>
+        <button id="modal-ok">OK</button>
+    </div>
+</div>
+
 <div class="product-header">
     <div class="product-images">
         <% product.content.url.forEach((imageId, index) => { %>
@@ -11,8 +20,30 @@
         <h1 class="product-name"><%= product.content.name %></h1>
         <p class="product-description"><%= product.content.description %></p>
         <p class="product-price"><%= product.content.price.toFixed(2) %>€</p>
+
+        <% if (product.content.colors && product.content.colors.length > 0) { %>
+            <label for="product-color">Couleur :</label>
+            <select id="product-color">
+                <% product.content.colors.forEach(color => { %>
+                    <option value="<%= color %>"><%= color %></option>
+                <% }); %>
+            </select>
+        <% } %>
+
+        <% if (product.content.sizes && product.content.sizes.length > 0) { %>
+            <label for="product-size">Taille :</label>
+            <select id="product-size">
+                <% product.content.sizes.forEach(size => { %>
+                    <option value="<%= size %>"><%= size %></option>
+                <% }); %>
+            </select>
+        <% } %>
+
+        <label for="product-quantity">Quantité :</label>
+        <input type="number" id="product-quantity" name="quantity" value="1" min="1" />
+
         <% if (logged) { %>
-            <button class="add-to-cart" id="product_<%= product.content.id %>">
+            <button class="add-to-cart" id="product_<%= product.content.id %>" data-product-id="<%= product.content.id %>" data-product-price="<%= product.content.price %>">
                 <ion-icon name="cart-outline"></ion-icon>
                 Ajouter au panier
             </button>
@@ -47,8 +78,7 @@
             <p>Aucun avis pour le moment.</p>
         <% } %>
     </div>
-
-    
 </div>
 
 <script src="/scripts/product-details.js"></script>
+<script src="/scripts/cart-add.js"></script>

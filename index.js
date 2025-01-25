@@ -150,6 +150,29 @@ app.get("/dashboard/:type", async (req, res) => {
 
         res.render("pages/dashboard/dashboard-products", { active: "dashboard-admin", container: "products", products });
     }
+
+    if (req.params.type === "users") {
+        // Get a list of all the products
+        const response = await fetch(`http://localhost:3000/api/v1/users/all`, {
+            method: 'GET',
+            headers: { 'Cookie': `token_cookie=${req.cookies.token_cookie}` }
+        });
+        const users = await response.json();
+        
+        res.render("pages/dashboard/dashboard-users", { active: "dashboard-admin", container: "users", users });
+    }
+
+    if (req.params.type === "orders") {
+        // Get a list of all the products
+        const response = await fetch(`http://localhost:3000/api/v1/orders/all`, {
+            method: 'GET',
+            headers: { 'Cookie': `token_cookie=${req.cookies.token_cookie}` }
+        });
+        const orders = await response.json();
+
+        
+        res.render("pages/dashboard/dashboard-orders", { active: "dashboard-admin", container: "orders", orders });
+    }
 })
 
 

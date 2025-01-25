@@ -1,0 +1,77 @@
+<link rel="stylesheet" href="/css/dashboard/orders.css">
+
+<section class="add-order">
+    <h2><ion-icon name="add-circle-outline"></ion-icon> Créer une commande</h2>
+    <form id="add-order-form">
+        <label for="user-id">ID Utilisateur :</label>
+        <input type="text" id="user-id" name="user-id" placeholder="Entrez l'ID utilisateur" required />
+
+        <button type="submit">Créer la commande</button>
+    </form>
+</section>
+
+<section class="order-management">
+    <h2>Gestion des commandes</h2>
+
+    <div class="order-filters">
+        <label for="filter-user">ID Utilisateur :</label>
+        <input type="text" id="filter-user" placeholder="Filtrer par utilisateur" />
+
+        <label for="filter-status">Statut :</label>
+        <select id="filter-status">
+            <option value="">Tous</option>
+            <option value="pending">En attente</option>
+            <option value="processing">En cours</option>
+            <option value="shipped">Expédié</option>
+            <option value="delivered">Livré</option>
+            <option value="cancelled">Annulé</option>
+        </select>
+
+        <label for="filter-sort">Trier par :</label>
+        <select id="filter-sort">
+            <option value="date" selected>Date</option>
+            <option value="status">Statut</option>
+            <option value="user">Utilisateur</option>
+        </select>
+
+        <button id="apply-filters">Appliquer</button>
+    </div>
+
+    <div class="order-list">
+        <% if (orders.status === 200) { %>
+            <% 
+                orders.content.forEach(order => { 
+            %>
+                <div class="order-item" data-order-id="<%= order.id %>">
+                    <div class="orders-info">
+                        <label>ID Utilisateur :
+                            <input type="text" value="<%= order.user_id %>" class="order-user-id" readonly />
+                        </label>
+                        <label>Statut :
+                            <select class="order-status">
+                                <option value="pending" <%= order.status === 'pending' ? 'selected' : '' %>>En attente</option>
+                                <option value="processing" <%= order.status === 'processing' ? 'selected' : '' %>>En cours</option>
+                                <option value="shipped" <%= order.status === 'shipped' ? 'selected' : '' %>>Expédié</option>
+                                <option value="delivered" <%= order.status === 'delivered' ? 'selected' : '' %>>Livré</option>
+                                <option value="cancelled" <%= order.status === 'cancelled' ? 'selected' : '' %>>Annulé</option>
+                            </select>
+                        </label>
+                        <label>Date de création :
+                            <input type="text" value="<%= new Date(order.created_at).toLocaleString() %>" readonly />
+                        </label>
+                    </div>
+                    <div class="order-actions">
+                        <button class="save-order" data-order-id="<%= order.id %>"><ion-icon name="save-outline"></ion-icon></button>
+                        <button class="delete-order" data-order-id="<%= order.id %>"><ion-icon name="trash-outline"></ion-icon></button>
+                    </div>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <p>Aucune commande disponible pour le moment.</p>
+        <% } %>
+    </div>
+</section>
+
+<script src="/scripts/dashboard/orders_create.js"></script>
+<script src="/scripts/dashboard/orders_modify.js"></script>
+<script src="/scripts/dashboard/orders_search.js"></script>
