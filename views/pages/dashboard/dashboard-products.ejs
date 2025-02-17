@@ -1,122 +1,1156 @@
-<link rel="stylesheet" href="/css/dashboard/products.css">
+<style>
+  /* Style global */
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #e0eafc, #cfdef3);
+    margin: 0;
+    padding: 0;
+  }
 
+  .products-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+
+  /* Sections d'ajout et de liste */
+  .add-product,
+  .product-list {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+  }
+
+  .add-product h2,
+  .product-list h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #007bff;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 0.5rem;
+  }
+
+  /* Formulaire d'ajout de produit */
+  .add-product form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .add-product label {
+    font-weight: 600;
+    color: #333;
+  }
+
+  .add-product input,
+  .add-product textarea,
+  .add-product select {
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+
+  .add-product input:focus,
+  .add-product textarea:focus,
+  .add-product select:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+
+  .add-product button {
+    padding: 1rem;
+    border: none;
+    background: #007bff;
+    color: #fff;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .add-product button:hover {
+    background: #0056b3;
+  }
+
+  /* Zone de sélection du type */
+  #type-selection>div {
+    margin-bottom: 0.5rem;
+  }
+
+  .new-type-container {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px dashed #007bff;
+    border-radius: 5px;
+  }
+
+  #icon-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+    gap: 10px;
+    margin: 10px 0;
+  }
+
+  /* Ajout pour les sélecteurs d'icônes dans l'update */
+  .icon-selector-update {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+    gap: 10px;
+    margin: 10px 0;
+  }
+
+  .icon-option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .icon-option:hover {
+    border-color: #007bff;
+    background-color: #f0f8ff;
+  }
+
+  .icon-option.selected {
+    border-color: #007bff;
+    background-color: #007bff;
+    color: white;
+  }
+
+  .icon-option ion-icon {
+    font-size: 24px;
+  }
+
+  /* Filtres */
+  .product-filters {
+    margin-bottom: 20px;
+    background: #ffffff;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .product-filters label {
+    font-size: 1rem;
+    color: #555;
+  }
+
+  .product-filters input,
+  .product-filters select {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+
+  #apply-filters {
+    background-color: #28a745;
+    color: #fff;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  #apply-filters:hover {
+    background-color: #218838;
+  }
+
+  /* Gestion des produits */
+  .product-management {
+    padding: 20px;
+  }
+
+  .product-management h2 {
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .product-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .product-item {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  .products-info {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    flex: 1 1 auto;
+  }
+
+  .products-info label {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.95rem;
+    color: #555;
+  }
+
+  .products-info input[type="text"],
+  .products-info input[type="number"],
+  .products-info textarea,
+  .products-info select {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.95rem;
+    color: #333;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  .product-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  button {
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+  }
+
+  button.view-images {
+    background-color: #17a2b8;
+    color: #fff;
+  }
+
+  button.save-product {
+    background-color: #ffc107;
+    color: #fff;
+  }
+
+  button.save-product.saved {
+    background-color: #28a745;
+  }
+
+  button.delete-product {
+    background-color: #dc3545;
+    color: #fff;
+  }
+
+  button:hover {
+    opacity: 0.9;
+  }
+
+  /* Modal */
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  .modal.hidden {
+    display: none;
+  }
+
+  .modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+    width: 80%;
+    max-width: 600px;
+    position: relative;
+  }
+
+  .modal-content h2 {
+    margin-bottom: 20px;
+    color: #007bff;
+  }
+
+  .modal-content .image-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .modal-content .image-list .image-list-element {
+    position: relative;
+  }
+
+  .modal-content .image-list img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+  }
+
+  .modal-content .image-list .delete-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(220, 53, 69, 0.8);
+    color: #fff;
+    font-size: 24px;
+    text-align: center;
+    line-height: 100px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.25s ease-in-out;
+    pointer-events: none;
+  }
+
+  .modal-content .image-list .image-list-element:hover .delete-icon {
+    opacity: 0.5;
+  }
+
+  .modal-content label {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  #upload-images {
+    background-color: #28a745;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  #upload-images:hover {
+    background-color: #218838;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    color: #333;
+    cursor: pointer;
+  }
+
+  /* Masquage des produits filtrés */
+  .product-item.hidden {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+  }
+
+  .product-item {
+    transition: opacity 0.3s ease-in;
+  }
+
+  /* Style pour le modal d'erreur */
+  .error-list {
+    color: #dc3545;
+    padding-left: 20px;
+    list-style-type: disc;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+
+  .error-list li {
+    margin-bottom: 8px;
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+  }
+</style>
+
+<!-- Formulaire d'ajout de produit -->
 <section class="add-product">
-    <h2><ion-icon name="add-circle-outline"></ion-icon> Ajouter un produit</h2>
-    <form id="add-product-form">
-        <label for="product-name">Nom du produit :</label>
-        <input type="text" id="product-name" name="product-name" placeholder="Entrez le nom" required />
+  <h2>
+    <ion-icon name="add-circle-outline"></ion-icon> Ajouter un produit
+  </h2>
+  <form id="add-product-form">
+    <label for="product-name">Nom du produit :</label>
+    <input type="text" id="product-name" name="product-name" placeholder="Entrez le nom" required />
 
-        <label for="product-type">Type du produit :</label>
-        <input type="text" id="product-type" name="product-type" placeholder="Entrez le type" required />
-
-        <label for="product-price">Prix :</label>
-        <input type="number" id="product-price" name="product-price" placeholder="Entrez le prix" required />
-
-        <label for="product-description">Description :</label>
-        <textarea id="product-description" name="product-description" placeholder="Entrez la description"></textarea>
-
-        <label for="product-inventory">Quantité :</label>
-        <input type="number" min="0" id="product-inventory" name="product-inventory" placeholder="Entrez la quantité disponible" required />
-
-        <label for="product-colors">Couleurs du produit (optionnel) :</label>
-        <input type="text" id="product-colors" name="product-colors" placeholder="Entrez les couleurs séparées par des virgules" />
-
-        <label for="product-sizes">Tailles du produit (optionnel) :</label>
-        <input type="text" id="product-sizes" name="product-sizes" placeholder="Entrez les tailles séparées par des virgules" />
-
-        <label for="product-images">Images du produit :</label>
-        <input type="file" id="product-images" name="product-images" multiple accept="image/*" />
-
-        <button type="submit">Ajouter le produit</button>
-    </form>
-</section>
-
-<section class="product-management">
-    <h2>Gestion des produits</h2>
-
-    <div class="product-filters">
-        <label for="filter-name">Nom :</label>
-        <input type="text" id="filter-name" placeholder="Filtrer par nom" />
-
-        <label for="filter-type">Type :</label>
-        <input type="text" id="filter-type" placeholder="Filtrer par type" />
-
-        <label for="filter-price-min">Prix min :</label>
-        <input type="number" id="filter-price-min" placeholder="Min" />
-
-        <label for="filter-price-max">Prix max :</label>
-        <input type="number" id="filter-price-max" placeholder="Max" />
-
-        <label for="filter-sort">Trier par :</label>
-        <select id="filter-sort">
-            <option value="name" selected>Nom</option> <!-- Ajout de selected ici pour le tri par défaut -->
-            <option value="price">Prix</option>
-            <option value="type">Type</option>
+    <!-- Zone de sélection du type -->
+    <div id="type-selection">
+      <div>
+        <input type="checkbox" id="new-type-checkbox" name="new-type-checkbox" />
+        <label for="new-type-checkbox">Créer un nouveau type</label>
+      </div>
+      <div id="existing-type-container">
+        <label for="product-type-select">Type existant :</label>
+        <select id="product-type-select" name="product-type" required>
+          <!-- Options chargées dynamiquement -->
         </select>
+      </div>
+      <!-- Nouveau type avec sélecteur d'icônes -->
+      <div id="new-type-container" style="display: none;">
+        <label for="new-type-name">Nouveau nom du type :</label>
+        <input type="text" id="new-type-name" name="new-type-name" placeholder="Entrez le nouveau type" />
 
-        <button id="apply-filters">Appliquer</button>
-    </div>
-
-    <div class="product-list">
-        <% if (products.status === 200) { %>
-            <% 
-                // Tri des produits par ordre alphabétique par nom
-                products.content.sort((a, b) => {
-                    return a.name.localeCompare(b.name); // Trie alphabétiquement par le nom du produit
-                });
-
-                products.content.forEach(product => { 
-            %>
-                <div class="product-item" data-product-id="<%= product.id %>">
-                    <div class="products-info">
-                        <label>Nom :
-                            <input type="text" value="<%= product.name %>" class="product-name" />
-                        </label>
-                        <label>Description :
-                            <textarea class="product-description"><%= product.description %></textarea>
-                        </label>
-                        <label>Couleurs :
-                            <input type="text" value="<%= product.colors ? product.colors.join(', ') : '' %>" class="product-colors" />
-                        </label>
-                        <label>Tailles :
-                            <input type="text" value="<%= product.sizes ? product.sizes.join(', ') : '' %>" class="product-sizes" />
-                        </label>
-                        <label>Prix :
-                            <input type="number" min="0" step="0.01" value="<%= product.price %>" class="product-price" />
-                        </label>
-                        <label>Quantité :
-                            <input type="number" min="0" value="<%= product.inventory %>" class="product-inventory" />
-                        </label>
-                        <label>Type :
-                            <input type="text" value="<%= product.type %>" class="product-type" />
-                        </label>
-                    </div>
-                    <div class="product-actions">
-                        <button class="view-images" data-product-id="<%= product.id %>" images_ids="<%= JSON.stringify(product.url) %>">Voir les images</button>
-                        <button class="save-product" data-product-id="<%= product.id %>"><ion-icon name="save-outline"></ion-icon></button>
-                        <button class="delete-product" data-product-id="<%= product.id %>"><ion-icon name="trash-outline"></ion-icon></button>
-                    </div>
-                </div>
+        <label for="new-type-logo">Sélectionnez une icône :</label>
+        <div id="icon-selector">
+          <% listOfTypeLogos.forEach(icon=> { %>
+            <div class="icon-option" data-icon="<%= icon %>">
+              <ion-icon name="<%= icon %>"></ion-icon>
+            </div>
             <% }); %>
-        <% } else { %>
-            <p>Aucun produit disponible pour le moment.</p>
-        <% } %>
+        </div>
+        <input type="hidden" id="new-type-logo" name="new-type-logo" />
+      </div>
     </div>
+
+    <label for="product-price">Prix :</label>
+    <input type="number" id="product-price" name="product-price" placeholder="Entrez le prix" required />
+
+    <label for="product-description">Description :</label>
+    <textarea id="product-description" name="product-description" placeholder="Entrez la description"></textarea>
+
+    <label for="product-inventory">Quantité :</label>
+    <input type="number" min="0" id="product-inventory" name="product-inventory"
+      placeholder="Entrez la quantité disponible" required />
+
+    <label for="product-colors">Couleurs du produit (optionnel) :</label>
+    <input type="text" id="product-colors" name="product-colors"
+      placeholder="Entrez les couleurs séparées par des virgules" />
+
+    <label for="product-sizes">Tailles du produit (optionnel) :</label>
+    <input type="text" id="product-sizes" name="product-sizes"
+      placeholder="Entrez les tailles séparées par des virgules" />
+
+    <label for="product-images">Images du produit :</label>
+    <input type="file" id="product-images" name="product-images" multiple accept="image/*" />
+
+    <button type="submit">Ajouter le produit</button>
+  </form>
 </section>
 
+<!-- Gestion des produits -->
+<section class="product-management">
+  <h2>Gestion des produits</h2>
+  <div class="product-filters">
+    <label for="filter-name">Nom :</label>
+    <input type="text" id="filter-name" placeholder="Filtrer par nom" />
 
+    <label for="filter-type">Type :</label>
+    <input type="text" id="filter-type" placeholder="Filtrer par type" />
+
+    <label for="filter-price-min">Prix min :</label>
+    <input type="number" id="filter-price-min" placeholder="Min" />
+
+    <label for="filter-price-max">Prix max :</label>
+    <input type="number" id="filter-price-max" placeholder="Max" />
+
+    <label for="filter-sort">Trier par :</label>
+    <select id="filter-sort">
+      <option value="name" selected>Nom</option>
+      <option value="price">Prix</option>
+      <option value="type">Type</option>
+    </select>
+
+    <button id="apply-filters">Appliquer</button>
+  </div>
+
+  <div class="product-list">
+    <% if (products.status===200) { %>
+      <% products.content.sort((a, b)=> a.name.localeCompare(b.name)); %>
+        <% products.content.forEach(product=> { %>
+          <!-- Ajout d'un attribut data-product-type pour faciliter la sélection par défaut -->
+          <div class="product-item" data-product-id="<%= product.id %>" data-product-type="<%= product.typeId %>">
+            <div class="products-info">
+              <label>
+                Nom :
+                <input type="text" value="<%= product.name %>" class="product-name" />
+              </label>
+              <label>
+                Description :
+                <textarea class="product-description"><%= product.description %></textarea>
+              </label>
+              <label>
+                Couleurs :
+                <input type="text" value="<%= product.colors ? product.colors.join(', ') : '' %>"
+                  class="product-colors" />
+              </label>
+              <label>
+                Tailles :
+                <input type="text" value="<%= product.sizes ? product.sizes.join(', ') : '' %>" class="product-sizes" />
+              </label>
+              <label>
+                Prix :
+                <input type="number" min="0" step="0.01" value="<%= product.price %>" class="product-price" />
+              </label>
+              <label>
+                Quantité :
+                <input type="number" min="0" value="<%= product.inventory %>" class="product-inventory" />
+              </label>
+              <label>
+                Type :
+                <!-- Zone de sélection pour la modification du type -->
+                <select class="existing-product-type"></select>
+                <input type="checkbox" class="new-type-checkbox" id="new-type-checkbox-<%= product.id %>" />
+                <label for="new-type-checkbox-<%= product.id %>">Créer un nouveau type</label>
+                <!-- Modification dans la section product-item -->
+                <div class="new-type-container" id="new-type-container-<%= product.id %>" style="display: none;">
+                  <input type="text" class="new-type-name" placeholder="Nouveau nom du type" />
+                  <div class="icon-selector-update">
+                    <% listOfTypeLogos.forEach(icon=> { %>
+                      <div class="icon-option" data-icon="<%= icon %>">
+                        <ion-icon name="<%= icon %>"></ion-icon>
+                      </div>
+                      <% }); %>
+                  </div>
+                  <input type="hidden" class="new-type-logo" />
+                </div>
+              </label>
+            </div>
+            <div class="product-actions">
+              <button class="view-images" data-product-id="<%= product.id %>"
+                images_ids='<%= JSON.stringify(product.url) %>'>
+                Voir les images
+              </button>
+              <button class="save-product" data-product-id="<%= product.id %>">
+                <ion-icon name="save-outline"></ion-icon>
+              </button>
+              <button class="delete-product" data-product-id="<%= product.id %>">
+                <ion-icon name="trash-outline"></ion-icon>
+              </button>
+            </div>
+          </div>
+          <% }); %>
+            <% } else { %>
+              <p>Aucun produit disponible pour le moment.</p>
+              <% } %>
+  </div>
+</section>
+
+<!-- Modal pour la gestion des images -->
 <div id="modal" class="modal hidden">
-    <div class="modal-content">
-        <span class="close-btn">&times;</span>
-        <h2>Images du produit</h2>
-        <div id="image-list" class="image-list"></div>
-        <label>Ajouter de nouvelles images :
-            <input type="file" id="new-images" multiple accept="image/*">
-        </label>
-        <button id="upload-images">Sauvegarder les images</button>
-    </div>
+  <div class="modal-content">
+    <span class="close-btn">&times;</span>
+    <h2>Images du produit</h2>
+    <div id="image-list" class="image-list"></div>
+    <label>
+      Ajouter de nouvelles images :
+      <input type="file" id="new-images" multiple accept="image/*">
+    </label>
+    <button id="upload-images">Sauvegarder les images</button>
+  </div>
 </div>
 
-<script src="/scripts/dashboard/products_create.js"></script>
-<script src="/scripts/dashboard/products_modify.js"></script>
-<script src="/scripts/dashboard/products_search.js"></script>
+<!-- Modal pour les erreurs -->
+<div id="error-modal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close-btn">&times;</span>
+    <h2>Erreurs détectées</h2>
+    <ul class="error-list"></ul>
+  </div>
+</div>
+
+<script>
+  // Variable globale pour stocker les messages d'erreur
+  let errorMessages = {};
+
+  // Récupérer les messages d'erreur depuis l'API
+  async function fetchErrorMessages() {
+    try {
+      const response = await fetch('http://localhost:3000/api/v1/errors');
+      if (response.ok) {
+        errorMessages = await response.json();
+      }
+    } catch (error) {
+      console.error('Erreur lors de la récupération des messages d\'erreur:', error);
+    }
+  }
+
+  // Fonction d'affichage des erreurs
+  function showErrorModal(errors) {
+    const modal = document.getElementById('error-modal');
+    const errorList = modal.querySelector('.error-list');
+    errorList.innerHTML = '';
+
+    errors.forEach(error => {
+      const li = document.createElement('li');
+      let message = error;
+
+      if (typeof error === 'number') {
+        message = errorMessages[error] || `Erreur inconnue (code ${error})`;
+      }
+
+      li.textContent = message;
+      errorList.appendChild(li);
+    });
+
+    modal.classList.remove('hidden');
+  }
+
+  // Gestion de la fermeture du modal
+  document.querySelectorAll('#error-modal .close-btn, #error-modal').forEach(el => {
+    el.addEventListener('click', (e) => {
+      if (e.target === el || e.target.classList.contains('close-btn')) {
+        document.getElementById('error-modal').classList.add('hidden');
+      }
+    });
+  });
+
+  // Appeler au chargement de la page
+  document.addEventListener('DOMContentLoaded', fetchErrorMessages);
+
+  // Fonction pour récupérer la liste des types existants
+  async function getProductTypes_request() {
+    const response = await fetch("http://localhost:3000/api/v1/products/types", {
+      method: "GET",
+      credentials: "include",
+    });
+    return await response.json();
+  }
+
+  // Gestion de l'affichage des options de type
+  document.addEventListener("DOMContentLoaded", async () => {
+    /* Pour le formulaire de création */
+    const newTypeCheckbox = document.getElementById("new-type-checkbox");
+    const existingTypeContainer = document.getElementById("existing-type-container");
+    const newTypeContainer = document.getElementById("new-type-container");
+    const productTypeSelect = document.getElementById("product-type-select");
+
+    // Toggle d'affichage selon le choix
+    newTypeCheckbox.addEventListener("change", () => {
+      if (newTypeCheckbox.checked) {
+        existingTypeContainer.style.display = "none";
+        newTypeContainer.style.display = "block";
+        productTypeSelect.required = false;
+      } else {
+        existingTypeContainer.style.display = "block";
+        newTypeContainer.style.display = "none";
+        productTypeSelect.required = true;
+      }
+    });
+
+    // Récupération et affichage des types existants
+    const typesData = await getProductTypes_request();
+    if (typesData.status === 200) {
+      typesData.content.forEach(type => {
+        const option = document.createElement("option");
+        option.value = type.id; // Utiliser l'ID du type comme valeur
+        option.textContent = type.name;
+        productTypeSelect.appendChild(option);
+      });
+    }
+
+    /* Pour la modification des produits */
+    const productItems = document.querySelectorAll(".product-item");
+    if (productItems.length > 0) {
+      const typesDataMod = await getProductTypes_request();
+      productItems.forEach(item => {
+        const selectElem = item.querySelector(".existing-product-type");
+        if (typesDataMod.status === 200) {
+          typesDataMod.content.forEach(type => {
+            const option = document.createElement("option");
+            option.value = type.id; // Utiliser l'ID du type comme valeur
+            option.textContent = type.name;
+            selectElem.appendChild(option);
+          });
+        }
+
+        // Affecter la valeur par défaut
+        const productType = item.getAttribute("data-product-type");
+        if (productType) {
+          selectElem.value = productType;
+        }
+
+        // Gestion du sélecteur d'icônes pour la mise à jour
+        const iconSelector = item.querySelector('.icon-selector-update');
+        const logoInput = item.querySelector('.new-type-logo');
+
+        if (iconSelector) {
+          iconSelector.querySelectorAll('.icon-option').forEach(icon => {
+            icon.addEventListener('click', () => {
+              iconSelector.querySelectorAll('.icon-option').forEach(i => i.classList.remove('selected'));
+              icon.classList.add('selected');
+              logoInput.value = icon.getAttribute('data-icon');
+            });
+          });
+        }
+
+        // Gestion du toggle pour création d'un nouveau type
+        const newTypeCheckboxMod = item.querySelector(".new-type-checkbox");
+        const newTypeContainerMod = item.querySelector(".new-type-container");
+        newTypeCheckboxMod.addEventListener("change", () => {
+          if (newTypeCheckboxMod.checked) {
+            selectElem.style.display = "none";
+            newTypeContainerMod.style.display = "block";
+          } else {
+            selectElem.style.display = "block";
+            newTypeContainerMod.style.display = "none";
+          }
+        });
+      });
+    }
+  });
+
+  // Script : Création d'un produit
+  async function createProduct_request(name, description, colors, sizes, price, inventory, typeValue, isNewType, newTypeLogo, imagesFiles) {
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('description', description);
+    formData.append('colors', colors);
+    formData.append('sizes', sizes);
+    formData.append('price', price);
+    formData.append('inventory', inventory);
+
+    if (isNewType) {
+      formData.append('type', JSON.stringify({ name: typeValue, logoUrl: newTypeLogo }));
+    } else {
+      formData.append('type', typeValue);
+    }
+
+    for (const fileItem of imagesFiles.files) {
+      formData.append('images', fileItem);
+    }
+
+    const response = await fetch("http://localhost:3000/api/v1/products/create", {
+      method: 'POST',
+      credentials: 'include',
+      body: formData,
+    });
+    return await response.json();
+  }
+
+  document.getElementById("add-product-form").addEventListener("submit", async event => {
+    event.preventDefault();
+
+    const name = document.getElementById("product-name").value;
+    const description = document.getElementById("product-description").value;
+    const colors = document.getElementById("product-colors").value;
+    const sizes = document.getElementById("product-sizes").value;
+    const price = document.getElementById("product-price").value;
+    const inventory = document.getElementById("product-inventory").value;
+    const images = document.getElementById("product-images");
+
+    const isNewType = document.getElementById("new-type-checkbox").checked;
+    let typeValue = "";
+    let newTypeLogo = "";
+    if (isNewType) {
+      typeValue = document.getElementById("new-type-name").value;
+      newTypeLogo = document.getElementById("new-type-logo").value;
+    } else {
+      typeValue = document.getElementById("product-type-select").value;
+    }
+
+    const response = await createProduct_request(name, description, colors, sizes, price, inventory, typeValue, isNewType, newTypeLogo, images);
+    if (response.status === 200) {
+      alert("Produit ajouté avec succès !");
+      window.location.reload();
+    } else {
+      const errors = response.id?.codes || response.content || ['Erreur inconnue'];
+      showErrorModal(errors);
+    }
+  });
+
+  // Script : Gestion de la modal, modification et suppression
+  document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("modal");
+    const closeModalButton = document.querySelector(".close-btn");
+    const uploadImagesButton = document.getElementById("upload-images");
+
+    // Ouvrir la modal pour afficher les images
+    document.querySelectorAll(".view-images").forEach(button => {
+      button.addEventListener("click", () => {
+        const productId = button.getAttribute("data-product-id");
+        const imagesIds = JSON.parse(button.getAttribute("images_ids"));
+        openModal(productId, imagesIds);
+      });
+    });
+
+    // Fermeture de la modal
+    closeModalButton.addEventListener("click", closeModal);
+
+    // Sauvegarder les modifications d'un produit
+    document.querySelectorAll(".save-product").forEach(button => {
+      button.addEventListener("click", () => {
+        const productId = button.getAttribute("data-product-id");
+        saveProductChanges(productId, button);
+      });
+    });
+
+    // Suppression d'un produit
+    document.querySelectorAll(".delete-product").forEach(button => {
+      button.addEventListener("click", () => {
+        const productId = button.getAttribute("data-product-id");
+        confirmDeletion(productId);
+      });
+    });
+
+    // Upload d'images
+    uploadImagesButton.addEventListener("click", () => {
+      const productId = modal.getAttribute("data-product-id");
+      uploadImages(productId);
+    });
+
+    // Fermer la modal en cliquant en dehors du contenu
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) {
+        closeModal();
+      }
+    });
+
+    // Empêcher la fermeture lors d'un clic dans la modal
+    const modalContent = document.querySelector(".modal-content");
+    modalContent.addEventListener("click", (event) => {
+      event.stopPropagation();
+    });
+
+    function openModal(productId, imagesIds) {
+      const imageList = document.getElementById("image-list");
+      imageList.innerHTML = "";
+      modal.classList.remove("hidden");
+      modal.setAttribute("data-product-id", productId);
+
+      imagesIds.forEach(imageId => {
+        const mainDiv = document.createElement("div");
+        mainDiv.classList.add("image-list-element");
+        mainDiv.setAttribute("data-image-id", imageId);
+
+        const imgElement = document.createElement("img");
+        imgElement.src = `http://localhost:3000/api/v1/images?product_id=${productId}&image_id=${imageId}`;
+        imgElement.alt = "Product Image";
+        imgElement.dataset.imageId = imageId;
+        imgElement.addEventListener("click", async () => await removeImage(productId, imageId));
+
+        const deleteIcon = document.createElement("ion-icon");
+        deleteIcon.name = "trash-outline";
+        deleteIcon.classList.add("delete-icon");
+
+        mainDiv.appendChild(imgElement);
+        mainDiv.appendChild(deleteIcon);
+        imageList.appendChild(mainDiv);
+      });
+    }
+
+    function closeModal() {
+      modal.classList.add("hidden");
+      modal.removeAttribute("data-product-id");
+    }
+
+    async function saveProductChanges(productId, button) {
+      if (confirm("Êtes-vous certain de vouloir modifier ce produit ?")) {
+        const productItem = document.querySelector(`.product-item[data-product-id='${productId}']`);
+        const name = productItem.querySelector(".product-name").value;
+        const description = productItem.querySelector(".product-description").value;
+        const colors = productItem.querySelector(".product-colors").value;
+        const sizes = productItem.querySelector(".product-sizes").value;
+        const price = parseFloat(productItem.querySelector(".product-price").value);
+        const inventory = parseInt(productItem.querySelector(".product-inventory").value, 10);
+
+        const newTypeCheckbox = productItem.querySelector(".new-type-checkbox");
+        let typeValue = "";
+        if (newTypeCheckbox.checked) {
+          const newTypeName = productItem.querySelector(".new-type-name").value;
+          const newTypeLogo = productItem.querySelector(".new-type-logo").value; // Récupère la valeur du sélecteur
+          typeValue = JSON.stringify({ name: newTypeName, logoUrl: newTypeLogo });
+        } else {
+          const existingTypeSelect = productItem.querySelector(".existing-product-type");
+          typeValue = existingTypeSelect.value;
+        }
+
+        const response = await updateProduct_request(name, description, colors, sizes, price, inventory, typeValue, productId);
+        if (response.status === 200) {
+          updateProductInDOM(response.content);
+          button.classList.add("saved");
+          button.querySelector("ion-icon").setAttribute("name", "checkmark-done-outline");
+          setTimeout(() => {
+            button.querySelector("ion-icon").setAttribute("name", "save-outline");
+            button.classList.remove("saved");
+          }, 1000);
+        } else {
+          const errors = response.id?.codes || response.content || ['Erreur inconnue'];
+          showErrorModal(errors);
+        }
+      }
+    }
+
+    async function confirmDeletion(productId) {
+      if (confirm("Êtes-vous sûr de vouloir supprimer ce produit ?")) {
+        const response = await deleteProduct_request(productId);
+        if (response.status === 200) {
+          document.querySelector(`.product-item[data-product-id='${productId}']`).remove();
+        } else {
+          const errors = response.id?.codes || response.content || ['Erreur inconnue'];
+          showErrorModal(errors);
+        }
+      }
+    }
+
+    async function uploadImages(productId) {
+      const newImagesInput = document.getElementById("new-images");
+      const files = newImagesInput.files;
+      if (files.length === 0) {
+        showErrorModal(['Veuillez sélectionner des images à télécharger.']);
+        return;
+      }
+      const response = await addImageToProduct_request(productId, newImagesInput);
+      if (response.status === 200) {
+        updateProductImagesInModal(productId, response.content.url);
+      } else {
+        const errors = response.id?.codes || response.content || ['Erreur inconnue'];
+        showErrorModal(errors);
+      }
+    }
+
+    async function removeImage(productId, imageId) {
+      if (confirm("Êtes-vous sûr de vouloir supprimer cette image ?")) {
+        const response = await removeImageFromProduct_request(productId, imageId);
+        if (response.status === 200) {
+          const viewImagesButton = document.querySelector(`button.view-images[data-product-id='${productId}']`);
+          const oldIds = JSON.parse(viewImagesButton.getAttribute("images_ids"));
+          const newImagesIds = oldIds.filter(id => id !== imageId);
+          viewImagesButton.setAttribute("images_ids", JSON.stringify(newImagesIds));
+          document.querySelector(`div[data-image-id='${imageId}']`).remove();
+        } else {
+          const errors = response.id?.codes || response.content || ['Erreur inconnue'];
+          showErrorModal(errors);
+        }
+      }
+    }
+
+    function updateProductInDOM(product) {
+      const productItem = document.querySelector(`.product-item[data-product-id='${product.id}']`);
+      productItem.querySelector(".product-name").value = product.name;
+      productItem.querySelector(".product-description").value = product.description;
+      productItem.querySelector(".product-colors").value = product.colors ? product.colors.join(", ") : "";
+      productItem.querySelector(".product-sizes").value = product.sizes ? product.sizes.join(", ") : "";
+      productItem.querySelector(".product-price").value = product.price;
+      productItem.querySelector(".product-inventory").value = product.inventory;
+      // Mise à jour du type dans le select
+      const selectElem = productItem.querySelector(".existing-product-type");
+      selectElem.value = product.typeId;
+    }
+
+    function updateProductImagesInModal(productId, images) {
+      const imageList = document.getElementById("image-list");
+      imageList.innerHTML = "";
+      const viewImagesButton = document.querySelector(`button.view-images[data-product-id='${productId}']`);
+      viewImagesButton.setAttribute("images_ids", JSON.stringify(images));
+      images.forEach(imageId => {
+        const mainDiv = document.createElement("div");
+        mainDiv.classList.add("image-list-element");
+        mainDiv.setAttribute("data-image-id", imageId);
+
+        const imgElement = document.createElement("img");
+        imgElement.src = `http://localhost:3000/api/v1/images?product_id=${productId}&image_id=${imageId}`;
+        imgElement.alt = "Product Image";
+        imgElement.dataset.imageId = imageId;
+        imgElement.addEventListener("click", async () => await removeImage(productId, imageId));
+
+        const deleteIcon = document.createElement("ion-icon");
+        deleteIcon.name = "trash-outline";
+        deleteIcon.classList.add("delete-icon");
+
+        mainDiv.appendChild(imgElement);
+        mainDiv.appendChild(deleteIcon);
+        imageList.appendChild(mainDiv);
+      });
+    }
+
+    // Fonctions de communication avec le backend
+    async function updateProduct_request(name, description, colors, sizes, price, inventory, type, id) {
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("description", description);
+      formData.append("colors", colors);
+      formData.append("sizes", sizes);
+      formData.append("price", price);
+      formData.append("inventory", inventory);
+      formData.append("type", type);
+
+      const response = await fetch(`http://localhost:3000/api/v1/products/update/${id}`, {
+        method: "PATCH",
+        credentials: "include",
+        body: formData,
+      });
+      return await response.json();
+    }
+
+    async function deleteProduct_request(id) {
+      const response = await fetch(`http://localhost:3000/api/v1/products/delete/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      return await response.json();
+    }
+
+    async function addImageToProduct_request(id, imagesFiles) {
+      const formData = new FormData();
+      for (const fileItem of imagesFiles.files) {
+        formData.append("images", fileItem);
+      }
+      const response = await fetch(`http://localhost:3000/api/v1/products/add-images/${id}`, {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
+      return await response.json();
+    }
+
+    async function removeImageFromProduct_request(id, imageId) {
+      const response = await fetch(`http://localhost:3000/api/v1/products/remove-image/${id}/${imageId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      return await response.json();
+    }
+  });
+
+  // Script : Filtres et tri
+  document.addEventListener("DOMContentLoaded", () => {
+    const filterName = document.getElementById("filter-name");
+    const filterType = document.getElementById("filter-type");
+    const filterPriceMin = document.getElementById("filter-price-min");
+    const filterPriceMax = document.getElementById("filter-price-max");
+    const filterSort = document.getElementById("filter-sort");
+    const applyFiltersButton = document.getElementById("apply-filters");
+    const productList = document.querySelector(".product-list");
+
+    const applyFilters = () => {
+      const name = filterName.value.toLowerCase().trim();
+      const type = filterType.value.toLowerCase().trim();
+      const priceMin = filterPriceMin.value === "" ? 0 : parseFloat(filterPriceMin.value);
+      const priceMax = filterPriceMax.value === "" ? Infinity : parseFloat(filterPriceMax.value);
+      const sortBy = filterSort.value;
+
+      let products = Array.from(productList.querySelectorAll(".product-item"));
+
+      // Réinitialiser la visibilité de tous les produits
+      products.forEach(product => {
+        product.classList.remove("hidden");
+      });
+
+      // Filtrer les produits
+      products.forEach(product => {
+        const productName = product.querySelector(".product-name").value.toLowerCase();
+        const productType = product.getAttribute("data-product-type").toLowerCase();
+        const productPrice = parseFloat(product.querySelector(".product-price").value);
+
+        const matchesName = name ? productName.includes(name) : true;
+        const matchesType = type ? productType.includes(type) : true;
+        const matchesPrice = productPrice >= priceMin && productPrice <= priceMax;
+
+        if (!(matchesName && matchesType && matchesPrice)) {
+          product.classList.add("hidden");
+        }
+      });
+
+      // Tri des produits visibles
+      let visibleProducts = products.filter(product => !product.classList.contains("hidden"));
+      visibleProducts.sort((a, b) => {
+        if (sortBy === "name") {
+          return a.querySelector(".product-name").value.localeCompare(b.querySelector(".product-name").value);
+        } else if (sortBy === "price") {
+          return parseFloat(a.querySelector(".product-price").value) - parseFloat(b.querySelector(".product-price").value);
+        } else if (sortBy === "type") {
+          return a.getAttribute("data-product-type").localeCompare(b.getAttribute("data-product-type"));
+        }
+        return 0;
+      });
+
+      // Réordonner les éléments dans le DOM
+      visibleProducts.forEach(product => productList.appendChild(product));
+    };
+
+    applyFiltersButton.addEventListener("click", applyFilters);
+  });
+
+  // Fonction pour sauvegarder des champs du formulaire dans le localStorage
+  function saveFormDataToLocalStorage() {
+    const formData = {
+      name: document.getElementById('product-name').value,
+      description: document.getElementById('product-description').value,
+      price: document.getElementById('product-price').value,
+      inventory: document.getElementById('product-inventory').value,
+      colors: document.getElementById('product-colors').value,
+      sizes: document.getElementById('product-sizes').value,
+    };
+    localStorage.setItem('productFormData', JSON.stringify(formData));
+  }
+
+  // Chargement des données sauvegardées
+  function loadFormDataFromLocalStorage() {
+    const savedData = localStorage.getItem('productFormData');
+    if (savedData) {
+      const formData = JSON.parse(savedData);
+      document.getElementById('product-name').value = formData.name || '';
+      document.getElementById('product-description').value = formData.description || '';
+      document.getElementById('product-price').value = formData.price || '';
+      document.getElementById('product-inventory').value = formData.inventory || '';
+      document.getElementById('product-colors').value = formData.colors || '';
+      document.getElementById('product-sizes').value = formData.sizes || '';
+    }
+  }
+
+  // Ajout des écouteurs d'événements pour sauvegarder à chaque modification
+  document.addEventListener('DOMContentLoaded', () => {
+    loadFormDataFromLocalStorage();
+
+    document.getElementById('product-name').addEventListener('input', saveFormDataToLocalStorage);
+    document.getElementById('product-description').addEventListener('input', saveFormDataToLocalStorage);
+    document.getElementById('product-price').addEventListener('input', saveFormDataToLocalStorage);
+    document.getElementById('product-inventory').addEventListener('input', saveFormDataToLocalStorage);
+    document.getElementById('product-colors').addEventListener('input', saveFormDataToLocalStorage);
+    document.getElementById('product-sizes').addEventListener('input', saveFormDataToLocalStorage);
+  });
+
+  // Gestion du sélecteur d'icônes
+  document.addEventListener("DOMContentLoaded", () => {
+    const iconOptions = document.querySelectorAll("#icon-selector .icon-option");
+    const logoInput = document.getElementById("new-type-logo");
+
+    iconOptions.forEach(icon => {
+      icon.addEventListener("click", () => {
+        // Retirer la sélection précédente
+        iconOptions.forEach(i => i.classList.remove("selected"));
+
+        // Sélectionner l'icône cliquée
+        icon.classList.add("selected");
+
+        // Mettre à jour l'input caché avec le nom de l'icône
+        const iconName = icon.getAttribute("data-icon");
+        logoInput.value = iconName;
+      });
+    });
+  });
+</script>

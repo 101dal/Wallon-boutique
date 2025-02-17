@@ -1,42 +1,344 @@
-<link rel="stylesheet" href="/css/dashboard/users.css">
+<style>
+    /* Style global */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(to right, #e0eafc, #cfdef3);
+        margin: 0;
+        padding: 0;
+    }
 
+    .users-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+
+    /* Sections d'ajout et de liste */
+    .add-user,
+    .user-list {
+        background: #ffffff;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+    }
+
+    .add-user h2,
+    .user-list h2 {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #007bff;
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 0.5rem;
+    }
+
+    /* Formulaire d'ajout d'utilisateur */
+    .add-user form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .add-user label {
+        font-weight: 600;
+        color: #333;
+    }
+
+    .add-user input,
+    .add-user select {
+        padding: 0.8rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+    }
+
+    .add-user input:focus,
+    .add-user select:focus {
+        outline: none;
+        border-color: #007bff;
+    }
+
+    .add-user button {
+        padding: 1rem;
+        border: none;
+        background: #007bff;
+        color: #fff;
+        font-size: 1.1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .add-user button:hover {
+        background: #0056b3;
+    }
+
+    /* Filtres */
+    .user-filters {
+        margin-bottom: 20px;
+        background: #ffffff;
+        padding: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .user-filters label {
+        font-size: 1rem;
+        color: #555;
+    }
+
+    .user-filters input,
+    .user-filters select {
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+
+    #apply-filters {
+        background-color: #28a745;
+        color: #fff;
+        padding: 0.75rem 1rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    #apply-filters:hover {
+        background-color: #218838;
+    }
+
+    /* Gestion des utilisateurs */
+    .user-management {
+        padding: 20px;
+    }
+
+    .user-management h2 {
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .user-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .user-item {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 10px;
+        background-color: #ffffff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .user-info {
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        flex: 1 1 auto;
+    }
+
+    .user-info label {
+        display: flex;
+        flex-direction: column;
+        font-size: 0.95rem;
+        color: #555;
+    }
+
+    .user-info input[type="text"],
+    .user-info input[type="email"],
+    .user-info select {
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 0.95rem;
+        color: #333;
+    }
+
+    .user-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    button {
+        border: none;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: all 0.3s;
+    }
+
+    button.save-user {
+        background-color: #ffc107;
+        color: #fff;
+    }
+
+    button.save-user.saved {
+        background-color: #28a745;
+    }
+
+    button.delete-user {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+    button:hover {
+        opacity: 0.9;
+    }
+
+    /* Modal pour les erreurs */
+    .error-list {
+        color: #dc3545;
+        padding-left: 20px;
+        list-style-type: disc;
+        max-height: 60vh;
+        overflow-y: auto;
+    }
+
+    .error-list li {
+        margin-bottom: 8px;
+        padding: 5px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    /* Modal */
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    .modal.hidden {
+        display: none;
+    }
+
+    .modal-content {
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+        width: 80%;
+        max-width: 600px;
+        position: relative;
+    }
+
+    .modal-content h2 {
+        margin-bottom: 20px;
+        color: #007bff;
+    }
+
+    .modal-content .image-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .modal-content .image-list .image-list-element {
+        position: relative;
+    }
+
+    .modal-content .image-list img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        cursor: pointer;
+    }
+
+    .modal-content .image-list .delete-icon {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(220, 53, 69, 0.8);
+        color: #fff;
+        font-size: 24px;
+        text-align: center;
+        line-height: 100px;
+        border-radius: 5px;
+        opacity: 0;
+        transition: opacity 0.25s ease-in-out;
+        pointer-events: none;
+    }
+
+    .modal-content .image-list .image-list-element:hover .delete-icon {
+        opacity: 0.5;
+    }
+
+    .modal-content label {
+        display: block;
+        margin-bottom: 10px;
+    }
+</style>
+
+<!-- Formulaire d'ajout d'utilisateur -->
 <section class="add-user">
-    <h2><ion-icon name="person-add-outline"></ion-icon> Ajouter un utilisateur</h2>
+    <h2>
+        <ion-icon name="add-circle-outline"></ion-icon> Ajouter un utilisateur
+    </h2>
     <form id="add-user-form">
-        <label for="user-username">Nom d'utilisateur :</label>
-        <input type="text" id="user-username" name="user-username" placeholder="Entrez le nom d'utilisateur" required />
+        <label for="username">Nom d'utilisateur :</label>
+        <input type="text" id="username" name="username" placeholder="Entrez le nom d'utilisateur" required />
 
-        <label for="user-email">Email :</label>
-        <input type="email" id="user-email" name="user-email" placeholder="Entrez l'email" required />
+        <label for="email">Email :</label>
+        <input type="email" id="email" name="email" placeholder="Entrez l'email" required />
 
-        <label for="user-password">Mot de passe :</label>
-        <input type="password" id="user-password" name="user-password" placeholder="Entrez le mot de passe" required />
+        <label for="password">Mot de passe :</label>
+        <input type="password" id="password" name="password" placeholder="Entrez le mot de passe" required />
 
-        <label for="user-firstName">Prénom :</label>
-        <input type="text" id="user-firstName" name="user-firstName" placeholder="Entrez le prénom" required />
+        <label for="firstName">Prénom :</label>
+        <input type="text" id="firstName" name="firstName" placeholder="Entrez le prénom" required />
 
-        <label for="user-lastName">Nom :</label>
-        <input type="text" id="user-lastName" name="user-lastName" placeholder="Entrez le nom" required />
+        <label for="lastName">Nom de famille :</label>
+        <input type="text" id="lastName" name="lastName" placeholder="Entrez le nom de famille" required />
 
-        <label for="user-role">Rôle :</label>
-        <select id="user-role" name="user-role" required>
+        <label for="role">Rôle :</label>
+        <select id="role" name="role" required>
+            <option value="ADMIN">Admin</option>
             <option value="USER">Utilisateur</option>
-            <option value="ADMIN">Administrateur</option>
         </select>
 
-        <label for="user-level">Niveau :</label>
-        <input type="text" id="user-level" name="user-level" placeholder="Entrez le niveau" />
+        <label for="level">Niveau :</label>
+        <input type="text" id="level" name="level" placeholder="Entrez le niveau" />
 
-        <label for="user-classe">Classe :</label>
-        <input type="text" id="user-classe" name="user-classe" placeholder="Entrez la classe" />
+        <label for="classe">Classe :</label>
+        <input type="text" id="classe" name="classe" placeholder="Entrez la classe" />
 
         <button type="submit">Ajouter l'utilisateur</button>
     </form>
 </section>
 
+<!-- Gestion des utilisateurs -->
 <section class="user-management">
     <h2>Gestion des utilisateurs</h2>
-
     <div class="user-filters">
         <label for="filter-username">Nom d'utilisateur :</label>
         <input type="text" id="filter-username" placeholder="Filtrer par nom d'utilisateur" />
@@ -44,70 +346,362 @@
         <label for="filter-email">Email :</label>
         <input type="text" id="filter-email" placeholder="Filtrer par email" />
 
-        <label for="filter-firstName">Prénom :</label>
-        <input type="text" id="filter-firstName" placeholder="Filtrer par prénom" />
-
-        <label for="filter-lastName">Nom :</label>
-        <input type="text" id="filter-lastName" placeholder="Filtrer par nom" />
-
         <label for="filter-role">Rôle :</label>
         <select id="filter-role">
             <option value="">Tous</option>
+            <option value="ADMIN">Admin</option>
             <option value="USER">Utilisateur</option>
-            <option value="ADMIN">Administrateur</option>
         </select>
 
         <button id="apply-filters">Appliquer</button>
     </div>
 
     <div class="user-list">
-        <% if (users.status === 200) { %>
-            <% 
-                users.content.sort((a, b) => {
-                    return a.username.localeCompare(b.username);
-                });
-
-                users.content.forEach(user => { 
-            %>
-                <div class="user-item" data-user-id="<%= user.id %>">
-                    <div class="users-info">
-                        <label>Nom d'utilisateur :
-                            <input type="text" value="<%= user.username %>" class="user-username" />
-                        </label>
-                        <label>Email :
-                            <input type="email" value="<%= user.email %>" class="user-email" />
-                        </label>
-                        <label>Prénom :
-                            <input type="text" value="<%= user.firstName %>" class="user-firstName" />
-                        </label>
-                        <label>Nom :
-                            <input type="text" value="<%= user.lastName %>" class="user-lastName" />
-                        </label>
-                        <label>Rôle :
-                            <select class="user-role">
-                                <option value="USER" <%= user.role === 'USER' ? 'selected' : '' %>>Utilisateur</option>
-                                <option value="ADMIN" <%= user.role === 'ADMIN' ? 'selected' : '' %>>Administrateur</option>
-                            </select>
-                        </label>
-                        <label>Niveau :
-                            <input type="text" value="<%= user.level %>" class="user-level" />
-                        </label>
-                        <label>Classe :
-                            <input type="text" value="<%= user.classe %>" class="user-classe" />
-                        </label>
+        <% if (users.status===200) { %>
+            <% users.content.sort((a, b)=> a.username.localeCompare(b.username)); %>
+                <% users.content.forEach(user=> { %>
+                    <div class="user-item" data-user-id="<%= user.id %>">
+                        <div class="user-info">
+                            <label>
+                                Nom d'utilisateur :
+                                <input type="text" value="<%= user.username %>" class="username" />
+                            </label>
+                            <label>
+                                Email :
+                                <input type="email" value="<%= user.email %>" class="email" />
+                            </label>
+                            <label>
+                                Prénom :
+                                <input type="text" value="<%= user.firstName %>" class="firstName" />
+                            </label>
+                            <label>
+                                Nom de famille :
+                                <input type="text" value="<%= user.lastName %>" class="lastName" />
+                            </label>
+                            <label>
+                                Rôle :
+                                <select class="role">
+                                    <option value="ADMIN" <%=user.role==='ADMIN' ? 'selected' : '' %>>Admin</option>
+                                    <option value="USER" <%=user.role==='USER' ? 'selected' : '' %>>Utilisateur</option>
+                                </select>
+                            </label>
+                            <label>
+                                Niveau :
+                                <input type="text" value="<%= user.level %>" class="level" />
+                            </label>
+                            <label>
+                                Classe :
+                                <input type="text" value="<%= user.classe %>" class="classe" />
+                            </label>
+                        </div>
+                        <div class="user-actions">
+                            <button class="save-user" data-user-id="<%= user.id %>">
+                                <ion-icon name="save-outline"></ion-icon>
+                            </button>
+                            <button class="delete-user" data-user-id="<%= user.id %>">
+                                <ion-icon name="trash-outline"></ion-icon>
+                            </button>
+                        </div>
                     </div>
-                    <div class="user-actions">
-                        <button class="save-user" data-user-id="<%= user.id %>"><ion-icon name="save-outline"></ion-icon></button>
-                        <button class="delete-user" data-user-id="<%= user.id %>"><ion-icon name="trash-outline"></ion-icon></button>
-                    </div>
-                </div>
-            <% }); %>
-        <% } else { %>
-            <p>Aucun utilisateur disponible pour le moment.</p>
-        <% } %>
+                    <% }); %>
+                        <% } else { %>
+                            <p>Aucun utilisateur disponible pour le moment.</p>
+                            <% } %>
     </div>
 </section>
 
-<script src="/scripts/dashboard/users_create.js"></script>
-<script src="/scripts/dashboard/users_modify.js"></script>
-<script src="/scripts/dashboard/users_search.js"></script>
+<!-- Modal pour les erreurs -->
+<div id="error-modal" class="modal hidden">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Erreurs détectées</h2>
+        <ul class="error-list"></ul>
+    </div>
+</div>
+
+<script>
+    // Variable globale pour stocker les messages d'erreur
+    let errorMessages = {};
+
+    // Récupérer les messages d'erreur depuis l'API
+    async function fetchErrorMessages() {
+        try {
+            const response = await fetch('http://localhost:3000/api/v1/errors');
+            if (response.ok) {
+                errorMessages = await response.json();
+            }
+        } catch (error) {
+            console.error('Erreur lors de la récupération des messages d\'erreur:', error);
+        }
+    }
+
+    // Fonction d'affichage des erreurs
+    function showErrorModal(errors) {
+        const modal = document.getElementById('error-modal');
+        const errorList = modal.querySelector('.error-list');
+        errorList.innerHTML = '';
+
+        errors.forEach(error => {
+            const li = document.createElement('li');
+            let message = error;
+
+            if (typeof error === 'number') {
+                message = errorMessages[error] || `Erreur inconnue (code ${error})`;
+            }
+
+            li.textContent = message;
+            errorList.appendChild(li);
+        });
+
+        modal.classList.remove('hidden');
+    }
+
+    // Gestion de la fermeture du modal
+    document.querySelectorAll('#error-modal .close-btn, #error-modal').forEach(el => {
+        el.addEventListener('click', (e) => {
+            if (e.target === el || e.target.classList.contains('close-btn')) {
+                document.getElementById('error-modal').classList.add('hidden');
+            }
+        });
+    });
+
+    // Appeler au chargement de la page
+    document.addEventListener('DOMContentLoaded', fetchErrorMessages);
+
+    // Script : Création d'un utilisateur
+    async function createUser_request(username, email, password, role, firstName, lastName, level, classe) {
+        const formData = new FormData();
+        formData.append('firstName', firstName)
+        formData.append('lastName', lastName)
+        formData.append('username', username)
+        formData.append('email', email)
+        formData.append('password', password)
+        formData.append('role', role)
+        formData.append('level', level)
+        formData.append('classe', classe)
+
+        const response = await fetch("http://localhost:3000/api/v1/users/create", {
+            method: 'POST',
+            credentials: "include",
+            body: formData,
+        });
+        return await response.json();
+    }
+
+    document.getElementById("add-user-form").addEventListener("submit", async event => {
+        event.preventDefault();
+
+        const username = document.getElementById("username").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const role = document.getElementById("role").value;
+        const firstName = document.getElementById("firstName").value;
+        const lastName = document.getElementById("lastName").value;
+        const level = document.getElementById("level").value;
+        const classe = document.getElementById("classe").value;
+
+        const response = await createUser_request(username, email, password, role, firstName, lastName, level, classe);
+        console.log(response)
+        if (response.status === 201) {
+            alert("Utilisateur ajouté avec succès !");
+            window.location.reload();
+        } else {
+            const errors = response.id?.codes || response.content || ['Erreur inconnue'];
+            console.log(errors)
+            showErrorModal(errors);
+        }
+    });
+
+    // Script : Gestion de la modification et suppression
+    document.addEventListener("DOMContentLoaded", () => {
+        // Sauvegarder les modifications d'un utilisateur
+        document.querySelectorAll(".save-user").forEach(button => {
+            button.addEventListener("click", () => {
+                const userId = button.getAttribute("data-user-id");
+                saveUserChanges(userId, button);
+            });
+        });
+
+        // Suppression d'un utilisateur
+        document.querySelectorAll(".delete-user").forEach(button => {
+            button.addEventListener("click", () => {
+                const userId = button.getAttribute("data-user-id");
+                confirmDeletion(userId);
+            });
+        });
+
+        async function saveUserChanges(userId, button) {
+            if (confirm("Êtes-vous certain de vouloir modifier cet utilisateur ?")) {
+                const userItem = document.querySelector(`.user-item[data-user-id='${userId}']`);
+                const username = userItem.querySelector(".username").value;
+                const email = userItem.querySelector(".email").value;
+                const firstName = userItem.querySelector(".firstName").value;
+                const lastName = userItem.querySelector(".lastName").value;
+                const role = userItem.querySelector(".role").value;
+                const level = userItem.querySelector(".level").value;
+                const classe = userItem.querySelector(".classe").value;
+
+                const response = await updateUser_request(username, email, firstName, lastName, role, level, classe, userId);
+                console.log(response)
+                if (response.status === 200) {
+                    updateUserInDOM(response.content);
+                    button.classList.add("saved");
+                    button.querySelector("ion-icon").setAttribute("name", "checkmark-done-outline");
+                    setTimeout(() => {
+                        button.querySelector("ion-icon").setAttribute("name", "save-outline");
+                        button.classList.remove("saved");
+                    }, 1000);
+                } else {
+                    const errors = response.id?.codes || response.content || ['Erreur inconnue'];
+                    showErrorModal(errors);
+                }
+            }
+        }
+
+        async function confirmDeletion(userId) {
+            if (confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?")) {
+                const response = await deleteUser_request(userId);
+                if (response.status === 200) {
+                    document.querySelector(`.user-item[data-user-id='${userId}']`).remove();
+                } else {
+                    const errors = response.id?.codes || response.content || ['Erreur inconnue'];
+                    showErrorModal(errors);
+                }
+            }
+        }
+
+        function updateUserInDOM(user) {
+            const userItem = document.querySelector(`.user-item[data-user-id='${user.id}']`);
+            userItem.querySelector(".username").value = user.username;
+            userItem.querySelector(".email").value = user.email;
+            userItem.querySelector(".firstName").value = user.firstName;
+            userItem.querySelector(".lastName").value = user.lastName;
+            userItem.querySelector(".role").value = user.role;
+            userItem.querySelector(".level").value = user.level;
+            userItem.querySelector(".classe").value = user.classe;
+        }
+
+        // Fonctions de communication avec le backend
+        async function updateUser_request(username, email, firstName, lastName, role, level, classe, id) {
+            const formData = new FormData();
+            formData.append('firstName', firstName)
+            formData.append('lastName', lastName)
+            formData.append('username', username)
+            formData.append('email', email)
+            // formData.append('password', password)
+            formData.append('role', role)
+            formData.append('level', level)
+            formData.append('classe', classe)
+
+            const response = await fetch(`http://localhost:3000/api/v1/users/update/${id}`, {
+                method: "PATCH",
+                credentials: "include",
+                body: formData,
+            });
+            return await response.json();
+        }
+
+        async function deleteUser_request(id) {
+            const response = await fetch(`http://localhost:3000/api/v1/users/delete/${id}`, {
+                credentials: "include",
+                method: "DELETE",
+            });
+            return await response.json();
+        }
+    });
+
+    // Script : Filtres et tri
+    document.addEventListener("DOMContentLoaded", () => {
+        const filterUsername = document.getElementById("filter-username");
+        const filterEmail = document.getElementById("filter-email");
+        const filterRole = document.getElementById("filter-role");
+        const applyFiltersButton = document.getElementById("apply-filters");
+        const userList = document.querySelector(".user-list");
+
+        const applyFilters = () => {
+            const username = filterUsername.value.toLowerCase().trim();
+            const email = filterEmail.value.toLowerCase().trim();
+            const role = filterRole.value;
+
+            let users = Array.from(userList.querySelectorAll(".user-item"));
+
+            // Réinitialiser la visibilité de tous les utilisateurs
+            users.forEach(user => {
+                user.classList.remove("hidden");
+            });
+
+            // Filtrer les utilisateurs
+            users.forEach(user => {
+                const userUsername = user.querySelector(".username").value.toLowerCase();
+                const userEmail = user.querySelector(".email").value.toLowerCase();
+                const userRole = user.querySelector(".role").value;
+
+                const matchesUsername = username ? userUsername.includes(username) : true;
+                const matchesEmail = email ? userEmail.includes(email) : true;
+                const matchesRole = role ? userRole === role : true;
+
+                if (!(matchesUsername && matchesEmail && matchesRole)) {
+                    user.classList.add("hidden");
+                }
+            });
+
+            // Tri des utilisateurs visibles
+            let visibleUsers = users.filter(user => !user.classList.contains("hidden"));
+            visibleUsers.sort((a, b) => {
+                return a.querySelector(".username").value.localeCompare(b.querySelector(".username").value);
+            });
+
+            // Réordonner les éléments dans le DOM
+            visibleUsers.forEach(user => userList.appendChild(user));
+        };
+
+        applyFiltersButton.addEventListener("click", applyFilters);
+    });
+
+    // Fonction pour sauvegarder les données du formulaire dans le localStorage
+    function saveFormDataToLocalStorage() {
+        const formData = {
+            username: document.getElementById('username').value,
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value,
+            firstName: document.getElementById('firstName').value,
+            lastName: document.getElementById('lastName').value,
+            role: document.getElementById('role').value,
+            level: document.getElementById('level').value,
+            classe: document.getElementById('classe').value,
+        };
+        localStorage.setItem('userFormData', JSON.stringify(formData));
+    }
+
+    // Fonction pour charger les données sauvegardées depuis le localStorage
+    function loadFormDataFromLocalStorage() {
+        const savedData = localStorage.getItem('userFormData');
+        if (savedData) {
+            const formData = JSON.parse(savedData);
+            document.getElementById('username').value = formData.username || '';
+            document.getElementById('email').value = formData.email || '';
+            document.getElementById('password').value = formData.password || '';
+            document.getElementById('firstName').value = formData.firstName || '';
+            document.getElementById('lastName').value = formData.lastName || '';
+            document.getElementById('role').value = formData.role || 'USER';
+            document.getElementById('level').value = formData.level || '';
+            document.getElementById('classe').value = formData.classe || '';
+        }
+    }
+
+    // Ajout des écouteurs d'événements pour sauvegarder à chaque modification
+    document.addEventListener('DOMContentLoaded', () => {
+        // Charger les données sauvegardées au chargement de la page
+        loadFormDataFromLocalStorage();
+
+        // Sauvegarder les données à chaque modification des champs
+        document.getElementById('username').addEventListener('input', saveFormDataToLocalStorage);
+        document.getElementById('email').addEventListener('input', saveFormDataToLocalStorage);
+        document.getElementById('password').addEventListener('input', saveFormDataToLocalStorage);
+        document.getElementById('firstName').addEventListener('input', saveFormDataToLocalStorage);
+        document.getElementById('lastName').addEventListener('input', saveFormDataToLocalStorage);
+        document.getElementById('role').addEventListener('change', saveFormDataToLocalStorage);
+        document.getElementById('level').addEventListener('input', saveFormDataToLocalStorage);
+        document.getElementById('classe').addEventListener('input', saveFormDataToLocalStorage);
+    });
+</script>

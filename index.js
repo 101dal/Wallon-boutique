@@ -46,6 +46,7 @@ app.get("/products", async (req, res) => {
     const response = await fetch(`http://localhost:3000/api/v1/products`, {
         method: 'GET',
     });
+    
     const products = await response.json();
 
     res.render("pages/products", { active: "products", container: "product", products })
@@ -148,7 +149,21 @@ app.get("/dashboard/:type", async (req, res) => {
         });
         const products = await response.json();
 
-        res.render("pages/dashboard/dashboard-products", { active: "dashboard-admin", container: "products", products });
+        const listOfTypeLogos = [
+            "phone-portrait-outline",
+            "shirt-outline",
+            "book-outline",
+            "home-outline",
+            "fast-food-outline",
+            "fitness-outline",
+            "color-palette-outline",
+            "laptop-outline",
+            "cut-outline",
+            "beaker-outline",
+            "game-controller-outline"
+          ];
+
+        res.render("pages/dashboard/dashboard-products", { active: "dashboard-admin", container: "products", products, listOfTypeLogos });
     }
 
     if (req.params.type === "users") {
