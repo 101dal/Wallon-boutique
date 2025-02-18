@@ -14,7 +14,6 @@
     }
 
     /* Sections d'ajout et de liste */
-    .add-order,
     .order-list {
         background: #ffffff;
         padding: 2rem;
@@ -23,7 +22,6 @@
         margin-bottom: 2rem;
     }
 
-    .add-order h2,
     .order-list h2 {
         display: flex;
         align-items: center;
@@ -33,50 +31,6 @@
         margin-bottom: 1rem;
         border-bottom: 2px solid #007bff;
         padding-bottom: 0.5rem;
-    }
-
-    /* Formulaire d'ajout de commande */
-    .add-order form {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .add-order label {
-        font-weight: 600;
-        color: #333;
-    }
-
-    .add-order input,
-    .add-order textarea,
-    .add-order select {
-        padding: 0.8rem;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 1rem;
-        transition: border-color 0.3s ease;
-    }
-
-    .add-order input:focus,
-    .add-order textarea:focus,
-    .add-order select:focus {
-        outline: none;
-        border-color: #007bff;
-    }
-
-    .add-order button {
-        padding: 1rem;
-        border: none;
-        background: #007bff;
-        color: #fff;
-        font-size: 1.1rem;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background 0.3s;
-    }
-
-    .add-order button:hover {
-        background: #0056b3;
     }
 
     /* Filtres */
@@ -345,27 +299,6 @@
     }
 </style>
 
-<!-- Formulaire d'ajout de commande -->
-<section class="add-order">
-    <h2>
-        <ion-icon name="add-circle-outline"></ion-icon> Ajouter une commande
-    </h2>
-    <form id="add-order-form">
-        <label for="order-user-id">ID de l'utilisateur :</label>
-        <input type="number" id="order-user-id" name="order-user-id" placeholder="Entrez l'ID de l'utilisateur"
-            required />
-
-        <label for="order-status">Statut :</label>
-        <select id="order-status" name="order-status" required>
-            <option value="PENDING">En attente</option>
-            <option value="COMPLETED">Terminé</option>
-            <option value="CANCELLED">Annulé</option>
-        </select>
-
-        <button type="submit">Ajouter la commande</button>
-    </form>
-</section>
-
 <!-- Gestion des commandes -->
 <section class="order-management">
     <h2>Gestion des commandes</h2>
@@ -398,7 +331,7 @@
                         <div class="orders-info">
                             <label>
                                 ID de l'utilisateur :
-                                <input type="number" value="<%= order.user_id %>" class="order-user-id" />
+                                <input type="number" value="<%= order.user_id %>" class="order-user-id" disabled />
                             </label>
                             <label>
                                 Statut :
@@ -426,9 +359,6 @@
                         <div class="order-actions">
                             <button class="save-order" data-order-id="<%= order.id %>">
                                 <ion-icon name="save-outline"></ion-icon>
-                            </button>
-                            <button class="delete-order" data-order-id="<%= order.id %>">
-                                <ion-icon name="trash-outline"></ion-icon>
                             </button>
                         </div>
                     </div>
@@ -497,98 +427,6 @@
     // Appeler au chargement de la page
     document.addEventListener('DOMContentLoaded', fetchErrorMessages);
 
-    // Fonction pour récupérer la liste des commandes
-    async function getOrders_request() {
-        const response = await fetch("http://localhost:3000/api/v1/orders/user/:id", {
-            method: "POST",
-            credentials: "include",
-        });
-        return await response.json();
-    }
-
-    // Gestion de l'affichage des commandes
-    document.addEventListener("DOMContentLoaded", async () => {
-        const ordersData = await getOrders_request();
-        if (ordersData.status === 200) {
-            const orderList = document.querySelector(".order-list");
-            ordersData.content.forEach(order => {
-                const orderItem = document.createElement("div");
-                orderItem.classList.add("order-item");
-                orderItem.setAttribute("data-order-id", order.id);
-                orderItem.setAttribute("data-order-status", order.status);
-
-                const ordersInfo = document.createElement("div");
-                ordersInfo.classList.add("orders-info");
-
-                const userIdLabel = document.createElement("label");
-                userIdLabel.innerHTML = `ID de l'utilisateur : <input type="number" value="${order.user_id}" class="order-user-id" />`;
-
-                const statusLabel = document.createElement("label");
-                statusLabel.innerHTML = `Statut : <select class="order-status">
-            <option value="PENDING" ${order.status === 'PENDING' ? 'selected' : ''}>En attente</option>
-            <option value="COMPLETED" ${order.status === 'COMPLETED' ? 'selected' : ''}>Terminé</option>
-            <option value="CANCELLED" ${order.status === 'CANCELLED' ? 'selected' : ''}>Annulé</option>
-          </select>`;
-
-                const productsLabel = document.createElement("label");
-                productsLabel.innerHTML = `Produits : <ul>${order.products.map(product => `<li>Taille : ${product.size}, Couleur : ${product.color}, Quantité : ${product.quantity}, ID du produit : ${product.product_id}</li>`).join('')}</ul>`;
-
-                ordersInfo.appendChild(userIdLabel);
-                ordersInfo.appendChild(statusLabel);
-                ordersInfo.appendChild(productsLabel);
-
-                const orderActions = document.createElement("div");
-                orderActions.classList.add("order-actions");
-
-                const saveButton = document.createElement("button");
-                saveButton.classList.add("save-order");
-                saveButton.setAttribute("data-order-id", order.id);
-                saveButton.innerHTML = '<ion-icon name="save-outline"></ion-icon>';
-
-                const deleteButton = document.createElement("button");
-                deleteButton.classList.add("delete-order");
-                deleteButton.setAttribute("data-order-id", order.id);
-                deleteButton.innerHTML = '<ion-icon name="trash-outline"></ion-icon>';
-
-                orderActions.appendChild(saveButton);
-                orderActions.appendChild(deleteButton);
-
-                orderItem.appendChild(ordersInfo);
-                orderItem.appendChild(orderActions);
-
-                orderList.appendChild(orderItem);
-            });
-        }
-    });
-
-    // Script : Création d'une commande
-    async function createOrder_request(userId, status) {
-        const formData = new FormData();
-        formData.append("status", status)
-        const response = await fetch(`http://localhost:3000/api/v1/orders/create/user/${userId}`, {
-            method: 'POST',
-            credentials: 'include',
-            body: formData
-        });
-        return await response.json();
-    }
-
-    document.getElementById("add-order-form").addEventListener("submit", async event => {
-        event.preventDefault();
-
-        const userId = document.getElementById("order-user-id").value;
-        const status = document.getElementById("order-status").value;
-
-        const response = await createOrder_request(userId, status);
-        if (response.status === 200) {
-            alert("Commande ajoutée avec succès !");
-            window.location.reload();
-        } else {
-            const errors = response.id?.codes || response.content || ['Erreur inconnue'];
-            showErrorModal(errors);
-        }
-    });
-
     // Script : Gestion de la modal, modification et suppression
     document.addEventListener("DOMContentLoaded", () => {
         const modal = document.getElementById("modal");
@@ -600,14 +438,6 @@
             button.addEventListener("click", () => {
                 const orderId = button.getAttribute("data-order-id");
                 saveOrderChanges(orderId, button);
-            });
-        });
-
-        // Suppression d'une commande
-        document.querySelectorAll(".delete-order").forEach(button => {
-            button.addEventListener("click", () => {
-                const orderId = button.getAttribute("data-order-id");
-                confirmDeletion(orderId);
             });
         });
 
@@ -632,12 +462,11 @@
         async function saveOrderChanges(orderId, button) {
             if (confirm("Êtes-vous certain de vouloir modifier cette commande ?")) {
                 const orderItem = document.querySelector(`.order-item[data-order-id='${orderId}']`);
-                const userId = orderItem.querySelector(".order-user-id").value;
                 const status = orderItem.querySelector(".order-status").value;
 
-                const response = await updateOrder_request(orderId, userId, status);
+                const response = await updateOrder_request(orderId, status);
+                console.log(response)
                 if (response.status === 200) {
-                    updateOrderInDOM(response.content);
                     button.classList.add("saved");
                     button.querySelector("ion-icon").setAttribute("name", "checkmark-done-outline");
                     setTimeout(() => {
@@ -651,44 +480,15 @@
             }
         }
 
-        async function confirmDeletion(orderId) {
-            if (confirm("Êtes-vous sûr de vouloir supprimer cette commande ?")) {
-                const response = await deleteOrder_request(orderId);
-                if (response.status === 200) {
-                    document.querySelector(`.order-item[data-order-id='${orderId}']`).remove();
-                } else {
-                    const errors = response.id?.codes || response.content || ['Erreur inconnue'];
-                    showErrorModal(errors);
-                }
-            }
-        }
-
-        function updateOrderInDOM(order) {
-            const orderItem = document.querySelector(`.order-item[data-order-id='${order.id}']`);
-            orderItem.querySelector(".order-user-id").value = order.user_id;
-            orderItem.querySelector(".order-status").value = order.status;
-            const productsList = orderItem.querySelector(".orders-info ul");
-            productsList.innerHTML = order.products.map(product => `<li>Taille : ${product.size}, Couleur : ${product.color}, Quantité : ${product.quantity}, ID du produit : ${product.product_id}</li>`).join('');
-        }
-
         // Fonctions de communication avec le backend
-        async function updateOrder_request(id, userId, status) {
+        async function updateOrder_request(id, status) {
             const formData = new FormData();
             formData.append("status", status);
-            formData.append("user_id", userId);
 
-            const response = await fetch(`http://localhost:3000/api/v1/orders/update/${id}`, {
+            const response = await fetch(`http://localhost:3000/api/v1/orders/update/status/${id}`, {
                 method: "PATCH",
                 credentials: "include",
                 body: formData
-            });
-            return await response.json();
-        }
-
-        async function deleteOrder_request(id) {
-            const response = await fetch(`http://localhost:3000/api/v1/orders/delete/${id}`, {
-                method: "DELETE",
-                credentials: "include",
             });
             return await response.json();
         }
@@ -743,32 +543,5 @@
         };
 
         applyFiltersButton.addEventListener("click", applyFilters);
-    });
-
-    // Fonction pour sauvegarder des champs du formulaire dans le localStorage
-    function saveFormDataToLocalStorage() {
-        const formData = {
-            userId: document.getElementById('order-user-id').value,
-            status: document.getElementById('order-status').value,
-        };
-        localStorage.setItem('orderFormData', JSON.stringify(formData));
-    }
-
-    // Chargement des données sauvegardées
-    function loadFormDataFromLocalStorage() {
-        const savedData = localStorage.getItem('orderFormData');
-        if (savedData) {
-            const formData = JSON.parse(savedData);
-            document.getElementById('order-user-id').value = formData.userId || '';
-            document.getElementById('order-status').value = formData.status || '';
-        }
-    }
-
-    // Ajout des écouteurs d'événements pour sauvegarder à chaque modification
-    document.addEventListener('DOMContentLoaded', () => {
-        loadFormDataFromLocalStorage();
-
-        document.getElementById('order-user-id').addEventListener('input', saveFormDataToLocalStorage);
-        document.getElementById('order-status').addEventListener('input', saveFormDataToLocalStorage);
     });
 </script>

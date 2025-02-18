@@ -323,7 +323,8 @@
         <label for="role">Rôle :</label>
         <select id="role" name="role" required>
             <option value="ADMIN">Admin</option>
-            <option value="USER">Utilisateur</option>
+            <option value="EMPLOYEE">Employé</option>
+            <option value="REGULAR">Utilisateur</option>
         </select>
 
         <label for="level">Niveau :</label>
@@ -350,7 +351,8 @@
         <select id="filter-role">
             <option value="">Tous</option>
             <option value="ADMIN">Admin</option>
-            <option value="USER">Utilisateur</option>
+            <option value="EMPLOYEE">Employé</option>
+            <option value="REGULAR">Utilisateur</option>
         </select>
 
         <button id="apply-filters">Appliquer</button>
@@ -382,7 +384,8 @@
                                 Rôle :
                                 <select class="role">
                                     <option value="ADMIN" <%=user.role==='ADMIN' ? 'selected' : '' %>>Admin</option>
-                                    <option value="USER" <%=user.role==='USER' ? 'selected' : '' %>>Utilisateur</option>
+                                    <option value="EMPLOYEE" <%=user.role==='EMPLOYEE' ? 'selected' : '' %>>Employé</option>
+                                    <option value="REGULAR" <%=user.role==='REGULAR' ? 'selected' : '' %>>Utilisateur</option>
                                 </select>
                             </label>
                             <label>

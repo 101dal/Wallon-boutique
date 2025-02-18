@@ -46,7 +46,7 @@ app.get("/products", async (req, res) => {
     const response = await fetch(`http://localhost:3000/api/v1/products`, {
         method: 'GET',
     });
-    
+
     const products = await response.json();
 
     res.render("pages/products", { active: "products", container: "product", products })
@@ -58,7 +58,7 @@ app.get("/products/:id", async (req, res) => {
     });
     const product = await response.json();
 
-    if(product.status !== 200) {
+    if (product.status !== 200) {
         res.redirect("/products");
     }
 
@@ -126,7 +126,14 @@ app.get("/dashboard", async (req, res) => {
     if (res.locals.profile.role === "ADMIN") {
         res.render("pages/dashboard/dashboard-admin", { active: "dashboard-admin", container: "dashboard" });
     } else if (res.locals.profile.role === "EMPLOYEE") {
-        res.render("pages/dashboard/dashboard-employee", { active: "dashboard-employee", container: "dashboard" });
+        // Get a list of all the products
+        const response = await fetch(`http://localhost:3000/api/v1/orders/all`, {
+            method: 'GET',
+            headers: { 'Cookie': `token_cookie=${req.cookies.token_cookie}` }
+        });
+        const orders = await response.json();
+
+        res.render("pages/dashboard/dashboard-employee", { active: "dashboard-employee", container: "orders", orders });
     } else {
         res.redirect("/profile");
     }
@@ -161,7 +168,7 @@ app.get("/dashboard/:type", async (req, res) => {
             "cut-outline",
             "beaker-outline",
             "game-controller-outline"
-          ];
+        ];
 
         res.render("pages/dashboard/dashboard-products", { active: "dashboard-admin", container: "products", products, listOfTypeLogos });
     }
@@ -173,7 +180,7 @@ app.get("/dashboard/:type", async (req, res) => {
             headers: { 'Cookie': `token_cookie=${req.cookies.token_cookie}` }
         });
         const users = await response.json();
-        
+
         res.render("pages/dashboard/dashboard-users", { active: "dashboard-admin", container: "users", users });
     }
 
@@ -185,8 +192,29 @@ app.get("/dashboard/:type", async (req, res) => {
         });
         const orders = await response.json();
 
-        
         res.render("pages/dashboard/dashboard-orders", { active: "dashboard-admin", container: "orders", orders });
+    }
+
+    if (req.params.type === "carts") {
+        // Get a list of all the products
+        const response = await fetch(`http://localhost:3000/api/v1/carts/all`, {
+            method: 'GET',
+            headers: { 'Cookie': `token_cookie=${req.cookies.token_cookie}` }
+        });
+        const carts = await response.json();
+
+        res.render("pages/dashboard/dashboard-carts", { active: "dashboard-admin", container: "carts", carts });
+    }
+
+    if (req.params.type === "reviews") {
+        // Get a list of all the products
+        const response = await fetch(`http://localhost:3000/api/v1/reviews/all`, {
+            method: 'GET',
+            headers: { 'Cookie': `token_cookie=${req.cookies.token_cookie}` }
+        });
+        const reviews = await response.json();
+
+        res.render("pages/dashboard/dashboard-reviews", { active: "dashboard-admin", container: "reviews", reviews });
     }
 })
 
