@@ -1,50 +1,311 @@
-<link rel="stylesheet" href="/css/profile.css">
+<style>
+    /* Profil */
+    .profile-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+
+    .profile-content {
+        background: var(--card-bg);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+    }
+
+    .profile-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .profile-header ion-icon {
+        font-size: 6rem;
+        color: var(--accent);
+        margin-bottom: 1rem;
+    }
+
+    .profile-header h2 {
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+        color: var(--text);
+    }
+
+    .user-info {
+        color: #666;
+        font-size: 1rem;
+    }
+
+    /* Section des commandes et paramètres */
+    .profile-sections {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+
+    .orders-section,
+    .settings-section {
+        padding: 1.5rem;
+        background: var(--background);
+        border-radius: 8px;
+    }
+
+    section h3 {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--accent);
+        margin-bottom: 1.5rem;
+        font-size: 1.2rem;
+    }
+
+    section h3 ion-icon {
+        font-size: 1.4rem;
+    }
+
+    /* Commandes */
+    .orders-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .order-item {
+        padding: 1.5rem;
+        background: var(--card-bg);
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .order-item h4 {
+        font-size: 1.4rem;
+        color: var(--text);
+        margin-bottom: 1rem;
+    }
+
+    .order-item p {
+        font-size: 1rem;
+        color: #666;
+        margin-bottom: 0.5rem;
+    }
+
+    .order-products {
+        margin-bottom: 1rem;
+    }
+
+    .product-item {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 1rem;
+        color: var(--text);
+    }
+
+    .generate-pdf-btn button {
+        background: var(--accent);
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+
+    .generate-pdf-btn button:hover {
+        background: darken(var(--accent), 10%);
+    }
+
+    /* Paramètres */
+    .settings-options {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .settings-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1rem;
+        background: var(--card-bg);
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        color: var(--text);
+        transition: all 0.3s ease;
+    }
+
+    .settings-btn:hover {
+        color: var(--accent);
+    }
+
+    .settings-btn.logout {
+        color: #ff4444;
+    }
+
+    .settings-btn.logout:hover {
+        background: rgba(255, 68, 68, 0.1);
+        color: #ff4444;
+    }
+
+    /* Placeholders */
+    .order-placeholder {
+        text-align: center;
+        padding: 2rem;
+        color: var(--text);
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+    }
+
+    /* Responsive */
+    @media screen and (max-width: 768px) {
+        .profile-sections {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Modal styles */
+    .modal {
+        display: none;
+        /* Masqué par défaut */
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+        background-color: var(--card-bg);
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid var(--border);
+        width: 90%;
+        max-width: 500px;
+        border-radius: 8px;
+        position: relative;
+    }
+
+    .modal-content h2 {
+        margin-top: 0;
+    }
+
+    .modal-content .close {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+
+    .modal-content form label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+    }
+
+    .modal-content form input {
+        width: 100%;
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+    }
+
+    .modal-content form button {
+        background: var(--accent);
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+
+    .modal-content form button:hover {
+        background: darken(var(--accent), 10%);
+    }
+
+    .modal-note {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 1rem;
+    }
+
+    .error-message {
+        margin-bottom: 1rem;
+    }
+</style>
 
 <div class="profile-content">
     <div class="profile-header">
         <ion-icon name="person-circle-outline"></ion-icon>
-        <h2><%= profile.firstName %> <%= profile.lastName %></h2>
-        <p class="user-info"><%= `${profile.level} ${profile.classe?profile.classe:""}` %> • <%= profile.email %></p>
-        <% if (profile.role !== "REGULAR") { %>
-            <a href="/dashboard" class="generate-pdf-btn"><button style="padding:10px; margin: 5px;">Dashboard</button></a>
-        <% } %>
+        <h2>
+            <%= profile.firstName %>
+                <%= profile.lastName %>
+        </h2>
+        <p class="user-info">
+            <%= `${profile.level} ${profile.classe ? profile.classe : "" }` %> • <%= profile.email %>
+        </p>
+        <% if (profile.role !=="REGULAR" ) { %>
+            <a href="/dashboard" class="generate-pdf-btn">
+                <button style="padding:10px; margin: 5px;">Dashboard</button>
+            </a>
+            <% } %>
     </div>
 
     <div class="profile-sections">
         <section class="orders-section">
-            <h3><ion-icon name="bag-check-outline"></ion-icon>Mes commandes</h3>
-
-            <% if (orders.status === 200) { %>
+            <h3>
+                <ion-icon name="bag-check-outline"></ion-icon>
+                Mes commandes
+            </h3>
+            <% if (orders.status===200) { %>
                 <div class="orders-list">
-                    <% orders.content.forEach(order => { %>
+                    <% orders.content.forEach(order=> { %>
                         <div class="order-item">
-                            <h4>Commande ID: <%= order.id %></h4>
-                            <p>Status: <%= order.status %></p>
-                            <p>Date de création: <%= new Date(order.createdAt).toLocaleDateString() %></p>
+                            <h4>Commande ID: <%= order.id %>
+                            </h4>
+                            <p>Status: <%= order.status %>
+                            </p>
+                            <p>Date de création: <%= new Date(order.createdAt).toLocaleDateString() %>
+                            </p>
                             <div class="order-products">
-                                <% order.products.forEach(product => { %>
+                                <% order.products.forEach(product=> { %>
                                     <div class="product-item">
-                                        <p>Produit ID: <%= product.product_id %> - Taille: <%= product.size %> - Couleur: <%= product.color %> - Quantité: <%= product.quantity %></p>
+                                        <p>Produit ID: <%= product.product_id %> - Taille: <%= product.size %> -
+                                                    Couleur: <%= product.color %> - Quantité: <%= product.quantity %>
+                                        </p>
                                     </div>
-                                <% }) %>
+                                    <% }) %>
                             </div>
-                            <a href="http://localhost:3000/api/v1/orders/pdf/<%= order.id %>" class="generate-pdf-btn" target="_blank">
+                            <a href="http://localhost:3000/api/v1/orders/pdf/<%= order.id %>" class="generate-pdf-btn"
+                                target="_blank">
                                 <button>Générer PDF</button>
                             </a>
                         </div>
-                    <% }) %>
+                        <% }) %>
                 </div>
-            <% } else { %>
-                <div class="order-placeholder">
-                    <p>Aucune commande pour le moment</p>
-                </div>
-            <% } %>
+                <% } else { %>
+                    <div class="order-placeholder">
+                        <p>Aucune commande pour le moment</p>
+                    </div>
+                    <% } %>
         </section>
 
         <section class="settings-section">
-            <h3><ion-icon name="settings-outline"></ion-icon>Paramètres</h3>
+            <h3>
+                <ion-icon name="settings-outline"></ion-icon>
+                Paramètres
+            </h3>
             <div class="settings-options">
-                <button class="settings-btn">
+                <!-- Bouton d'ouverture du modal pour modifier le profil -->
+                <button class="settings-btn" id="editProfileBtn">
                     <ion-icon name="create-outline"></ion-icon>
                     Modifier le profil
                 </button>
@@ -61,4 +322,120 @@
     </div>
 </div>
 
-<script src="/scripts/logout.js"></script>
+<!-- Modal pour modifier le profil -->
+<div id="editProfileModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Modifier le profil</h2>
+        <form id="editProfileForm">
+            <label for="username">Nom d'utilisateur</label>
+            <input type="text" id="username" name="username" value="<%= profile.username %>" required>
+            <p class="modal-note">Pour modifier d'autres informations, veuillez contacter le support.</p>
+            <div class="error-message" style="display: none; color: red;"></div>
+            <button type="submit">Enregistrer</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    async function logout_request() {
+        const response = await fetch('http://localhost:3000/api/v1/auth/logout', {
+            method: 'POST',
+            credentials: 'include'
+        });
+        const data = await response.json();
+        return data;
+    }
+
+    document.querySelector(".logout").addEventListener("click", async () => {
+        await logout_request();
+        window.location = "/?disconnected=true";
+    });
+
+    // Gestion du modal
+    const editProfileBtn = document.getElementById('editProfileBtn');
+    const modal = document.getElementById('editProfileModal');
+    const closeModal = modal.querySelector('.close');
+    const editProfileForm = document.getElementById('editProfileForm');
+    const errorMessageDiv = modal.querySelector('.error-message');
+
+    editProfileBtn.addEventListener('click', () => {
+        modal.style.display = 'block';
+    });
+
+    closeModal.addEventListener('click', () => {
+        modal.style.display = 'none';
+        errorMessageDiv.style.display = 'none';
+    });
+
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+            errorMessageDiv.style.display = 'none';
+        }
+    });
+
+    editProfileForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const username = document.getElementById('username').value;
+
+        const formData = new FormData();
+        formData.append("username", username)
+
+        const response = await fetch('http://localhost:3000/api/v1/users/update', {
+            method: 'PATCH',
+            credentials: 'include',
+            body: formData
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            // Fermer le modal et rediriger vers l'URL avec ?changed=true
+            modal.style.display = 'none';
+            window.location.href = window.location.pathname + '?changed=true';
+        } else {
+            // Gestion des erreurs selon les codes d'erreur
+            if (data.id && data.id.codes && data.id.codes.length > 0) {
+                try {
+                    const errorsResponse = await fetch('http://localhost:3000/api/v1/errors');
+                    if (errorsResponse.ok) {
+                        const errorMapping = await errorsResponse.json();
+                        const errorMessages = data.id.codes.map(code => errorMapping[code] || `Erreur inconnue (code ${code})`);
+                        errorMessageDiv.textContent = errorMessages.join(', ');
+                    } else {
+                        errorMessageDiv.textContent = "Erreur lors de la récupération des messages d'erreur.";
+                    }
+                } catch (err) {
+                    errorMessageDiv.textContent = "Erreur lors de la récupération des messages d'erreur.";
+                }
+            } else {
+                errorMessageDiv.textContent = Array.isArray(data.content) ? data.content.join(', ') : data.content;
+            }
+            errorMessageDiv.style.display = 'block';
+        }
+    });
+
+    // Au chargement de la page, afficher le message de succès si l'URL contient ?changed=true et retirer le paramètre
+    document.addEventListener("DOMContentLoaded", () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('changed') === 'true') {
+            const successMessageDiv = document.createElement('div');
+            successMessageDiv.textContent = "Le nom d'utilisateur a bien été changé.";
+            successMessageDiv.style.backgroundColor = "#d4edda";
+            successMessageDiv.style.color = "#155724";
+            successMessageDiv.style.padding = "10px";
+            successMessageDiv.style.border = "1px solid #c3e6cb";
+            successMessageDiv.style.borderRadius = "4px";
+            successMessageDiv.style.marginBottom = "1rem";
+
+            // Insérer le message en haut de la section profil
+            const profileContent = document.querySelector('.profile-content');
+            if (profileContent) {
+                profileContent.insertBefore(successMessageDiv, profileContent.firstChild);
+            }
+
+            // Supprimer le paramètre de l'URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    });
+</script>

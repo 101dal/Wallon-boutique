@@ -2,7 +2,7 @@
     /* Style global */
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(to right, #e0eafc, #cfdef3);
+        background: var(--background);
         margin: 0;
         padding: 0;
     }
@@ -16,10 +16,10 @@
     /* Sections d'ajout et de liste */
     .add-review,
     .review-list {
-        background: #ffffff;
+        background: var(--card-bg);
         padding: 2rem;
         border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 8px var(--shadow);
         margin-bottom: 2rem;
     }
 
@@ -28,10 +28,10 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        color: #007bff;
+        color: var(--accent);
         font-size: 1.8rem;
         margin-bottom: 1rem;
-        border-bottom: 2px solid #007bff;
+        border-bottom: 2px solid var(--accent);
         padding-bottom: 0.5rem;
     }
 
@@ -44,14 +44,14 @@
 
     .add-review label {
         font-weight: 600;
-        color: #333;
+        color: var(--text);
     }
 
     .add-review input,
     .add-review textarea,
     .add-review select {
         padding: 0.8rem;
-        border: 1px solid #ccc;
+        border: 1px solid var(--border);
         border-radius: 5px;
         font-size: 1rem;
         transition: border-color 0.3s ease;
@@ -61,13 +61,13 @@
     .add-review textarea:focus,
     .add-review select:focus {
         outline: none;
-        border-color: #007bff;
+        border-color: var(--accent);
     }
 
     .add-review button {
         padding: 1rem;
         border: none;
-        background: #007bff;
+        background: var(--accent);
         color: #fff;
         font-size: 1.1rem;
         border-radius: 5px;
@@ -82,10 +82,10 @@
     /* Filtres */
     .review-filters {
         margin-bottom: 20px;
-        background: #ffffff;
+        background: var(--card-bg);
         padding: 1rem;
         border-radius: 10px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 4px var(--shadow);
         display: flex;
         flex-wrap: wrap;
         gap: 1rem;
@@ -94,13 +94,13 @@
 
     .review-filters label {
         font-size: 1rem;
-        color: #555;
+        color: var(--text);
     }
 
     .review-filters input,
     .review-filters select {
         padding: 0.5rem;
-        border: 1px solid #ccc;
+        border: 1px solid var(--border);
         border-radius: 5px;
         font-size: 1rem;
     }
@@ -125,7 +125,7 @@
     }
 
     .review-management h2 {
-        color: #333;
+        color: var(--text);
         margin-bottom: 20px;
         text-align: center;
     }
@@ -140,15 +140,16 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
-        border: 1px solid #ddd;
+        border: 1px solid var(--border);
         padding: 15px;
         border-radius: 10px;
-        background-color: #ffffff;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        background-color: var(--card-bg);
+        box-shadow: 0 2px 4px var(--shadow);
     }
 
     .review-item.reported {
-        background-color: #ffcc00; /* Couleur orange pour les reviews reportées */
+        background-color: #ffcc00;
+        /* Couleur orange pour les reviews reportées */
     }
 
     .reviews-info {
@@ -162,7 +163,7 @@
         display: flex;
         flex-direction: column;
         font-size: 0.95rem;
-        color: #555;
+        color: var(--text);
     }
 
     .reviews-info input[type="text"],
@@ -170,10 +171,10 @@
     .reviews-info textarea,
     .reviews-info select {
         padding: 5px;
-        border: 1px solid #ccc;
+        border: 1px solid var(--border);
         border-radius: 5px;
         font-size: 0.95rem;
-        color: #333;
+        color: var(--text);
     }
 
     textarea {
@@ -239,10 +240,10 @@
     }
 
     .modal-content {
-        background: #fff;
+        background: var(--card-bg);
         padding: 20px;
         border-radius: 10px;
-        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+        box-shadow: 0px 8px 16px var(--shadow);
         width: 80%;
         max-width: 600px;
         position: relative;
@@ -250,7 +251,7 @@
 
     .modal-content h2 {
         margin-bottom: 20px;
-        color: #007bff;
+        color: var(--accent);
     }
 
     .modal-content .image-list {
@@ -269,7 +270,7 @@
         height: 100px;
         object-fit: cover;
         border-radius: 5px;
-        border: 1px solid #ccc;
+        border: 1px solid var(--border);
         cursor: pointer;
     }
 
@@ -318,7 +319,7 @@
         top: 10px;
         right: 15px;
         font-size: 28px;
-        color: #333;
+        color: var(--text);
         cursor: pointer;
     }
 
@@ -345,7 +346,7 @@
     .error-list li {
         margin-bottom: 8px;
         padding: 5px 0;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid var(--border);
     }
 </style>
 
@@ -412,7 +413,8 @@
                             </label>
                             <label>
                                 ID du produit :
-                                <input type="number" value="<%= review.product_id %>" class="review-product-id" readonly />
+                                <input type="number" value="<%= review.product_id %>" class="review-product-id"
+                                    readonly />
                             </label>
                             <label>
                                 Avis :
@@ -424,7 +426,8 @@
                             </label>
                             <label>
                                 Nombre de reports :
-                                <input type="number" value="<%= review.reportedByUsers.length %>" class="review-report-count" readonly />
+                                <input type="number" value="<%= review.reportedByUsers.length %>"
+                                    class="review-report-count" readonly />
                             </label>
                         </div>
                         <div class="review-actions">
