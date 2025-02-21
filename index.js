@@ -42,14 +42,30 @@ app.get("/", (req, res) => {
 
 
 app.get("/products", async (req, res) => {
-    // Get a list of all the products
-    const response = await fetch(`http://localhost:3000/api/v1/products`, {
-        method: 'GET',
+    // Récupère les produits
+    const productsResponse = await fetch(`http://localhost:3000/api/v1/products`);
+    const products = await productsResponse.json();
+
+    // Récupère tous les types
+    const typesResponse = await fetch(`http://localhost:3000/api/v1/products/types`);
+    const typesData = await typesResponse.json();
+
+    let filteredTypes = [];
+    if (products.status === 200 && products.content?.length) {
+        // Ajoute la propriété 'type' correspondant au typeId
+        products.content.forEach(product => product.type = product.typeId);
+
+        // Filtre les types ayant des produits associés
+        const usedTypeIds = new Set(products.content.map(p => p.typeId));
+        filteredTypes = typesData.content.filter(type => usedTypeIds.has(type.id));
+    }
+
+    res.render("pages/products", {
+        active: "products",
+        container: "product",
+        products,
+        types: filteredTypes
     });
-
-    const products = await response.json();
-
-    res.render("pages/products", { active: "products", container: "product", products })
 });
 
 app.get("/products/:id", async (req, res) => {

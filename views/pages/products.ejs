@@ -1,39 +1,216 @@
-<link rel="stylesheet" href="/css/products.css">
+<style>
+    .categories {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        padding: 2rem;
+        background: var(--card-bg);
+        margin: 2rem auto;
+        max-width: 1200px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .category-link {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        transition: color 0.3s ease;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--text);
+    }
+
+    .category-link:hover {
+        color: var(--accent);
+    }
+
+    .category-link.active {
+        color: var(--accent);
+        font-weight: bold;
+    }
+
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 2rem;
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .product-card {
+        cursor: pointer;
+        background: var(--card-bg);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        display: none;
+        padding: 16px;
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .product-card.visible {
+        display: block;
+    }
+
+    .product-card img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+    }
+
+    ion-icon {
+        color: var(--text);
+    }
+
+    .product-info {
+        padding: 1.5rem;
+        background: var(--card-bg);
+        text-align: center;
+    }
+
+    .product-info h3 {
+        margin-bottom: 0.5rem;
+    }
+
+    .product-details {
+        margin-top: 1rem;
+        text-align: left;
+    }
+
+    .description {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 1rem;
+    }
+
+    .add-to-cart {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem;
+        background-color: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .add-to-cart:hover {
+        background-color: #e57373;
+    }
+
+    .add-to-cart ion-icon {
+        color: var(--text);
+    }
+
+    .price {
+        font-weight: bold;
+        color: var(--accent);
+        font-size: 1.2rem;
+        margin: 0.5rem 0;
+    }
+
+    @media screen and (max-width: 768px) {
+        .categories {
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .products-grid {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            padding: 1rem;
+        }
+    }
+</style>
 
 <div class="categories">
     <button class="category-link active" data-category="all">
         <ion-icon name="grid-outline"></ion-icon>Tous
     </button>
-    <button class="category-link" data-category="viennoiseries">
-        <ion-icon name="game-controller-outline"></ion-icon>Viennoiseries
-    </button>
-    <button class="category-link" data-category="tasses">
-        <ion-icon name="cafe-outline"></ion-icon>Tasses
-    </button>
-    <button class="category-link" data-category="tshirts">
-        <ion-icon name="shirt-outline"></ion-icon>T-shirts
-    </button>
-    <button class="category-link" data-category="pulls">
-        <ion-icon name="shirt-outline"></ion-icon>Pulls
-    </button>
+    <% types.forEach(type=> { %>
+        <button class="category-link" data-category="<%= type.id %>">
+            <ion-icon name="<%= type.logoUrl %>"></ion-icon>
+            <%= type.name %>
+        </button>
+        <% }) %>
 </div>
 
 <div class="products-grid">
-    <% if (products.status === 200) { %>
-        <% products.content.forEach(product => { %>
+    <% if (products.status===200) { %>
+        <% products.content.forEach(product=> { %>
             <div class="product-card visible" data-category="<%= product.type %>" data-product-id="<%= product.id %>">
-                <img src="http://localhost:3000/api/v1/images?product_id=<%= product.id %>&image_id=<%= product.url[0] %>" alt="<%= product.name %>" />
-                <h3><%= product.name %></h3>
-                <p class="price"><%= product.price.toFixed(2) %>€</p>
+                <img src="http://localhost:3000/api/v1/images?product_id=<%= product.id %>&image_id=<%= product.url[0] %>"
+                    alt="<%= product.name %>" />
+                <h3>
+                    <%= product.name %>
+                </h3>
+                <p class="price">
+                    <%= product.price.toFixed(2) %>€
+                </p>
                 <div class="product-details">
-                    <p class="description"><%= product.description %></p>
+                    <p class="description">
+                        <%= product.description %>
+                    </p>
                 </div>
             </div>
-        <% }) %>
-    <% } else { %>
-        <p>Aucun produit disponible pour le moment.</p>
-    <% } %>
+            <% }) %>
+                <% } else { %>
+                    <p>Aucun produit disponible pour le moment.</p>
+                    <% } %>
 </div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const categoryButtons = document.querySelectorAll(".category-link");
+        const products = document.querySelectorAll(".product-card");
 
-<script src="/scripts/product.js"></script>
+        products.forEach((product) => product.classList.add("visible"));
+
+        categoryButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                categoryButtons.forEach((btn) => btn.classList.remove("active"));
+                button.classList.add("active");
+
+                const selectedCategory = button.dataset.category;
+
+                products.forEach((product) => {
+                    if (
+                        selectedCategory === "all" ||
+                        product.dataset.category === selectedCategory
+                    ) {
+                        product.classList.add("visible");
+                    } else {
+                        product.classList.remove("visible");
+                    }
+                });
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const productCards = document.querySelectorAll('.product-card');
+
+        productCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const productId = card.getAttribute('data-product-id');
+                if (productId) {
+                    window.location.href = `/products/${productId}`;
+                }
+            });
+        });
+    });
+
+</script>

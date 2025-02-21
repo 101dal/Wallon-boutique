@@ -1,4 +1,247 @@
-<link rel="stylesheet" href="/css/product-details.css">
+<style>
+    .product-detail-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: var(--card-bg);
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .product-header {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        margin-bottom: 2rem;
+        justify-content: center;
+    }
+
+    .product-images {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    .product-images .thumbnail {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border: 2px solid transparent;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: border-color 0.3s ease;
+    }
+
+    .product-images .thumbnail.active {
+        border-color: var(--accent);
+    }
+
+    .product-image {
+        width: 500px;
+        height: 500px;
+        border-radius: 8px;
+        object-fit: cover;
+    }
+
+    .product-infos {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+
+    .product-name {
+        font-size: 2rem;
+        margin: 0;
+    }
+
+    .product-description {
+        font-size: 1rem;
+        color: #666;
+        line-height: 1.6;
+    }
+
+    .product-price {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--accent);
+    }
+
+    .add-to-cart {
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        background-color: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .add-to-cart:hover {
+        background-color: #d44d4d;
+    }
+
+    /* Reviews Section */
+    .reviews-section {
+        margin-top: 2rem;
+    }
+
+    .reviews-section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .reviews-list {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        background: var(--card-bg);
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .review {
+        border-bottom: 1px solid #ddd;
+        padding: 1rem 0;
+    }
+
+    .review:last-child {
+        border-bottom: none;
+    }
+
+    .review-author {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .review-content {
+        font-style: italic;
+        margin-bottom: 0.5rem;
+        color: #555;
+    }
+
+    .review-date {
+        font-size: 0.875rem;
+        color: #999;
+    }
+
+    /* Review Form */
+    .review-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .review-form textarea {
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        resize: vertical;
+    }
+
+    .review-form button {
+        align-self: flex-start;
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        background-color: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .review-form button:hover {
+        background-color: #d44d4d;
+    }
+
+    /* Responsive Design */
+    @media screen and (max-width: 768px) {
+        .product-header {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .product-image {
+            width: 100%;
+            height: auto;
+        }
+
+        .product-infos {
+            align-items: center;
+            text-align: center;
+        }
+
+        .add-to-cart {
+            justify-content: center;
+        }
+
+        .product-images {
+            flex-direction: row;
+            gap: 0.5rem;
+            max-height: auto;
+            overflow-x: auto;
+        }
+
+        .product-images .thumbnail {
+            width: 50px;
+            height: 50px;
+        }
+    }
+
+
+    /* Styles de la modale */
+    .modal {
+        display: none;
+        /* Cachée par défaut */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-content {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 8px;
+        text-align: center;
+        width: 300px;
+    }
+
+    .modal-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+
+    #modal-ok {
+        padding: 0.5rem 1rem;
+        background-color: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 1rem;
+    }
+
+    #modal-ok:hover {
+        background-color: #d44d4d;
+    }
+</style>
 
 <div id="modal" class="modal">
     <div class="modal-content">
@@ -11,43 +254,59 @@
 
 <div class="product-header">
     <div class="product-images">
-        <% product.content.url.forEach((imageId, index) => { %>
-            <img class="thumbnail <%= index === 0 ? 'active' : '' %>" src="http://localhost:3000/api/v1/images?product_id=<%= product.content.id %>&image_id=<%= imageId %>" alt="<%= product.content.name %>" data-index="<%= index %>" />
-        <% }); %>
+        <% product.content.url.forEach((imageId, index)=> { %>
+            <img class="thumbnail <%= index === 0 ? 'active' : '' %>"
+                src="http://localhost:3000/api/v1/images?product_id=<%= product.content.id %>&image_id=<%= imageId %>"
+                alt="<%= product.content.name %>" data-index="<%= index %>" />
+            <% }); %>
     </div>
-    <img class="product-image" src="http://localhost:3000/api/v1/images?product_id=<%=product.content.id%>&image_id=<%=product.content.url[0]%>" alt="<%= product.content.name%>" id="main-image" />
+    <img class="product-image"
+        src="http://localhost:3000/api/v1/images?product_id=<%=product.content.id%>&image_id=<%=product.content.url[0]%>"
+        alt="<%= product.content.name%>" id="main-image" />
     <div class="product-infos">
-        <h1 class="product-name"><%= product.content.name %></h1>
-        <p class="product-description"><%= product.content.description %></p>
-        <p class="product-price"><%= product.content.price.toFixed(2) %>€</p>
+        <h1 class="product-name">
+            <%= product.content.name %>
+        </h1>
+        <p class="product-description">
+            <%= product.content.description %>
+        </p>
+        <p class="product-price">
+            <%= product.content.price.toFixed(2) %>€
+        </p>
 
         <% if (logged) { %>
-            <% if (product.content.colors && product.content.colors.length > 0) { %>
+            <% if (product.content.colors && product.content.colors.length> 0) { %>
                 <label for="product-color">Couleur :</label>
                 <select id="product-color">
-                    <% product.content.colors.forEach(color => { %>
-                        <option value="<%= color %>"><%= color %></option>
-                    <% }); %>
+                    <% product.content.colors.forEach(color=> { %>
+                        <option value="<%= color %>">
+                            <%= color %>
+                        </option>
+                        <% }); %>
                 </select>
-            <% } %>
+                <% } %>
 
-            <% if (product.content.sizes && product.content.sizes.length > 0) { %>
-                <label for="product-size">Taille :</label>
-                <select id="product-size">
-                    <% product.content.sizes.forEach(size => { %>
-                        <option value="<%= size %>"><%= size %></option>
-                    <% }); %>
-                </select>
-            <% } %>
+                    <% if (product.content.sizes && product.content.sizes.length> 0) { %>
+                        <label for="product-size">Taille :</label>
+                        <select id="product-size">
+                            <% product.content.sizes.forEach(size=> { %>
+                                <option value="<%= size %>">
+                                    <%= size %>
+                                </option>
+                                <% }); %>
+                        </select>
+                        <% } %>
 
-            <label for="product-quantity">Quantité :</label>
-            <input type="number" id="product-quantity" name="quantity" value="1" min="1" />
+                            <label for="product-quantity">Quantité :</label>
+                            <input type="number" id="product-quantity" name="quantity" value="1" min="1" />
 
-            <button class="add-to-cart" id="product_<%= product.content.id %>" data-product-id="<%= product.content.id %>" data-product-price="<%= product.content.price %>">
-                <ion-icon name="cart-outline"></ion-icon>
-                Ajouter au panier
-            </button>
-        <% } %>
+                            <button class="add-to-cart" id="product_<%= product.content.id %>"
+                                data-product-id="<%= product.content.id %>"
+                                data-product-price="<%= product.content.price %>">
+                                <ion-icon name="cart-outline"></ion-icon>
+                                Ajouter au panier
+                            </button>
+                            <% } %>
     </div>
 </div>
 
@@ -59,26 +318,150 @@
             <input type="hidden" name="product_id" id="product_id" value="<%= product.content.id %>">
             <button type="submit" class="submit-review">Envoyer</button>
         </form>
-    <% } else { %>
-        <p>Veuillez vous connecter pour laisser un avis.</p>
-    <% } %>
-
-    <br>
-    <h2>Avis des utilisateurs</h2>
-    <div class="reviews-list">
-        <% if (reviews.status === 200) { %>
-            <% reviews.content.forEach(review => { %>
-                <div class="review">
-                    <p class="review-author">Par <%= review.author %>:</p>
-                    <p class="review-content">"<%= review.review %>"</p>
-                    <p class="review-date"><%= new Date(review.date).toLocaleDateString() %></p>
-                </div>
-            <% }); %>
         <% } else { %>
-            <p>Aucun avis pour le moment.</p>
-        <% } %>
-    </div>
+            <p>Veuillez vous connecter pour laisser un avis.</p>
+            <% } %>
+
+                <br>
+                <h2>Avis des utilisateurs</h2>
+                <div class="reviews-list">
+                    <% if (reviews.status===200) { %>
+                        <% reviews.content.forEach(review=> { %>
+                            <div class="review">
+                                <p class="review-author">Par <%= review.author %>:</p>
+                                <p class="review-content">"<%= review.review %>"</p>
+                                <p class="review-date">
+                                    <%= new Date(review.date).toLocaleDateString() %>
+                                </p>
+                            </div>
+                            <% }); %>
+                                <% } else { %>
+                                    <p>Aucun avis pour le moment.</p>
+                                    <% } %>
+                </div>
 </div>
 
-<script src="/scripts/product-details.js"></script>
-<script src="/scripts/cart-add.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        const mainImage = document.getElementById('main-image');
+
+        thumbnails.forEach((thumbnail) => {
+            thumbnail.addEventListener('click', () => {
+                // Remove active class from all thumbnails
+                thumbnails.forEach(thumb => thumb.classList.remove('active'));
+
+                // Add active class to the clicked thumbnail
+                thumbnail.classList.add('active');
+
+                // Update the main image source
+                mainImage.src = thumbnail.src;
+            });
+        });
+    });
+
+    async function createReview_request(review, rating, product_id) {
+        const formData = new FormData();
+        formData.append('review', review);
+        formData.append('rating', rating);
+        formData.append('product_id', product_id);
+        const response = await fetch(`http://localhost:3000/api/v1/reviews/create`, {
+            method: 'POST',
+            credentials: 'include',
+            body: formData,
+        });
+        const data = await response.json();
+        return data;
+    }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        const review_form = document.querySelector(".review-form");
+
+        await review_form.addEventListener("submit", async event => {
+            event.preventDefault();
+
+            const review_content = review_form.querySelector("#review").value;
+            const product_id = review_form.querySelector("#product_id").getAttribute("value");
+
+            const created_review = await createReview_request(review_content, 5, product_id);
+
+            console.log(created_review)
+
+            if (created_review.status === 201) {
+                window.location.reload();
+            } else {
+                alert("Une erreur s'est produite.")
+            }
+        })
+    })
+</script>
+<script>
+    async function addToCart_request(product_id, color, size, quantity) {
+        const formData = new FormData();
+        formData.append('product_id', product_id);
+        formData.append('color', color);
+        formData.append('size', size);
+        formData.append('quantity', quantity);
+        const response = await fetch(`http://localhost:3000/api/v1/carts/add`, {
+            method: 'POST',
+            credentials: 'include',
+            body: formData,
+        });
+        const data = await response.json();
+        return data;
+    }
+
+
+
+    async function addToCart_request(product_id, color, size, quantity) {
+        const formData = new FormData();
+        formData.append('product_id', product_id);
+        formData.append('color', color);
+        formData.append('size', size);
+        formData.append('quantity', quantity);
+        const response = await fetch(`http://localhost:3000/api/v1/carts/add`, {
+            method: 'POST',
+            credentials: 'include',
+            body: formData,
+        });
+        const data = await response.json();
+        return data;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const addToCartButtons = document.querySelectorAll(".add-to-cart");
+
+        addToCartButtons.forEach(button => {
+            button.addEventListener("click", async function () {
+                const productId = this.dataset.productId;
+
+                // Get the selected values from the form fields
+                const color = document.getElementById("product-color") ? document.getElementById("product-color").value : "";
+                const size = document.getElementById("product-size") ? document.getElementById("product-size").value : "";
+                const quantity = document.getElementById("product-quantity").value || 1;
+
+                // Send the request
+                const response = await addToCart_request(productId, color, size, quantity);
+                if (response.status === 200) {
+                    // Afficher la modale
+                    const modal = document.getElementById("modal");
+                    modal.style.display = "flex";
+                    2
+                    // Fermer la modale lorsque l'utilisateur clique sur "OK"
+                    document.getElementById("modal-ok").addEventListener("click", () => {
+                        modal.style.display = "none";
+                    });
+
+                    // Fermer la modale lorsqu'on clique sur le bouton de fermeture
+                    document.getElementById("modal-close").addEventListener("click", () => {
+                        modal.style.display = "none";
+                    });
+                } else {
+                    console.log(response);
+                    alert("Erreur lors de l'ajout au panier.");
+                }
+            });
+        });
+    });
+
+</script>

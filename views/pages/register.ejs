@@ -1,4 +1,190 @@
-<link rel="stylesheet" href="/css/login.css">
+<style>
+    .auth-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+
+    .auth-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        background: var(--card-bg);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .auth-image {
+        padding: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .auth-image img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .auth-form {
+        padding: 3rem 2rem;
+        background: var(--card-bg);
+    }
+
+    .auth-form h2 {
+        color: var(--accent);
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #666;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+    }
+
+    .password-input {
+        position: relative;
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: var(--card-bg);
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        padding: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+    }
+
+    .toggle-password:hover {
+        opacity: 0.8;
+    }
+
+    .checkbox-container {
+        align-items: center;
+        gap: 0.75rem;
+        cursor: pointer;
+        user-select: none;
+        flex-direction: row;
+        justify-content: flex-start;
+        margin-top: 1rem;
+    }
+
+    .checkbox-container input[type="checkbox"] {
+        height: 0;
+        width: 0;
+        visibility: hidden;
+        position: absolute;
+    }
+
+    .checkmark {
+        position: relative;
+        cursor: pointer;
+        width: 40px;
+        height: 20px;
+        background: #ddd;
+        display: block;
+        border-radius: 100px;
+        transition: 0.3s;
+    }
+
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 16px;
+        height: 16px;
+        background: #fff;
+        border-radius: 50%;
+        transition: 0.3s;
+    }
+
+    input:checked+.checkmark {
+        background: var(--accent);
+    }
+
+    input:checked+.checkmark:after {
+        left: calc(100% - 2px);
+        transform: translateX(-100%);
+    }
+
+    .checkbox-container span:last-child {
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 1rem;
+        background: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 1rem;
+    }
+
+    .auth-switch {
+        text-align: center;
+        margin-top: 1.5rem;
+        color: #666;
+    }
+
+    .auth-switch a {
+        color: var(--accent);
+        text-decoration: none;
+    }
+
+    @media screen and (max-width: 768px) {
+        .auth-content {
+            grid-template-columns: 1fr;
+        }
+
+        .auth-image {
+            display: none;
+        }
+    }
+
+    .login-error,
+    .register-error {
+        margin-top: 20px;
+        text-align: center;
+        color: rgb(255, 50, 50);
+        border: 1px solid rgb(255, 50, 50);
+        padding: 1rem;
+        border-radius: 4px;
+    }
+
+    .login-success,
+    .register-success {
+        margin-top: 20px;
+        text-align: center;
+        color: rgb(0, 175, 0);
+        border: 1px solid rgb(0, 175, 0);
+        padding: 1rem;
+        border-radius: 4px;
+    }
+</style>
 
 <div class="auth-content">
     <div class="auth-form">
@@ -52,4 +238,71 @@
     </div>
 </div>
 
-<script src="/scripts/register.js"></script>
+<script>
+    // Variable globale pour stocker les messages d'erreur
+    let errorMessages = {};
+
+    // Récupérer les messages d'erreur depuis l'API
+    async function fetchErrorMessages() {
+        try {
+            const response = await fetch('http://localhost:3000/api/v1/errors');
+            if (response.ok) {
+                errorMessages = await response.json();
+            }
+        } catch (error) {
+            console.error('Erreur lors de la récupération des messages d\'erreur:', error);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', fetchErrorMessages);
+
+    async function register_request(username, email, password, firstName, lastName, level, classe) {
+        const formData = new FormData();
+        formData.append('username', username);
+        formData.append('email', email);
+        formData.append('password', password);
+        formData.append('firstName', firstName);
+        formData.append('lastName', lastName);
+        formData.append('level', level);
+        formData.append('classe', classe);
+        const response = await fetch(`http://localhost:3000/api/v1/auth/register`, {
+            method: 'POST',
+            body: formData,
+        });
+        const data = await response.json();
+        return data;
+    }
+
+    const authForm = document.querySelector(".auth-form");
+    authForm.addEventListener("submit", async event => {
+        event.preventDefault();
+
+        const username = document.getElementById("username").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const firstName = document.getElementById("firstName").value;
+        const lastName = document.getElementById("lastName").value;
+        const level = document.getElementById("level").value;
+        const classe = document.getElementById("classe").value;
+
+        // console.log(username, email, password, firstName, lastName, level, classe)
+
+        const response = await register_request(username, email, password, firstName, lastName, level, classe);
+
+        console.log(response);
+
+        // Auth Reponses
+        const registerError = document.querySelector(".register-error");
+        const registerSuccess = document.querySelector(".register-success");
+        if (response.status != 201) {
+            registerError.hidden = false;
+            registerSuccess.hidden = true;
+            errors = response.id.codes.map(code => errorMessages[code] || `Inconnue (code ${code})`)
+            registerError.innerHTML = `<b>Erreurs :</b><br>${errors.join('<br>')}`;
+        } else {
+            registerError.hidden = true;
+            registerSuccess.hidden = false;
+            registerSuccess.innerHTML = "Inscription finalisée avec succès";
+        }
+    })
+</script>

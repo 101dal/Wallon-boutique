@@ -1,4 +1,190 @@
-<link rel="stylesheet" href="/css/login.css">
+<style>
+    .auth-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+
+    .auth-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        background: var(--card-bg);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .auth-image {
+        padding: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .auth-image img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .auth-form {
+        padding: 3rem 2rem;
+        background: var(--card-bg);
+    }
+
+    .auth-form h2 {
+        color: var(--accent);
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #666;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+    }
+
+    .password-input {
+        position: relative;
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: var(--card-bg);
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        padding: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+    }
+
+    .toggle-password:hover {
+        opacity: 0.8;
+    }
+
+    .checkbox-container {
+        align-items: center;
+        gap: 0.75rem;
+        cursor: pointer;
+        user-select: none;
+        flex-direction: row;
+        justify-content: flex-start;
+        margin-top: 1rem;
+    }
+
+    .checkbox-container input[type="checkbox"] {
+        height: 0;
+        width: 0;
+        visibility: hidden;
+        position: absolute;
+    }
+
+    .checkmark {
+        position: relative;
+        cursor: pointer;
+        width: 40px;
+        height: 20px;
+        background: #ddd;
+        display: block;
+        border-radius: 100px;
+        transition: 0.3s;
+    }
+
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 16px;
+        height: 16px;
+        background: #fff;
+        border-radius: 50%;
+        transition: 0.3s;
+    }
+
+    input:checked+.checkmark {
+        background: var(--accent);
+    }
+
+    input:checked+.checkmark:after {
+        left: calc(100% - 2px);
+        transform: translateX(-100%);
+    }
+
+    .checkbox-container span:last-child {
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 1rem;
+        background: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 1rem;
+    }
+
+    .auth-switch {
+        text-align: center;
+        margin-top: 1.5rem;
+        color: #666;
+    }
+
+    .auth-switch a {
+        color: var(--accent);
+        text-decoration: none;
+    }
+
+    @media screen and (max-width: 768px) {
+        .auth-content {
+            grid-template-columns: 1fr;
+        }
+
+        .auth-image {
+            display: none;
+        }
+    }
+
+    .login-error,
+    .register-error {
+        margin-top: 20px;
+        text-align: center;
+        color: rgb(255, 50, 50);
+        border: 1px solid rgb(255, 50, 50);
+        padding: 1rem;
+        border-radius: 4px;
+    }
+
+    .login-success,
+    .register-success {
+        margin-top: 20px;
+        text-align: center;
+        color: rgb(0, 175, 0);
+        border: 1px solid rgb(0, 175, 0);
+        padding: 1rem;
+        border-radius: 4px;
+    }
+</style>
 
 <div class="auth-content">
     <div class="auth-image">
@@ -38,5 +224,78 @@
     </div>
 </div>
 
-<script src="/scripts/password-toggle.js"></script>
-<script src="/scripts/login.js"></script>
+<script>
+    const togglePasswordButtons = document.querySelectorAll(".toggle-password");
+
+    togglePasswordButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+            const input = this.previousElementSibling;
+            const icon = this.querySelector("ion-icon");
+
+            if (input.type === "password") {
+                input.type = "text";
+                icon.setAttribute("name", "eye-off-outline");
+            } else {
+                input.type = "password";
+                icon.setAttribute("name", "eye-outline");
+            }
+        });
+    });
+
+</script>
+
+<script>
+    // Variable globale pour stocker les messages d'erreur
+    let errorMessages = {};
+
+    // Récupérer les messages d'erreur depuis l'API
+    async function fetchErrorMessages() {
+        try {
+            const response = await fetch('http://localhost:3000/api/v1/errors');
+            if (response.ok) {
+                errorMessages = await response.json();
+            }
+        } catch (error) {
+            console.error('Erreur lors de la récupération des messages d\'erreur:', error);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', fetchErrorMessages);
+
+    async function login_request(email, password) {
+        const formData = new FormData();
+        formData.append('email', email);
+        formData.append('password', password);
+        const response = await fetch('http://localhost:3000/api/v1/auth/login', {
+            method: 'POST',
+            body: formData,
+            credentials: 'include',
+        });
+
+        const data = await response.json();
+
+        return data;
+    }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        const loginForm = document.querySelector("form");
+        loginForm.addEventListener("submit", async e => {
+            e.preventDefault();
+            const email = loginForm.querySelector("#email").value;
+            const password = loginForm.querySelector("#password").value;
+            const response = await login_request(email, password);
+            console.log(response);
+
+            // login Reponses
+            const loginError = document.querySelector(".login-error");
+            if (response.status != 200) {
+                loginError.hidden = false;
+                error = response.id.codes;
+                loginError.innerHTML = "<b>Erreur : </b>" + errorMessages[error] || `Inconnue (code ${error})`;
+            } else {
+                loginError.hidden = true;
+                window.location.href = "/?registered=true";
+            }
+        });
+    });
+</script>
