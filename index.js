@@ -24,6 +24,7 @@ app.use(async (req, res, next) => {
     });
     const data = await response.json();
 
+
     res.locals.logged = data.status === 200;
     res.locals.profile = data.content;
 
@@ -102,7 +103,7 @@ app.get("/register", (req, res) => {
 
 app.get("/profile", async (req, res) => {
     if (!res.locals.logged) {
-        res.redirect("/login");
+        res.render("pages/404", { active: "404", container: "404" });
     }
 
     // If the user is an admin then you redirect him to 
@@ -120,7 +121,7 @@ app.get("/profile", async (req, res) => {
 
 app.get("/panier", async (req, res) => {
     if (!res.locals.logged) {
-        res.redirect("/login");
+        res.render("pages/404", { active: "404", container: "404" });
     }
 
     // Get the user's carts
@@ -136,7 +137,7 @@ app.get("/panier", async (req, res) => {
 
 app.get("/dashboard", async (req, res) => {
     if (!res.locals.logged) {
-        res.redirect("/login");
+        res.render("pages/404", { active: "404", container: "404" });
     }
 
     if (res.locals.profile.role === "ADMIN") {
@@ -151,18 +152,18 @@ app.get("/dashboard", async (req, res) => {
 
         res.render("pages/dashboard/dashboard-employee", { active: "dashboard-employee", container: "orders", orders });
     } else {
-        res.redirect("/profile");
+        res.render("pages/404", { active: "404", container: "404" });
     }
 
 });
 
 app.get("/dashboard/:type", async (req, res) => {
     if (!res.locals.logged) {
-        res.redirect("/login");
+        res.render("pages/404", { active: "404", container: "404" });
     }
 
     if (res.locals.profile.role !== "ADMIN") {
-        res.redirect("/profile");
+        res.render("pages/404", { active: "404", container: "404" });
     }
 
     if (req.params.type === "products") {
@@ -232,6 +233,10 @@ app.get("/dashboard/:type", async (req, res) => {
 
         res.render("pages/dashboard/dashboard-reviews", { active: "dashboard-admin", container: "reviews", reviews });
     }
+});
+
+app.all("*", async (req, res) => {
+    res.render("pages/404", { active: "404", container: "404" });
 })
 
 

@@ -185,9 +185,10 @@
 
 <h1>Votre panier</h1>
 
-<% let total=0 %>
 
-    <div class="cart-content">
+<div class="cart-content">
+    <% let total=0 %>
+
         <div class="cart-items">
             <% if (carts.status===200 && carts.content.length> 0) { %>
                 <% carts.content.forEach(cart=> {
@@ -230,34 +231,62 @@
                     <%= total> 0 ? total.toFixed(2) : '0.00' %>€
                 </span> <!-- Affiche le total ou 0 si vide -->
             </div>
-            <button class="validate-order">
-                <ion-icon name="mail-outline" style="color: white"></ion-icon>
-                Valider la commande
-            </button>
-            <p class="order-note">La validation vous permettra d'obtenir un bon de commande à présenter le jour de la
-                récupération de votre commande.</p>
-            <p class="payment-note">Le paiement aura lieu en chèque ou en espèce au même moment.</p>
+            <% if (total>0){ %>
+                <button class="validate-order">
+                    <ion-icon name="mail-outline" style="color: white"></ion-icon>
+                    Valider la commande
+                </button>
+                <p class="order-note">La validation vous permettra d'obtenir un bon de commande à présenter le jour
+                    de la
+                    récupération de votre commande.</p>
+                <p class="payment-note">Le paiement aura lieu en chèque ou en espèce au même moment.</p>
+                <% } %>
         </div>
-    </div>
+</div>
 
-    <script>
-        async function checkout_request() {
-            const formData = new FormData();
-            const response = await fetch(`http://localhost:3000/api/v1/carts/checkout`, {
-                method: 'POST',
-                credentials: 'include',
-                body: formData,
-            });
-            const data = await response.json();
-            return data;
-        }
+<script>
+    async function checkout_request() {
+        const formData = new FormData();
+        const response = await fetch(`http://localhost:3000/api/v1/carts/checkout`, {
+            method: 'POST',
+            credentials: 'include',
+            body: formData,
+        });
+        const data = await response.json();
+        return data;
+    }
 
-        document.addEventListener("DOMContentLoaded", async () => {
-            await document.querySelector(".validate-order").addEventListener("click", async (event) => {
-                if (confirm("Veuillez confirmer la commande")) {
-                    await checkout_request();
+    async function removeFromCart_request(id) {
+        const formData = new FormData();
+        const response = await fetch(`http://localhost:3000/api/v1/carts/remove/${id}`, {
+            method: 'DELETE',
+            credentials: 'include',
+            body: formData,
+        });
+        const data = await response.json();
+        return data;
+    }
+
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        await document.querySelector(".validate-order").addEventListener("click", async (event) => {
+            if (confirm("Veuillez confirmer la commande")) {
+                await checkout_request();
+                window.location.reload();
+            }
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        await document.querySelectorAll(".delete-btn").forEach(removeButton => {
+            removeButton.addEventListener("click", async (event) => {
+                if (confirm("Veillez confirmer la supression")) {
+                    await removeFromCart_request(removeButton.getAttribute("data-cart-id"));
                     window.location.reload();
                 }
             })
         })
-    </script>
+    })
+
+
+</script>

@@ -285,11 +285,7 @@
         const level = document.getElementById("level").value;
         const classe = document.getElementById("classe").value;
 
-        // console.log(username, email, password, firstName, lastName, level, classe)
-
         const response = await register_request(username, email, password, firstName, lastName, level, classe);
-
-        console.log(response);
 
         // Auth Reponses
         const registerError = document.querySelector(".register-error");
@@ -305,4 +301,24 @@
             registerSuccess.innerHTML = "Inscription finalisée avec succès";
         }
     })
+</script>
+
+<script>
+    const togglePasswordButtons = document.querySelectorAll(".toggle-password");
+
+    togglePasswordButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+            const input = this.previousElementSibling;
+            const icon = this.querySelector("ion-icon");
+
+            if (input.type === "password") {
+                input.type = "text";
+                icon.setAttribute("name", "eye-off-outline");
+            } else {
+                input.type = "password";
+                icon.setAttribute("name", "eye-outline");
+            }
+        });
+    });
+
 </script>

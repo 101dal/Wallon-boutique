@@ -925,7 +925,9 @@
       }
       const response = await addImageToProduct_request(productId, newImagesInput);
       if (response.status === 200) {
-        updateProductImagesInModal(productId, response.content.url);
+        setTimeout(() => {
+          updateProductImagesInModal(productId, response.content.url);
+        }, 200);
       } else {
         const errors = response.id?.codes || response.content || ['Erreur inconnue'];
         showErrorModal(errors);

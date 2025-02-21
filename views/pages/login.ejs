@@ -273,7 +273,7 @@
         });
 
         const data = await response.json();
-
+ 
         return data;
     }
 
@@ -284,7 +284,6 @@
             const email = loginForm.querySelector("#email").value;
             const password = loginForm.querySelector("#password").value;
             const response = await login_request(email, password);
-            console.log(response);
 
             // login Reponses
             const loginError = document.querySelector(".login-error");
