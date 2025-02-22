@@ -1,5 +1,6 @@
 import { fetch } from "bun";
 import cookieParser from "cookie-parser";
+import createProductsRouter from "./fillProducts";
 
 const express = require("express");
 const app = express();
@@ -40,6 +41,8 @@ app.get("/", (req, res) => {
     const disconnected = req.query.disconnected === 'true';
     res.render("pages/home", { active: "home", container: "home", registered, disconnected });
 });
+
+app.use("/database", createProductsRouter);
 
 
 app.get("/products", async (req, res) => {

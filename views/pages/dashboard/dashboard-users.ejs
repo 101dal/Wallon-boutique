@@ -509,7 +509,7 @@
         console.log(response)
         if (response.status === 201) {
             alert("Utilisateur ajouté avec succès !");
-            window.location.reload();
+            setTimeout(() => window.location.reload(), 200);
         } else {
             const errors = response.id?.codes || response.content || ['Erreur inconnue'];
             console.log(errors)

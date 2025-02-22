@@ -51,7 +51,6 @@
         gap: 1rem;
     }
 
-
     .product-name {
         font-size: 2rem;
         margin: 0;
@@ -196,59 +195,84 @@
         }
     }
 
-
-    /* Styles de la modale */
+    /* Styles communs aux modales */
     .modal {
-        display: none;
-        /* Cachée par défaut */
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 1000;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
         align-items: center;
         justify-content: center;
+        z-index: 1000;
+    }
+
+    .modal.hidden {
+        display: none;
     }
 
     .modal-content {
-        background-color: var(--background);
-        padding: 2rem;
-        border-radius: 8px;
+        background: var(--card-bg);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 8px 16px var(--shadow);
+        width: 80%;
+        max-width: 400px;
+        position: relative;
         text-align: center;
-        width: 300px;
     }
 
     .modal-close {
         position: absolute;
         top: 10px;
-        right: 10px;
-        font-size: 1.5rem;
+        right: 15px;
+        font-size: 28px;
+        color: var(--text);
         cursor: pointer;
     }
 
-    #modal-ok {
-        padding: 0.5rem 1rem;
+    .modal-actions {
+        margin-top: 20px;
+    }
+
+    .modal-ok {
         background-color: var(--accent);
         color: white;
+        padding: 10px 20px;
         border: none;
-        border-radius: 4px;
+        border-radius: 5px;
         cursor: pointer;
-        margin-top: 1rem;
+        font-size: 1rem;
     }
 
-    #modal-ok:hover {
-        background-color: #d44d4d;
+    .modal-ok:hover {
+        opacity: 0.9;
     }
 </style>
 
-<div id="modal" class="modal">
+<!-- Modal de confirmation -->
+<div id="confirmation-modal" class="modal hidden">
     <div class="modal-content">
-        <span id="modal-close" class="modal-close">&times;</span>
+        <span class="modal-close">&times;</span>
         <h2>Produit ajouté au panier !</h2>
         <p>Votre produit a été ajouté avec succès à votre panier.</p>
-        <button id="modal-ok">OK</button>
+        <div class="modal-actions">
+            <button class="modal-ok">OK</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal d'erreur -->
+<div id="error-modal" class="modal hidden">
+    <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <h2>Erreur</h2>
+        <ul class="error-list"></ul>
+        <div class="modal-actions">
+            <button class="modal-ok">OK</button>
+        </div>
     </div>
 </div>
 
@@ -258,7 +282,7 @@
             <img class="thumbnail <%= index === 0 ? 'active' : '' %>"
                 src="http://localhost:3000/api/v1/images?product_id=<%= product.content.id %>&image_id=<%= imageId %>"
                 alt="<%= product.content.name %>" data-index="<%= index %>" />
-            <% }); %>
+        <% }); %>
     </div>
     <img class="product-image"
         src="http://localhost:3000/api/v1/images?product_id=<%=product.content.id%>&image_id=<%=product.content.url[0]%>"
@@ -282,31 +306,31 @@
                         <option value="<%= color %>">
                             <%= color %>
                         </option>
-                        <% }); %>
+                    <% }); %>
                 </select>
-                <% } %>
+            <% } %>
 
-                    <% if (product.content.sizes && product.content.sizes.length> 0) { %>
-                        <label for="product-size">Taille :</label>
-                        <select id="product-size">
-                            <% product.content.sizes.forEach(size=> { %>
-                                <option value="<%= size %>">
-                                    <%= size %>
-                                </option>
-                                <% }); %>
-                        </select>
-                        <% } %>
+            <% if (product.content.sizes && product.content.sizes.length> 0) { %>
+                <label for="product-size">Taille :</label>
+                <select id="product-size">
+                    <% product.content.sizes.forEach(size=> { %>
+                        <option value="<%= size %>">
+                            <%= size %>
+                        </option>
+                    <% }); %>
+                </select>
+            <% } %>
 
-                            <label for="product-quantity">Quantité :</label>
-                            <input type="number" id="product-quantity" name="quantity" value="1" min="1" />
+            <label for="product-quantity">Quantité :</label>
+            <input type="number" id="product-quantity" name="quantity" value="1" min="1" />
 
-                            <button class="add-to-cart" id="product_<%= product.content.id %>"
-                                data-product-id="<%= product.content.id %>"
-                                data-product-price="<%= product.content.price %>">
-                                <ion-icon name="cart-outline"></ion-icon>
-                                Ajouter au panier
-                            </button>
-                            <% } %>
+            <button class="add-to-cart" id="product_<%= product.content.id %>"
+                data-product-id="<%= product.content.id %>"
+                data-product-price="<%= product.content.price %>">
+                <ion-icon name="cart-outline"></ion-icon>
+                Ajouter au panier
+            </button>
+        <% } %>
     </div>
 </div>
 
@@ -318,27 +342,27 @@
             <input type="hidden" name="product_id" id="product_id" value="<%= product.content.id %>">
             <button type="submit" class="submit-review">Envoyer</button>
         </form>
-        <% } else { %>
-            <p>Veuillez vous connecter pour laisser un avis.</p>
-            <% } %>
+    <% } else { %>
+        <p>Veuillez vous connecter pour laisser un avis.</p>
+    <% } %>
 
-                <br>
-                <h2>Avis des utilisateurs</h2>
-                <div class="reviews-list">
-                    <% if (reviews.status===200) { %>
-                        <% reviews.content.forEach(review=> { %>
-                            <div class="review">
-                                <p class="review-author">Par <%= review.author %>:</p>
-                                <p class="review-content">"<%= review.review %>"</p>
-                                <p class="review-date">
-                                    <%= new Date(review.date).toLocaleDateString() %>
-                                </p>
-                            </div>
-                            <% }); %>
-                                <% } else { %>
-                                    <p>Aucun avis pour le moment.</p>
-                                    <% } %>
+    <br>
+    <h2>Avis des utilisateurs</h2>
+    <div class="reviews-list">
+        <% if (reviews.status===200) { %>
+            <% reviews.content.forEach(review=> { %>
+                <div class="review">
+                    <p class="review-author">Par <%= review.author %>:</p>
+                    <p class="review-content">"<%= review.review %>"</p>
+                    <p class="review-date">
+                        <%= new Date(review.date).toLocaleDateString() %>
+                    </p>
                 </div>
+            <% }); %>
+        <% } else { %>
+            <p>Aucun avis pour le moment.</p>
+        <% } %>
+    </div>
 </div>
 
 <script>
@@ -388,30 +412,12 @@
             console.log(created_review)
 
             if (created_review.status === 201) {
-                window.location.reload();
+                setTimeout(() => window.location.reload(), 200);
             } else {
                 alert("Une erreur s'est produite.")
             }
         })
-    })
-</script>
-<script>
-    async function addToCart_request(product_id, color, size, quantity) {
-        const formData = new FormData();
-        formData.append('product_id', product_id);
-        formData.append('color', color);
-        formData.append('size', size);
-        formData.append('quantity', quantity);
-        const response = await fetch(`http://localhost:3000/api/v1/carts/add`, {
-            method: 'POST',
-            credentials: 'include',
-            body: formData,
-        });
-        const data = await response.json();
-        return data;
-    }
-
-
+    });
 
     async function addToCart_request(product_id, color, size, quantity) {
         const formData = new FormData();
@@ -424,44 +430,60 @@
             credentials: 'include',
             body: formData,
         });
-        const data = await response.json();
-        return data;
+        return await response.json();
     }
 
+    // Gestion générique des modales
+    function setupModal(modalId) {
+        const modal = document.getElementById(modalId);
+        const closeElements = modal.querySelectorAll('.modal-close, .modal-ok');
+
+        closeElements.forEach(element => {
+            element.addEventListener('click', () => {
+                modal.classList.add('hidden');
+            });
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.add('hidden');
+            }
+        });
+    }
+
+    // Initialisation des modales
+    document.addEventListener('DOMContentLoaded', () => {
+        setupModal('confirmation-modal');
+        setupModal('error-modal');
+    });
+
+    // Modification de la fonction addToCart
     document.addEventListener("DOMContentLoaded", function () {
         const addToCartButtons = document.querySelectorAll(".add-to-cart");
 
         addToCartButtons.forEach(button => {
             button.addEventListener("click", async function () {
                 const productId = this.dataset.productId;
-
-                // Get the selected values from the form fields
-                const color = document.getElementById("product-color") ? document.getElementById("product-color").value : "";
-                const size = document.getElementById("product-size") ? document.getElementById("product-size").value : "";
+                const color = document.getElementById("product-color")?.value || "";
+                const size = document.getElementById("product-size")?.value || "";
                 const quantity = document.getElementById("product-quantity").value || 1;
 
-                // Send the request
-                const response = await addToCart_request(productId, color, size, quantity);
-                if (response.status === 200) {
-                    // Afficher la modale
-                    const modal = document.getElementById("modal");
-                    modal.style.display = "flex";
-                    2
-                    // Fermer la modale lorsque l'utilisateur clique sur "OK"
-                    document.getElementById("modal-ok").addEventListener("click", () => {
-                        modal.style.display = "none";
-                    });
+                try {
+                    const response = await addToCart_request(productId, color, size, quantity);
 
-                    // Fermer la modale lorsqu'on clique sur le bouton de fermeture
-                    document.getElementById("modal-close").addEventListener("click", () => {
-                        modal.style.display = "none";
-                    });
-                } else {
-                    console.log(response);
-                    alert("Erreur lors de l'ajout au panier.");
+                    if (response.status === 200) {
+                        document.getElementById('confirmation-modal').classList.remove('hidden');
+                    } else {
+                        const errorList = document.querySelector('#error-modal .error-list');
+                        errorList.innerHTML = `<li>${response.content || 'Erreur lors de l\'ajout au panier'}</li>`;
+                        document.getElementById('error-modal').classList.remove('hidden');
+                    }
+                } catch (error) {
+                    const errorList = document.querySelector('#error-modal .error-list');
+                    errorList.innerHTML = '<li>Erreur de connexion au serveur</li>';
+                    document.getElementById('error-modal').classList.remove('hidden');
                 }
             });
         });
     });
-
 </script>

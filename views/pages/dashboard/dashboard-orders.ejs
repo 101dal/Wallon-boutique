@@ -582,7 +582,7 @@
         const response = await createOrder_request(userId, status);
         if (response.status === 200) {
             alert("Commande ajoutée avec succès !");
-            window.location.reload();
+            setTimeout(() => window.location.reload(), 200);
         } else {
             const errors = response.id?.codes || response.content || ['Erreur inconnue'];
             showErrorModal(errors);

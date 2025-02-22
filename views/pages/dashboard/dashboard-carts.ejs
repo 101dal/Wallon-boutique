@@ -506,79 +506,6 @@
     // Appeler au chargement de la page
     document.addEventListener('DOMContentLoaded', fetchErrorMessages);
 
-    // Fonction pour récupérer la liste des paniers
-    async function getCarts_request() {
-        const response = await fetch("http://localhost:3000/api/v1/carts/search", {
-            method: "POST",
-            credentials: "include",
-            body: JSON.stringify({})
-        });
-        return await response.json();
-    }
-
-    // Gestion de l'affichage des paniers
-    document.addEventListener("DOMContentLoaded", async () => {
-        const cartsData = await getCarts_request();
-        if (cartsData.status === 200) {
-            const cartList = document.querySelector(".cart-list");
-            cartsData.content.forEach(cart => {
-                const cartItem = document.createElement("div");
-                cartItem.classList.add("cart-item");
-                cartItem.setAttribute("data-cart-id", cart.id);
-                cartItem.setAttribute("data-cart-user-id", cart.user_id);
-                cartItem.setAttribute("data-cart-product-id", cart.product_id);
-                cartItem.setAttribute("data-cart-color", cart.color);
-                cartItem.setAttribute("data-cart-size", cart.size);
-                cartItem.setAttribute("data-cart-quantity", cart.quantity);
-
-                const cartsInfo = document.createElement("div");
-                cartsInfo.classList.add("carts-info");
-
-                const userIdLabel = document.createElement("label");
-                userIdLabel.innerHTML = `ID de l'utilisateur : <input type="number" value="${cart.user_id}" class="cart-user-id" />`;
-
-                const productIdLabel = document.createElement("label");
-                productIdLabel.innerHTML = `ID du produit : <input type="number" value="${cart.product_id}" class="cart-product-id" />`;
-
-                const colorLabel = document.createElement("label");
-                colorLabel.innerHTML = `Couleur : <input type="text" value="${cart.color}" class="cart-color" />`;
-
-                const sizeLabel = document.createElement("label");
-                sizeLabel.innerHTML = `Taille : <input type="text" value="${cart.size}" class="cart-size" />`;
-
-                const quantityLabel = document.createElement("label");
-                quantityLabel.innerHTML = `Quantité : <input type="number" value="${cart.quantity}" class="cart-quantity" />`;
-
-                cartsInfo.appendChild(userIdLabel);
-                cartsInfo.appendChild(productIdLabel);
-                cartsInfo.appendChild(colorLabel);
-                cartsInfo.appendChild(sizeLabel);
-                cartsInfo.appendChild(quantityLabel);
-
-                const cartActions = document.createElement("div");
-                cartActions.classList.add("cart-actions");
-
-                const saveButton = document.createElement("button");
-                saveButton.classList.add("save-cart");
-                saveButton.setAttribute("data-cart-id", cart.id);
-                saveButton.innerHTML = '<ion-icon name="save-outline"></ion-icon>';
-
-                const deleteButton = document.createElement("button");
-                deleteButton.classList.add("delete-cart");
-                deleteButton.setAttribute("data-cart-id", cart.id);
-                deleteButton.innerHTML = '<ion-icon name="trash-outline"></ion-icon>';
-
-                cartActions.appendChild(saveButton);
-                cartActions.appendChild(deleteButton);
-
-                cartItem.appendChild(cartsInfo);
-                cartItem.appendChild(cartActions);
-
-                cartList.appendChild(cartItem);
-            });
-        }
-    });
-
     // Script : Création d'un panier
     async function createCart_request(userId, productId, color, size, quantity) {
         const formData = new FormData();
@@ -608,7 +535,7 @@
         const response = await createCart_request(userId, productId, color, size, quantity);
         if (response.status === 200) {
             alert("Panier ajouté avec succès !");
-            window.location.reload();
+            setTimeout(() => window.location.reload(), 200);
         } else {
             const errors = response.id?.codes || response.content || ['Erreur inconnue'];
             showErrorModal(errors);
@@ -664,7 +591,10 @@
                 const size = cartItem.querySelector(".cart-size").value;
                 const quantity = cartItem.querySelector(".cart-quantity").value;
 
+                console.log(cartId, userId, productId, color, size, quantity)
+
                 const response = await modifyCart_request(cartId, userId, productId, color, size, quantity);
+                console.log(response)
                 if (response.status === 200) {
                     updateCartInDOM(response.content);
                     button.classList.add("saved");

@@ -739,7 +739,11 @@
       formData.append('type', typeValue);
     }
 
+    console.log(imagesFiles.files)
+
+
     for (const fileItem of imagesFiles.files) {
+      console.log(fileItem);
       formData.append('images', fileItem);
     }
 
@@ -775,7 +779,7 @@
     const response = await createProduct_request(name, description, colors, sizes, price, inventory, typeValue, isNewType, newTypeLogo, images);
     if (response.status === 200) {
       alert("Produit ajouté avec succès !");
-      window.location.reload();
+      setTimeout(() => window.location.reload(), 200);
     } else {
       const errors = response.id?.codes || response.content || ['Erreur inconnue'];
       showErrorModal(errors);

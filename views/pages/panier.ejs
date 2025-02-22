@@ -272,7 +272,7 @@
         await document.querySelector(".validate-order").addEventListener("click", async (event) => {
             if (confirm("Veuillez confirmer la commande")) {
                 await checkout_request();
-                window.location.reload();
+                setTimeout(() => window.location.reload(), 200);
             }
         });
     });
@@ -282,7 +282,7 @@
             removeButton.addEventListener("click", async (event) => {
                 if (confirm("Veillez confirmer la supression")) {
                     await removeFromCart_request(removeButton.getAttribute("data-cart-id"));
-                    window.location.reload();
+                    setTimeout(() => window.location.reload(), 200);
                 }
             })
         })

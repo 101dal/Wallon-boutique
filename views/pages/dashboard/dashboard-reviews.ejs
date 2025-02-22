@@ -540,7 +540,7 @@
         const response = await createReview_request(userId, productId, review, rating);
         if (response.status === 200) {
             alert("Avis ajouté avec succès !");
-            window.location.reload();
+            setTimeout(() => window.location.reload(), 200);
         } else {
             const errors = response.id?.codes || response.content || ['Erreur inconnue'];
             showErrorModal(errors);
