@@ -1,13 +1,28 @@
 <style>
+    /* ========================
+       Styles Globaux
+    ============================= */
+    body {
+        font-family: Arial, sans-serif;
+        background: #f7f7f7;
+        margin: 0;
+        padding: 0;
+    }
     .product-detail-container {
         max-width: 1200px;
         margin: 2rem auto;
         padding: 2rem;
-        background: var(--card-bg);
+        background: #fff;
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     }
-
+    h1, h2, h3, p {
+        margin: 0 0 1rem 0;
+    }
+  
+    /* ========================
+       Produit (Header, images, infos)
+    ============================= */
     .product-header {
         display: flex;
         flex-wrap: wrap;
@@ -15,7 +30,6 @@
         margin-bottom: 2rem;
         justify-content: center;
     }
-
     .product-images {
         display: flex;
         flex-direction: column;
@@ -23,7 +37,6 @@
         max-height: 400px;
         overflow-y: auto;
     }
-
     .product-images .thumbnail {
         width: 60px;
         height: 60px;
@@ -33,46 +46,40 @@
         cursor: pointer;
         transition: border-color 0.3s ease;
     }
-
     .product-images .thumbnail.active {
-        border-color: var(--accent);
+        border-color: #ff6f61;
     }
-
     .product-image {
         width: 500px;
         height: 500px;
         border-radius: 8px;
         object-fit: cover;
     }
-
     .product-infos {
         display: flex;
         flex-direction: column;
         gap: 1rem;
+        justify-content: center;
     }
-
     .product-name {
         font-size: 2rem;
-        margin: 0;
+        font-weight: bold;
     }
-
     .product-description {
         font-size: 1rem;
-        color: #666;
+        color: #555;
         line-height: 1.6;
     }
-
     .product-price {
         font-size: 1.5rem;
         font-weight: bold;
-        color: var(--accent);
+        color: #ff6f61;
     }
-
     .add-to-cart {
         padding: 0.75rem 1rem;
         font-size: 1rem;
-        background-color: var(--accent);
-        color: white;
+        background-color: #ff6f61;
+        color: #fff;
         border: none;
         border-radius: 4px;
         cursor: pointer;
@@ -81,61 +88,103 @@
         align-items: center;
         gap: 0.5rem;
     }
-
     .add-to-cart:hover {
-        background-color: #d44d4d;
+        background-color: #e55a4d;
     }
-
-    /* Reviews Section */
+  
+    /* ========================
+       Section Avis / Reviews
+    ============================= */
     .reviews-section {
         margin-top: 2rem;
     }
-
     .reviews-section h2 {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
+        font-size: 1.8rem;
+        border-bottom: 2px solid #ff6f61;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1.5rem;
     }
-
     .reviews-list {
         margin-bottom: 2rem;
         padding: 1rem;
-        background: var(--card-bg);
+        background: #fafafa;
         border-radius: 8px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
-
     .review {
         border-bottom: 1px solid #ddd;
         padding: 1rem 0;
     }
-
     .review:last-child {
         border-bottom: none;
     }
-
     .review-author {
         font-weight: bold;
+        margin-bottom: 0.3rem;
+    }
+    .review-rating-display {
         margin-bottom: 0.5rem;
     }
-
     .review-content {
         font-style: italic;
+        color: #444;
         margin-bottom: 0.5rem;
-        color: #555;
     }
-
     .review-date {
         font-size: 0.875rem;
         color: #999;
     }
-
-    /* Review Form */
+    .review-actions button,
+    .report-review {
+        margin-right: 0.5rem;
+        padding: 0.3rem 0.6rem;
+        font-size: 0.9rem;
+        background-color: #ff6f61;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .review-actions button:hover,
+    .report-review:hover:not([disabled]) {
+        background-color: #e55a4d;
+    }
+    .report-review[disabled] {
+        background-color: #ccc;
+        cursor: default;
+    }
+    .edit-review-form input.edit-review-text {
+        width: 100%;
+        padding: 0.5rem;
+        margin-bottom: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    .edit-review-form button {
+        margin-right: 0.5rem;
+        padding: 0.3rem 0.6rem;
+        font-size: 0.9rem;
+        background-color: #ff6f61;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .edit-review-form button:hover {
+        background-color: #e55a4d;
+    }
+  
+    /* ========================
+       Formulaire d'avis
+    ============================= */
     .review-form {
         display: flex;
         flex-direction: column;
         gap: 1rem;
+        margin-bottom: 2rem;
     }
-
     .review-form textarea {
         width: 100%;
         padding: 0.75rem;
@@ -144,58 +193,55 @@
         border-radius: 4px;
         resize: vertical;
     }
-
     .review-form button {
         align-self: flex-start;
         padding: 0.5rem 1rem;
         font-size: 1rem;
-        background-color: var(--accent);
-        color: white;
+        background-color: #ff6f61;
+        color: #fff;
         border: none;
         border-radius: 4px;
         cursor: pointer;
         transition: background-color 0.3s;
     }
-
     .review-form button:hover {
-        background-color: #d44d4d;
+        background-color: #e55a4d;
     }
-
-    /* Responsive Design */
-    @media screen and (max-width: 768px) {
-        .product-header {
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .product-image {
-            width: 100%;
-            height: auto;
-        }
-
-        .product-infos {
-            align-items: center;
-            text-align: center;
-        }
-
-        .add-to-cart {
-            justify-content: center;
-        }
-
-        .product-images {
-            flex-direction: row;
-            gap: 0.5rem;
-            max-height: auto;
-            overflow-x: auto;
-        }
-
-        .product-images .thumbnail {
-            width: 50px;
-            height: 50px;
-        }
+  
+    /* ========================
+       Sélecteur d'étoiles (Star Rating)
+       Application aux conteneurs interactifs et en lecture seule
+    ============================= */
+    .star-rating,
+    .star-rating-readonly {
+        display: inline-block;
     }
-
-    /* Styles communs aux modales */
+    .star-rating .star,
+    .star-rating-readonly .star {
+        font-size: 2.5rem;
+        cursor: pointer;
+        color: #e0e0e0;
+        transition: color 0.2s ease, transform 0.2s ease;
+        text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+    }
+    .star-rating .star.full,
+    .star-rating-readonly .star.full {
+        color: #ffcc00;
+        transform: scale(1.1);
+    }
+    .star-rating .star.half,
+    .star-rating-readonly .star.half {
+        background: linear-gradient(90deg, #ffcc00 50%, #e0e0e0 50%);
+        -webkit-background-clip: text;
+        color: transparent;
+    }
+    .star-rating-readonly .star {
+        cursor: default;
+    }
+  
+    /* ========================
+       Modales
+    ============================= */
     .modal {
         position: fixed;
         top: 0;
@@ -208,52 +254,93 @@
         justify-content: center;
         z-index: 1000;
     }
-
     .modal.hidden {
         display: none;
     }
-
     .modal-content {
-        background: var(--card-bg);
+        background: #fff;
         padding: 20px;
         border-radius: 10px;
-        box-shadow: 0px 8px 16px var(--shadow);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.3);
         width: 80%;
         max-width: 400px;
         position: relative;
         text-align: center;
     }
-
-    .modal-close {
+    .modal-close, .close-btn {
         position: absolute;
         top: 10px;
         right: 15px;
         font-size: 28px;
-        color: var(--text);
+        color: #333;
         cursor: pointer;
     }
-
     .modal-actions {
         margin-top: 20px;
     }
-
     .modal-ok {
-        background-color: var(--accent);
-        color: white;
+        background-color: #ff6f61;
+        color: #fff;
         padding: 10px 20px;
         border: none;
         border-radius: 5px;
         cursor: pointer;
         font-size: 1rem;
     }
-
     .modal-ok:hover {
         opacity: 0.9;
     }
-</style>
-
-<!-- Modal de confirmation -->
-<div id="confirmation-modal" class="modal hidden">
+    /* Modal d'erreur */
+    .error-list {
+      color: #dc3545;
+      padding-left: 20px;
+      list-style-type: disc;
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+    .error-list li {
+      margin-bottom: 8px;
+      padding: 5px 0;
+      border-bottom: 1px solid #ddd;
+    }
+  
+    /* ========================
+       Responsive Design
+    ============================= */
+    @media screen and (max-width: 768px) {
+        .product-header {
+            flex-direction: column;
+            align-items: center;
+        }
+        .product-image {
+            width: 100%;
+            height: auto;
+        }
+        .product-infos {
+            align-items: center;
+            text-align: center;
+        }
+        .add-to-cart {
+            justify-content: center;
+        }
+        .product-images {
+            flex-direction: row;
+            gap: 0.5rem;
+            max-height: auto;
+            overflow-x: auto;
+        }
+        .product-images .thumbnail {
+            width: 50px;
+            height: 50px;
+        }
+    }
+  </style>
+  
+  <!-- ========================
+       Modales HTML
+  ============================= -->
+  <!-- Modal de confirmation (ajout au panier) -->
+  <div id="confirmation-modal" class="modal hidden">
     <div class="modal-content">
         <span class="modal-close">&times;</span>
         <h2>Produit ajouté au panier !</h2>
@@ -262,128 +349,248 @@
             <button class="modal-ok">OK</button>
         </div>
     </div>
-</div>
-
-<!-- Modal d'erreur -->
-<div id="error-modal" class="modal hidden">
+  </div>
+  
+  <!-- Modal d'erreur -->
+  <div id="error-modal" class="modal hidden">
     <div class="modal-content">
-        <span class="modal-close">&times;</span>
-        <h2>Erreur</h2>
+        <span class="close-btn">&times;</span>
+        <h2>Erreurs détectées</h2>
         <ul class="error-list"></ul>
         <div class="modal-actions">
             <button class="modal-ok">OK</button>
         </div>
     </div>
-</div>
-
-<div class="product-header">
+  </div>
+  
+  <!-- Modal de confirmation pour suppression d'un avis -->
+  <div id="delete-review-modal" class="modal hidden">
+    <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <h2>Confirmer la suppression</h2>
+        <p>Voulez-vous vraiment supprimer cet avis ?</p>
+        <div class="modal-actions">
+            <button class="modal-ok confirm-delete">Confirmer</button>
+            <button class="modal-ok cancel-delete">Annuler</button>
+        </div>
+    </div>
+  </div>
+  
+  <!-- ========================
+       Contenu Produit
+  ============================= -->
+  <div class="product-header">
     <div class="product-images">
-        <% product.content.url.forEach((imageId, index)=> { %>
+        <% product.content.url.forEach((imageId, index) => { %>
             <img class="thumbnail <%= index === 0 ? 'active' : '' %>"
-                src="http://localhost:3000/api/v1/images?product_id=<%= product.content.id %>&image_id=<%= imageId %>"
-                alt="<%= product.content.name %>" data-index="<%= index %>" />
+                 src="http://localhost:3000/api/v1/images?product_id=<%= product.content.id %>&image_id=<%= imageId %>"
+                 alt="<%= product.content.name %>" data-index="<%= index %>" />
         <% }); %>
     </div>
     <img class="product-image"
-        src="http://localhost:3000/api/v1/images?product_id=<%=product.content.id%>&image_id=<%=product.content.url[0]%>"
-        alt="<%= product.content.name%>" id="main-image" />
+         src="http://localhost:3000/api/v1/images?product_id=<%= product.content.id %>&image_id=<%= product.content.url[0] %>"
+         alt="<%= product.content.name %>" id="main-image" />
     <div class="product-infos">
-        <h1 class="product-name">
-            <%= product.content.name %>
-        </h1>
-        <p class="product-description">
-            <%= product.content.description %>
-        </p>
-        <p class="product-price">
-            <%= product.content.price.toFixed(2) %>€
-        </p>
-
+        <h1 class="product-name"><%= product.content.name %></h1>
+        <p class="product-description"><%= product.content.description %></p>
+        <p class="product-price"><%= product.content.price.toFixed(2) %>€</p>
+  
         <% if (logged) { %>
-            <% if (product.content.colors && product.content.colors.length> 0) { %>
+            <% if (product.content.colors && product.content.colors.length > 0) { %>
                 <label for="product-color">Couleur :</label>
                 <select id="product-color">
-                    <% product.content.colors.forEach(color=> { %>
-                        <option value="<%= color %>">
-                            <%= color %>
-                        </option>
+                    <% product.content.colors.forEach(color => { %>
+                        <option value="<%= color %>"><%= color %></option>
                     <% }); %>
                 </select>
             <% } %>
-
-            <% if (product.content.sizes && product.content.sizes.length> 0) { %>
+  
+            <% if (product.content.sizes && product.content.sizes.length > 0) { %>
                 <label for="product-size">Taille :</label>
                 <select id="product-size">
-                    <% product.content.sizes.forEach(size=> { %>
-                        <option value="<%= size %>">
-                            <%= size %>
-                        </option>
+                    <% product.content.sizes.forEach(size => { %>
+                        <option value="<%= size %>"><%= size %></option>
                     <% }); %>
                 </select>
             <% } %>
-
+  
             <label for="product-quantity">Quantité :</label>
             <input type="number" id="product-quantity" name="quantity" value="1" min="1" />
-
+  
             <button class="add-to-cart" id="product_<%= product.content.id %>"
-                data-product-id="<%= product.content.id %>"
-                data-product-price="<%= product.content.price %>">
+                    data-product-id="<%= product.content.id %>"
+                    data-product-price="<%= product.content.price %>">
                 <ion-icon name="cart-outline"></ion-icon>
                 Ajouter au panier
             </button>
         <% } %>
     </div>
-</div>
-
-<div class="reviews-section">
+  </div>
+  
+  <!-- ========================
+       Section Reviews
+  ============================= -->
+  <div class="reviews-section">
     <h2>Laisser un avis</h2>
     <% if (logged) { %>
         <form class="review-form" action="/api/v1/reviews" method="POST">
             <textarea name="review" id="review" placeholder="Écrivez votre avis ici..." required></textarea>
+            <!-- Sélecteur d'étoiles interactif pour la note -->
+            <div id="star-rating" class="star-rating">
+                <span class="star" data-index="0">&#9733;</span>
+                <span class="star" data-index="1">&#9733;</span>
+                <span class="star" data-index="2">&#9733;</span>
+                <span class="star" data-index="3">&#9733;</span>
+                <span class="star" data-index="4">&#9733;</span>
+            </div>
+            <input type="hidden" name="rating" id="review-rating" value="0">
             <input type="hidden" name="product_id" id="product_id" value="<%= product.content.id %>">
             <button type="submit" class="submit-review">Envoyer</button>
         </form>
     <% } else { %>
         <p>Veuillez vous connecter pour laisser un avis.</p>
     <% } %>
-
+  
     <br>
     <h2>Avis des utilisateurs</h2>
     <div class="reviews-list">
-        <% if (reviews.status===200) { %>
-            <% reviews.content.forEach(review=> { %>
-                <div class="review">
-                    <p class="review-author">Par <%= review.author %>:</p>
-                    <p class="review-content">"<%= review.review %>"</p>
-                    <p class="review-date">
-                        <%= new Date(review.date).toLocaleDateString() %>
-                    </p>
+        <% if (reviews.status === 200) { %>
+            <% reviews.content.forEach(review => { %>
+                <div class="review" data-review-id="<%= review.id %>">
+                    <p class="review-author">Par <%= review.username %>:</p>
+                    <!-- Affichage de la note au-dessus du commentaire -->
+                    <div class="review-rating-display star-rating-readonly" data-rating="<%= review.rating %>"></div>
+                    <% if (logged && profile && review.user_id === profile.id) { %>
+                        <p class="review-content" data-review-text><%= review.review %></p>
+                        <div class="review-actions">
+                            <button class="edit-review">Modifier</button>
+                            <button class="delete-review">Supprimer</button>
+                        </div>
+                        <div class="edit-review-form" style="display: none;">
+                            <input type="text" class="edit-review-text" value="<%= review.review %>" />
+                            <div class="edit-star-rating star-rating">
+                                <span class="star" data-index="0">&#9733;</span>
+                                <span class="star" data-index="1">&#9733;</span>
+                                <span class="star" data-index="2">&#9733;</span>
+                                <span class="star" data-index="3">&#9733;</span>
+                                <span class="star" data-index="4">&#9733;</span>
+                            </div>
+                            <input type="hidden" class="edit-review-rating" value="<%= review.rating %>">
+                            <button class="save-review">Enregistrer</button>
+                            <button class="cancel-edit">Annuler</button>
+                        </div>
+                    <% } else { %>
+                        <p class="review-content">"<%= review.review %>"</p>
+                    <% } %>
+                    <% if (logged && profile && review.user_id !== profile.id) { %>
+                        <% if (review.reportedByUsers.indexOf(profile.id) === -1) { %>
+                            <button class="report-review">Signaler</button>
+                        <% } else { %>
+                            <button class="report-review" disabled>Déjà signalé</button>
+                        <% } %>
+                    <% } %>
+                    <p class="review-date"><%= new Date(review.createdAt).toLocaleDateString() %></p>
                 </div>
             <% }); %>
         <% } else { %>
             <p>Aucun avis pour le moment.</p>
         <% } %>
     </div>
-</div>
-
-<script>
+  </div>
+  
+  <script>
+    /*********************
+     * Gestion des images
+     *********************/
     document.addEventListener('DOMContentLoaded', () => {
         const thumbnails = document.querySelectorAll('.thumbnail');
         const mainImage = document.getElementById('main-image');
-
-        thumbnails.forEach((thumbnail) => {
+        thumbnails.forEach(thumbnail => {
             thumbnail.addEventListener('click', () => {
-                // Remove active class from all thumbnails
                 thumbnails.forEach(thumb => thumb.classList.remove('active'));
-
-                // Add active class to the clicked thumbnail
                 thumbnail.classList.add('active');
-
-                // Update the main image source
                 mainImage.src = thumbnail.src;
             });
         });
     });
-
+  
+    /*********************
+     * Fonction de gestion du Star Rating interactif
+     *********************/
+    function setupStarRating(container, hiddenInput, initialRating = 0) {
+        const stars = container.querySelectorAll('.star');
+        let currentRating = initialRating;
+        updateStars(currentRating);
+        function updateStars(rating) {
+            stars.forEach((star, index) => {
+                const starValue = index + 1;
+                if (rating >= starValue) {
+                    star.classList.remove('half');
+                    star.classList.add('full');
+                } else if (rating >= starValue - 0.5) {
+                    star.classList.remove('full');
+                    star.classList.add('half');
+                } else {
+                    star.classList.remove('full', 'half');
+                }
+            });
+        }
+        stars.forEach((star, index) => {
+            star.addEventListener('mousemove', (e) => {
+                const rect = star.getBoundingClientRect();
+                const offsetX = e.clientX - rect.left;
+                const starWidth = rect.width;
+                const rating = index + (offsetX < starWidth / 2 ? 0.5 : 1);
+                updateStars(rating);
+            });
+            star.addEventListener('click', (e) => {
+                const rect = star.getBoundingClientRect();
+                const offsetX = e.clientX - rect.left;
+                const starWidth = rect.width;
+                currentRating = index + (offsetX < starWidth / 2 ? 0.5 : 1);
+                hiddenInput.value = currentRating;
+            });
+        });
+        container.addEventListener('mouseleave', () => {
+            updateStars(currentRating);
+        });
+    }
+  
+    /*********************
+     * Initialisation du star rating pour le formulaire d'avis
+     *********************/
+    document.addEventListener('DOMContentLoaded', () => {
+        const reviewStarContainer = document.getElementById('star-rating');
+        const reviewRatingInput = document.getElementById('review-rating');
+        setupStarRating(reviewStarContainer, reviewRatingInput);
+    });
+  
+    /*********************
+     * Génération des étoiles en lecture seule
+     *********************/
+    function generateReadonlyStars(rating) {
+        let html = '';
+        for (let i = 0; i < 5; i++) {
+            if (rating >= i + 1) {
+                html += '<span class="star full">&#9733;</span>';
+            } else if (rating >= i + 0.5) {
+                html += '<span class="star half">&#9733;</span>';
+            } else {
+                html += '<span class="star">&#9733;</span>';
+            }
+        }
+        return html;
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.star-rating-readonly').forEach(container => {
+            const rating = parseFloat(container.getAttribute('data-rating'));
+            container.innerHTML = generateReadonlyStars(rating);
+        });
+    });
+  
+    /*********************
+     * Création d'un avis
+     *********************/
     async function createReview_request(review, rating, product_id) {
         const formData = new FormData();
         formData.append('review', review);
@@ -394,31 +601,62 @@
             credentials: 'include',
             body: formData,
         });
-        const data = await response.json();
-        return data;
+        return await response.json();
     }
-
-    document.addEventListener("DOMContentLoaded", async () => {
+    document.addEventListener("DOMContentLoaded", () => {
         const review_form = document.querySelector(".review-form");
-
-        await review_form.addEventListener("submit", async event => {
+        review_form.addEventListener("submit", async event => {
             event.preventDefault();
-
             const review_content = review_form.querySelector("#review").value;
-            const product_id = review_form.querySelector("#product_id").getAttribute("value");
-
-            const created_review = await createReview_request(review_content, 5, product_id);
-
-            console.log(created_review)
-
+            const product_id = review_form.querySelector("#product_id").value;
+            const rating = review_form.querySelector("#review-rating").value || 0;
+            const created_review = await createReview_request(review_content, rating, product_id);
             if (created_review.status === 201) {
                 setTimeout(() => window.location.reload(), 200);
             } else {
-                alert("Une erreur s'est produite.")
+                showErrorModal(created_review.content || ['Erreur lors de la création de l\'avis']);
             }
-        })
+        });
     });
-
+  
+    /*********************
+     * Modification et suppression d'un avis
+     *********************/
+    async function modifyReview_request(review, rating, id) {
+        const formData = new FormData();
+        formData.append('review', review);
+        formData.append('rating', rating);
+        const response = await fetch(`http://localhost:3000/api/v1/reviews/modify/${id}`, {
+            method: 'PATCH',
+            credentials: 'include',
+            body: formData,
+        });
+        return await response.json();
+    }
+    async function deleteReview_request(id) {
+        const response = await fetch(`http://localhost:3000/api/v1/reviews/delete/${id}`, {
+            method: 'DELETE',
+            credentials: 'include'
+        });
+        return await response.json();
+    }
+  
+    /*********************
+     * Report d'un avis
+     *********************/
+    async function reportReview_request(id) {
+        const formData = new FormData();
+        const response = await fetch(`http://localhost:3000/api/v1/reviews/report/${id}`, {
+            method: 'POST',
+            credentials: 'include',
+            body: formData,
+        });
+        return await response.json();
+    }
+  
+    /*********************
+     * Ajout au panier
+     *********************/
     async function addToCart_request(product_id, color, size, quantity) {
         const formData = new FormData();
         formData.append('product_id', product_id);
@@ -432,58 +670,169 @@
         });
         return await response.json();
     }
-
-    // Gestion générique des modales
+  
+    /*********************
+     * Gestion des modales (confirmation et erreurs)
+     *********************/
     function setupModal(modalId) {
         const modal = document.getElementById(modalId);
-        const closeElements = modal.querySelectorAll('.modal-close, .modal-ok');
-
+        const closeElements = modal.querySelectorAll('.modal-close, .modal-ok, .close-btn');
         closeElements.forEach(element => {
             element.addEventListener('click', () => {
                 modal.classList.add('hidden');
             });
         });
-
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
                 modal.classList.add('hidden');
             }
         });
     }
-
-    // Initialisation des modales
     document.addEventListener('DOMContentLoaded', () => {
         setupModal('confirmation-modal');
         setupModal('error-modal');
+        setupModal('delete-review-modal');
     });
-
-    // Modification de la fonction addToCart
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", () => {
         const addToCartButtons = document.querySelectorAll(".add-to-cart");
-
         addToCartButtons.forEach(button => {
             button.addEventListener("click", async function () {
                 const productId = this.dataset.productId;
                 const color = document.getElementById("product-color")?.value || "";
                 const size = document.getElementById("product-size")?.value || "";
                 const quantity = document.getElementById("product-quantity").value || 1;
-
                 try {
                     const response = await addToCart_request(productId, color, size, quantity);
-
                     if (response.status === 200) {
                         document.getElementById('confirmation-modal').classList.remove('hidden');
                     } else {
-                        const errorList = document.querySelector('#error-modal .error-list');
-                        errorList.innerHTML = `<li>${response.content || 'Erreur lors de l\'ajout au panier'}</li>`;
-                        document.getElementById('error-modal').classList.remove('hidden');
+                        showErrorModal([response.content || 'Erreur lors de l\'ajout au panier']);
                     }
                 } catch (error) {
-                    const errorList = document.querySelector('#error-modal .error-list');
-                    errorList.innerHTML = '<li>Erreur de connexion au serveur</li>';
-                    document.getElementById('error-modal').classList.remove('hidden');
+                    showErrorModal(['Erreur de connexion au serveur']);
                 }
             });
         });
     });
-</script>
+  
+    /*********************
+     * Gestion de la modification/suppression et report des avis
+     *********************/
+    document.addEventListener('DOMContentLoaded', () => {
+        // Modification d'avis
+        document.querySelectorAll('.edit-review').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const reviewElement = e.target.closest('.review');
+                reviewElement.querySelector('.review-content').style.display = 'none';
+                reviewElement.querySelector('.review-actions').style.display = 'none';
+                const editForm = reviewElement.querySelector('.edit-review-form');
+                editForm.style.display = 'block';
+                const editStarContainer = editForm.querySelector('.edit-star-rating');
+                const editRatingInput = editForm.querySelector('.edit-review-rating');
+                setupStarRating(editStarContainer, editRatingInput, parseFloat(editRatingInput.value));
+            });
+        });
+        // Annuler édition
+        document.querySelectorAll('.cancel-edit').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const reviewElement = e.target.closest('.review');
+                reviewElement.querySelector('.edit-review-form').style.display = 'none';
+                reviewElement.querySelector('.review-content').style.display = 'block';
+                reviewElement.querySelector('.review-actions').style.display = 'block';
+            });
+        });
+        // Sauvegarder édition
+        document.querySelectorAll('.save-review').forEach(button => {
+            button.addEventListener('click', async (e) => {
+                const reviewElement = e.target.closest('.review');
+                const reviewId = reviewElement.getAttribute('data-review-id');
+                const newReview = reviewElement.querySelector('.edit-review-text').value;
+                const newRating = reviewElement.querySelector('.edit-review-rating').value;
+                const modified = await modifyReview_request(newReview, newRating, reviewId);
+                if (modified.status === 200) {
+                    reviewElement.querySelector('[data-review-text]').textContent = newReview;
+                    reviewElement.querySelector('.edit-review-form').style.display = 'none';
+                    reviewElement.querySelector('.review-content').style.display = 'block';
+                    reviewElement.querySelector('.review-actions').style.display = 'block';
+                    // Mise à jour du star rating en lecture seule
+                    const ratingDisplay = reviewElement.querySelector('.review-rating-display');
+                    ratingDisplay.setAttribute('data-rating', newRating);
+                    ratingDisplay.innerHTML = generateReadonlyStars(parseFloat(newRating));
+                } else {
+                    showErrorModal([modified.content || 'Erreur lors de la modification de l\'avis']);
+                }
+            });
+        });
+        // Suppression d'avis
+        let reviewToDelete = null;
+        document.querySelectorAll('.delete-review').forEach(button => {
+            button.addEventListener('click', (e) => {
+                reviewToDelete = e.target.closest('.review');
+                document.getElementById('delete-review-modal').classList.remove('hidden');
+            });
+        });
+        document.querySelector('#delete-review-modal .confirm-delete').addEventListener('click', async () => {
+            if (reviewToDelete) {
+                const reviewId = reviewToDelete.getAttribute('data-review-id');
+                const deleted = await deleteReview_request(reviewId);
+                if (deleted.status === 200) {
+                    reviewToDelete.remove();
+                } else {
+                    showErrorModal([deleted.content || 'Erreur lors de la suppression de l\'avis']);
+                }
+                document.getElementById('delete-review-modal').classList.add('hidden');
+                reviewToDelete = null;
+            }
+        });
+        document.querySelector('#delete-review-modal .cancel-delete').addEventListener('click', () => {
+            document.getElementById('delete-review-modal').classList.add('hidden');
+            reviewToDelete = null;
+        });
+        // Report d'avis
+        document.querySelectorAll('.report-review').forEach(button => {
+            button.addEventListener('click', async (e) => {
+                const reviewElement = e.target.closest('.review');
+                const reviewId = reviewElement.getAttribute('data-review-id');
+                const reported = await reportReview_request(reviewId);
+                if (reported.status === 200) {
+                    button.disabled = true;
+                    button.textContent = "Déjà signalé";
+                } else {
+                    showErrorModal([reported.content || 'Erreur lors du signalement de l\'avis']);
+                }
+            });
+        });
+    });
+  
+    /*********************
+     * Gestion des erreurs via modal
+     *********************/
+    let errorMessages = {};
+    async function fetchErrorMessages() {
+        try {
+            const response = await fetch('http://localhost:3000/api/v1/errors');
+            if (response.ok) {
+                errorMessages = await response.json();
+            }
+        } catch (error) {
+            console.error('Erreur lors de la récupération des messages d\'erreur:', error);
+        }
+    }
+    function showErrorModal(errors) {
+        const modal = document.getElementById('error-modal');
+        const errorList = modal.querySelector('.error-list');
+        errorList.innerHTML = '';
+        errors.forEach(error => {
+            const li = document.createElement('li');
+            let message = error;
+            if (typeof error === 'number') {
+                message = errorMessages[error] || `Erreur inconnue (code ${error})`;
+            }
+            li.textContent = message;
+            errorList.appendChild(li);
+        });
+        modal.classList.remove('hidden');
+    }
+    document.addEventListener('DOMContentLoaded', fetchErrorMessages);
+  </script>
+  
