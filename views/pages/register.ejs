@@ -184,6 +184,20 @@
         padding: 1rem;
         border-radius: 4px;
     }
+
+    .auth-form select {
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid var(--border);
+        border-radius: 5px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+    }
+
+    .auth-form select:focus {
+        outline: none;
+        border-color: var(--accent);
+    }
 </style>
 
 <div class="auth-content">
@@ -208,12 +222,40 @@
             </div>
             <div class="form-group">
                 <label for="level">Niveau</label>
-                <input type="text" id="level" placeholder="Première" required autocomplete="organization-title" />
+                <select id="level" required autocomplete="off" values='<%= classesMap %>'>
+                    <% classes.content.forEach(([name, amount])=> { %>
+                        <option value="<%= name %>" amount="<%= amount %>">
+                            <%= name %>
+                        </option>
+                        <% }) %>
+                </select>
             </div>
+
             <div class="form-group">
                 <label for="classe">Classe</label>
-                <input type="number" id="classe" placeholder="1e G2" required autocomplete="off" />
+                <select id="classe" required autocomplete="off">
+                    <% for( let index = 1; index <= classes.content[0][1]; index++ ) { %>
+                        <option value="<%= index %>">
+                            <%= index %>
+                        </option>
+                        <% } %>
+                </select>
             </div>
+
+            <script>
+                document.getElementById("level").addEventListener("change", (element) => {
+                    const selector = document.getElementById("classe");
+                    selector.innerHTML = ``;
+                    const classesMap = JSON.parse(element.srcElement.getAttribute("values"));
+                    for (let index = 1; index <= classesMap[element.srcElement.value]; index++) {
+                        const option = document.createElement("option");
+                        option.setAttribute("value", index);
+                        option.textContent = index;
+                        selector.appendChild(option)
+                    }
+                });
+            </script>
+
             <div class="form-group">
                 <label for="password">Mot de passe</label>
                 <div class="password-input">
@@ -226,7 +268,8 @@
             </div>
             <div>
                 <input type="checkbox" required>
-                Avant l'inscription, vous devez lire la <a href="/charte-du-site" style="color: var(--accent);">Charte du site</a> et l'accepter
+                Avant l'inscription, vous devez lire la <a href="/charte-du-site" style="color: var(--accent);">Charte
+                    du site</a> et l'accepter
             </div>
             <button type="submit" class="submit-btn">S'inscrire</button>
             <div class="register-error" hidden></div>

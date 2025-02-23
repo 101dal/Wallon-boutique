@@ -131,8 +131,22 @@ app.get("/login", (req, res) => {
     res.render("pages/login", { active: "login", container: "auth" })
 });
 
-app.get("/register", (req, res) => {
-    res.render("pages/register", { active: false, container: "auth" })
+app.get("/register", async (req, res) => {
+    const request = await fetch(`${API_URL}/api/v1/users/classes`, {
+        method: 'GET',
+    });
+    const classes = await request.json();
+    console.log(classes);
+
+    let classesMap = {};
+
+    classes.content.forEach(([name, amount]) => {
+        classesMap[name] = amount;
+    });
+
+    classesMap = JSON.stringify(classesMap);
+
+    res.render("pages/register", { active: false, container: "auth", classes, classesMap })
 });
 
 app.get("/profile", async (req, res) => {
