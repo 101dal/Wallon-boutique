@@ -145,7 +145,7 @@
         async function createSupportMessage_request(message) {
             const formData = new FormData();
             formData.append('message', message);
-            const response = await fetch(`http://localhost:3000/api/v1/supports/create`, {
+            const response = await fetch(`<%= API_URL %>/api/v1/supports/create`, {
                 method: 'POST',
                 credentials: 'include',
                 body: formData,

@@ -16,6 +16,7 @@
     "http-proxy-middleware": "^3.0.3"
   },
   "scripts": {
+    "main": "bun run index.js",
     "dev": "bun --watch index.js"
   }
 }

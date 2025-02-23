@@ -15,10 +15,12 @@ app.use(expressLayouts);
 app.set("layout", "./components/layout");
 app.use(cookieParser());
 
+const API_URL = Bun.env.API_URL;
+
 
 // Checks if the user is logged in for each request to the pages
 app.use(async (req, res, next) => {
-    const response = await fetch(`http://localhost:3000/api/v1/users/me`, {
+    const response = await fetch(`${API_URL}/api/v1/users/me`, {
         method: 'GET',
         credentials: 'include',
         headers: { 'Cookie': `token_cookie=${req.cookies.token_cookie}` }
@@ -29,6 +31,7 @@ app.use(async (req, res, next) => {
     res.locals.logged = data.status === 200;
     res.locals.profile = data.content;
     res.locals.numberOfProducts = data.content.cart_amount || 0;
+    res.locals.API_URL = API_URL;
 
     next();
 })
@@ -43,7 +46,7 @@ app.get("/", async (req, res) => {
 
     try {
         // Appel à l'API pour récupérer tous les produits
-        const response = await fetch("http://localhost:3000/api/v1/products", {
+        const response = await fetch(`${API_URL}/api/v1/products`, {
             method: 'GET',
         });
         const data = await response.json();
@@ -75,11 +78,11 @@ app.use("/database", createProductsRouter);
 
 app.get("/products", async (req, res) => {
     // Récupère les produits
-    const productsResponse = await fetch(`http://localhost:3000/api/v1/products`);
+    const productsResponse = await fetch(`${API_URL}/api/v1/products`);
     const products = await productsResponse.json();
 
     // Récupère tous les types
-    const typesResponse = await fetch(`http://localhost:3000/api/v1/products/types`);
+    const typesResponse = await fetch(`${API_URL}/api/v1/products/types`);
     const typesData = await typesResponse.json();
 
     let filteredTypes = [];
@@ -101,7 +104,7 @@ app.get("/products", async (req, res) => {
 });
 
 app.get("/products/:id", async (req, res) => {
-    let response = await fetch(`http://localhost:3000/api/v1/products/get/${req.params.id}`, {
+    let response = await fetch(`${API_URL}/api/v1/products/get/${req.params.id}`, {
         method: 'GET'
     });
     const product = await response.json();
@@ -110,7 +113,7 @@ app.get("/products/:id", async (req, res) => {
         res.redirect("/products");
     }
 
-    response = await fetch(`http://localhost:3000/api/v1/reviews/product/${req.params.id}`, {
+    response = await fetch(`${API_URL}/api/v1/reviews/product/${req.params.id}`, {
         method: 'GET',
     });
     const reviews = await response.json();
@@ -141,7 +144,7 @@ app.get("/profile", async (req, res) => {
 
     // Get the user's orders
     let response;
-    response = await fetch(`http://localhost:3000/api/v1/orders/history`, {
+    response = await fetch(`${API_URL}/api/v1/orders/history`, {
         method: 'GET',
         headers: { 'Cookie': `token_cookie=${req.cookies.token_cookie}` }
     });
@@ -156,7 +159,7 @@ app.get("/panier", async (req, res) => {
     }
 
     // Get the user's carts
-    let response = await fetch(`http://localhost:3000/api/v1/carts/get`, {
+    let response = await fetch(`${API_URL}/api/v1/carts/get`, {
         method: 'GET',
         headers: { 'Cookie': `token_cookie=${req.cookies.token_cookie}` }
     });
@@ -175,7 +178,7 @@ app.get("/dashboard", async (req, res) => {
         res.render("pages/dashboard/dashboard-admin", { active: "dashboard-admin", container: "dashboard" });
     } else if (res.locals.profile.role === "EMPLOYEE") {
         // Get a list of all the products
-        const response = await fetch(`http://localhost:3000/api/v1/orders/all`, {
+        const response = await fetch(`${API_URL}/api/v1/orders/all`, {
             method: 'GET',
             headers: { 'Cookie': `token_cookie=${req.cookies.token_cookie}` }
         });
@@ -199,7 +202,7 @@ app.get("/dashboard/:type", async (req, res) => {
 
     if (req.params.type === "products") {
         // Get a list of all the products
-        const response = await fetch(`http://localhost:3000/api/v1/products`, {
+        const response = await fetch(`${API_URL}/api/v1/products`, {
             method: 'GET',
         });
         const products = await response.json();
@@ -223,7 +226,7 @@ app.get("/dashboard/:type", async (req, res) => {
 
     if (req.params.type === "users") {
         // Get a list of all the products
-        const response = await fetch(`http://localhost:3000/api/v1/users/all`, {
+        const response = await fetch(`${API_URL}/api/v1/users/all`, {
             method: 'GET',
             headers: { 'Cookie': `token_cookie=${req.cookies.token_cookie}` }
         });
@@ -234,7 +237,7 @@ app.get("/dashboard/:type", async (req, res) => {
 
     if (req.params.type === "orders") {
         // Get a list of all the products
-        const response = await fetch(`http://localhost:3000/api/v1/orders/all`, {
+        const response = await fetch(`${API_URL}/api/v1/orders/all`, {
             method: 'GET',
             headers: { 'Cookie': `token_cookie=${req.cookies.token_cookie}` }
         });
@@ -245,7 +248,7 @@ app.get("/dashboard/:type", async (req, res) => {
 
     if (req.params.type === "carts") {
         // Get a list of all the products
-        const response = await fetch(`http://localhost:3000/api/v1/carts/all`, {
+        const response = await fetch(`${API_URL}/api/v1/carts/all`, {
             method: 'GET',
             headers: { 'Cookie': `token_cookie=${req.cookies.token_cookie}` }
         });
@@ -256,13 +259,17 @@ app.get("/dashboard/:type", async (req, res) => {
 
     if (req.params.type === "reviews") {
         // Get a list of all the products
-        const response = await fetch(`http://localhost:3000/api/v1/reviews/all`, {
+        const response = await fetch(`${API_URL}/api/v1/reviews/all`, {
             method: 'GET',
             headers: { 'Cookie': `token_cookie=${req.cookies.token_cookie}` }
         });
         const reviews = await response.json();
 
         res.render("pages/dashboard/dashboard-reviews", { active: "dashboard-admin", container: "reviews", reviews });
+    }
+
+    if (req.params.type === "supports") {
+        res.render("pages/dashboard/dashboard-supports", { active: "dashboard-admin", container: "supports" });
     }
 });
 

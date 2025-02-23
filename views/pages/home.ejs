@@ -441,21 +441,26 @@
                 <div class="best-sellers">
                     <h2>Nos best sellers</h2>
                     <div class="products">
-                        <% if (bestSellers && bestSellers.length > 0) { %>
-                            <% bestSellers.forEach((product) => { %>
+                        <% if (bestSellers && bestSellers.length> 0) { %>
+                            <% bestSellers.forEach((product)=> { %>
                                 <div class="product">
                                     <!-- Ici, nous utilisons une image statique.
                                          Vous pouvez adapter la logique pour utiliser le endpoint d'image si nécessaire -->
-                                    <img src="http://localhost:3000/api/v1/images?product_id=<%= product.id %>&image_id=<%= product.url[0] %>" alt="<%= product.name %>" />
+                                    <img src="<%= API_URL %>/api/v1/images?product_id=<%= product.id %>&image_id=<%= product.url[0] %>"
+                                        alt="<%= product.name %>" />
                                     <div class="product-info">
-                                        <h3><%= product.name %></h3>
-                                        <p><%= product.price %>€</p>
+                                        <h3>
+                                            <%= product.name %>
+                                        </h3>
+                                        <p>
+                                            <%= product.price %>€
+                                        </p>
                                     </div>
                                 </div>
-                            <% }); %>
-                        <% } else { %>
-                            <p>Aucun produit vendu pour le moment.</p>
-                        <% } %>
+                                <% }); %>
+                                    <% } else { %>
+                                        <p>Aucun produit vendu pour le moment.</p>
+                                        <% } %>
                     </div>
                 </div>
 

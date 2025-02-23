@@ -345,6 +345,34 @@
     }
 </style>
 
+<style>
+    .dashboard-section {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .dashboard-btn button {
+        background: var(--accent);
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+
+    .dashboard-btn button:hover {
+        background: darken(var(--accent), 10%);
+    }
+</style>
+<section class="dashboard-section">
+    <a href="/dashboard" class="dashboard-btn">
+        <button style="padding:10px; margin: 5px;">Dashboard</button>
+    </a>
+</section>
+
 <!-- Formulaire d'ajout de commande -->
 <section class="add-order">
     <h2>
@@ -455,7 +483,7 @@
     // Récupérer les messages d'erreur depuis l'API
     async function fetchErrorMessages() {
         try {
-            const response = await fetch('http://localhost:3000/api/v1/errors');
+            const response = await fetch('<%= API_URL %>/api/v1/errors');
             if (response.ok) {
                 errorMessages = await response.json();
             }
@@ -499,7 +527,7 @@
 
     // Fonction pour récupérer la liste des commandes
     async function getOrders_request() {
-        const response = await fetch("http://localhost:3000/api/v1/orders/user/:id", {
+        const response = await fetch("<%= API_URL %>/api/v1/orders/user/:id", {
             method: "POST",
             credentials: "include",
         });
@@ -565,7 +593,7 @@
     async function createOrder_request(userId, status) {
         const formData = new FormData();
         formData.append("status", status)
-        const response = await fetch(`http://localhost:3000/api/v1/orders/create/user/${userId}`, {
+        const response = await fetch(`<%= API_URL %>/api/v1/orders/create/user/${userId}`, {
             method: 'POST',
             credentials: 'include',
             body: formData
@@ -677,7 +705,7 @@
             formData.append("status", status);
             formData.append("user_id", userId);
 
-            const response = await fetch(`http://localhost:3000/api/v1/orders/update/${id}`, {
+            const response = await fetch(`<%= API_URL %>/api/v1/orders/update/${id}`, {
                 method: "PATCH",
                 credentials: "include",
                 body: formData
@@ -686,7 +714,7 @@
         }
 
         async function deleteOrder_request(id) {
-            const response = await fetch(`http://localhost:3000/api/v1/orders/delete/${id}`, {
+            const response = await fetch(`<%= API_URL %>/api/v1/orders/delete/${id}`, {
                 method: "DELETE",
                 credentials: "include",
             });

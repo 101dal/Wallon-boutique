@@ -15,7 +15,7 @@ async function createProduct_request(TOKEN_COOKIE, { name, description, colors, 
     for (const fileItem of imagesFiles) {
         formData.append('images', fileItem);
     }
-    const response = await fetch(`http://localhost:3000/api/v1/products/create`, {
+    const response = await fetch(`${Bun.env.API_URL}/api/v1/products/create`, {
         method: 'POST',
         credentials: 'include',
         body: formData,

@@ -433,12 +433,12 @@
         <div class="product-images">
             <% product.content.url.forEach((imageId, index)=> { %>
                 <img class="thumbnail <%= index === 0 ? 'active' : '' %>"
-                    src="http://localhost:3000/api/v1/images?product_id=<%= product.content.id %>&image_id=<%= imageId %>"
+                    src="<%= API_URL %>/api/v1/images?product_id=<%= product.content.id %>&image_id=<%= imageId %>"
                     alt="<%= product.content.name %>" data-index="<%= index %>" />
                 <% }); %>
         </div>
         <img class="product-image"
-            src="http://localhost:3000/api/v1/images?product_id=<%= product.content.id %>&image_id=<%= product.content.url[0] %>"
+            src="<%= API_URL %>/api/v1/images?product_id=<%= product.content.id %>&image_id=<%= product.content.url[0] %>"
             alt="<%= product.content.name %>" id="main-image" />
     </div>
 
@@ -670,7 +670,7 @@
         formData.append('review', review);
         formData.append('rating', rating);
         formData.append('product_id', product_id);
-        const response = await fetch(`http://localhost:3000/api/v1/reviews/create`, {
+        const response = await fetch(`<%= API_URL %>/api/v1/reviews/create`, {
             method: 'POST',
             credentials: 'include',
             body: formData,
@@ -700,7 +700,7 @@
         const formData = new FormData();
         formData.append('review', review);
         formData.append('rating', rating);
-        const response = await fetch(`http://localhost:3000/api/v1/reviews/modify/${id}`, {
+        const response = await fetch(`<%= API_URL %>/api/v1/reviews/modify/${id}`, {
             method: 'PATCH',
             credentials: 'include',
             body: formData,
@@ -708,7 +708,7 @@
         return await response.json();
     }
     async function deleteReview_request(id) {
-        const response = await fetch(`http://localhost:3000/api/v1/reviews/delete/${id}`, {
+        const response = await fetch(`<%= API_URL %>/api/v1/reviews/delete/${id}`, {
             method: 'DELETE',
             credentials: 'include'
         });
@@ -720,7 +720,7 @@
      *********************/
     async function reportReview_request(id) {
         const formData = new FormData();
-        const response = await fetch(`http://localhost:3000/api/v1/reviews/report/${id}`, {
+        const response = await fetch(`<%= API_URL %>/api/v1/reviews/report/${id}`, {
             method: 'POST',
             credentials: 'include',
             body: formData,
@@ -737,7 +737,7 @@
         formData.append('color', color);
         formData.append('size', size);
         formData.append('quantity', quantity);
-        const response = await fetch(`http://localhost:3000/api/v1/carts/add`, {
+        const response = await fetch(`<%= API_URL %>/api/v1/carts/add`, {
             method: 'POST',
             credentials: 'include',
             body: formData,
@@ -890,7 +890,7 @@
     let errorMessages = {};
     async function fetchErrorMessages() {
         try {
-            const response = await fetch('http://localhost:3000/api/v1/errors');
+            const response = await fetch('<%= API_URL %>/api/v1/errors');
             if (response.ok) {
                 errorMessages = await response.json();
             }

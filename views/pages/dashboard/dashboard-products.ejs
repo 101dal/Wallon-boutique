@@ -398,6 +398,34 @@
     }
 </style>
 
+<style>
+    .dashboard-section {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .dashboard-btn button {
+        background: var(--accent);
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+
+    .dashboard-btn button:hover {
+        background: darken(var(--accent), 10%);
+    }
+</style>
+<section class="dashboard-section">
+    <a href="/dashboard" class="dashboard-btn">
+        <button style="padding:10px; margin: 5px;">Dashboard</button>
+    </a>
+</section>
+
 <!-- Formulaire d'ajout de produit -->
 <section class="add-product">
     <h2>
@@ -595,7 +623,7 @@
     // Récupérer les messages d'erreur depuis l'API
     async function fetchErrorMessages() {
         try {
-            const response = await fetch('http://localhost:3000/api/v1/errors');
+            const response = await fetch('<%= API_URL %>/api/v1/errors');
             if (response.ok) {
                 errorMessages = await response.json();
             }
@@ -639,7 +667,7 @@
 
     // Fonction pour récupérer la liste des types existants
     async function getProductTypes_request() {
-        const response = await fetch("http://localhost:3000/api/v1/products/types", {
+        const response = await fetch("<%= API_URL %>/api/v1/products/types", {
             method: "GET",
             credentials: "include",
         });
@@ -753,7 +781,7 @@
             formData.append('images', fileItem);
         }
 
-        const response = await fetch("http://localhost:3000/api/v1/products/create", {
+        const response = await fetch("<%= API_URL %>/api/v1/products/create", {
             method: 'POST',
             credentials: 'include',
             body: formData,
@@ -857,7 +885,7 @@
                 mainDiv.setAttribute("data-image-id", imageId);
 
                 const imgElement = document.createElement("img");
-                imgElement.src = `http://localhost:3000/api/v1/images?product_id=${productId}&image_id=${imageId}`;
+                imgElement.src = `<%= API_URL %>/api/v1/images?product_id=${productId}&image_id=${imageId}`;
                 imgElement.alt = "Product Image";
                 imgElement.dataset.imageId = imageId;
                 imgElement.addEventListener("click", async () => await removeImage(productId, imageId));
@@ -984,7 +1012,7 @@
                 mainDiv.setAttribute("data-image-id", imageId);
 
                 const imgElement = document.createElement("img");
-                imgElement.src = `http://localhost:3000/api/v1/images?product_id=${productId}&image_id=${imageId}`;
+                imgElement.src = `<%= API_URL %>/api/v1/images?product_id=${productId}&image_id=${imageId}`;
                 imgElement.alt = "Product Image";
                 imgElement.dataset.imageId = imageId;
                 imgElement.addEventListener("click", async () => await removeImage(productId, imageId));
@@ -1010,7 +1038,7 @@
             formData.append("inventory", inventory);
             formData.append("type", type);
 
-            const response = await fetch(`http://localhost:3000/api/v1/products/update/${id}`, {
+            const response = await fetch(`<%= API_URL %>/api/v1/products/update/${id}`, {
                 method: "PATCH",
                 credentials: "include",
                 body: formData,
@@ -1019,7 +1047,7 @@
         }
 
         async function deleteProduct_request(id) {
-            const response = await fetch(`http://localhost:3000/api/v1/products/delete/${id}`, {
+            const response = await fetch(`<%= API_URL %>/api/v1/products/delete/${id}`, {
                 method: "DELETE",
                 credentials: "include",
             });
@@ -1031,7 +1059,7 @@
             for (const fileItem of imagesFiles.files) {
                 formData.append("images", fileItem);
             }
-            const response = await fetch(`http://localhost:3000/api/v1/products/add-images/${id}`, {
+            const response = await fetch(`<%= API_URL %>/api/v1/products/add-images/${id}`, {
                 method: "POST",
                 credentials: "include",
                 body: formData,
@@ -1040,7 +1068,7 @@
         }
 
         async function removeImageFromProduct_request(id, imageId) {
-            const response = await fetch(`http://localhost:3000/api/v1/products/remove-image/${id}/${imageId}`, {
+            const response = await fetch(`<%= API_URL %>/api/v1/products/remove-image/${id}/${imageId}`, {
                 method: "DELETE",
                 credentials: "include",
             });

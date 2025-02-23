@@ -1,0 +1,361 @@
+<style>
+    /* Style global */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: var(--background);
+        margin: 0;
+        padding: 0;
+    }
+
+    .support-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+
+    /* Section de la liste des messages */
+    .support-list {
+        background: var(--card-bg);
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px var(--shadow);
+        margin-bottom: 2rem;
+    }
+
+    .support-list h2 {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--accent);
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid var(--accent);
+        padding-bottom: 0.5rem;
+    }
+
+    /* Chaque message du support */
+    .support-item {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        border: 1px solid var(--border);
+        padding: 15px;
+        border-radius: 10px;
+        background-color: var(--card-bg);
+        box-shadow: 0 2px 4px var(--shadow);
+        margin-bottom: 15px;
+    }
+
+    .support-info {
+        flex: 1 1 auto;
+    }
+
+    .support-info label {
+        display: block;
+        font-size: 1rem;
+        color: var(--text);
+        margin-bottom: 5px;
+    }
+
+    .support-info .username {
+        font-weight: bold;
+    }
+
+    .support-info .message {
+        margin: 10px 0;
+    }
+
+    /* Actions sur les messages */
+    .support-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    button {
+        border: none;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: all 0.3s;
+    }
+
+    button.delete-support {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+    button:hover {
+        opacity: 0.9;
+    }
+
+    /* Modal pour les erreurs */
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    .modal.hidden {
+        display: none;
+    }
+
+    .modal-content {
+        background: var(--card-bg);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 8px 16px var(--shadow);
+        width: 80%;
+        max-width: 600px;
+        position: relative;
+    }
+
+    .modal-content h2 {
+        margin-bottom: 20px;
+        color: var(--accent);
+    }
+
+    .modal-content .error-list {
+        color: #dc3545;
+        padding-left: 20px;
+        list-style-type: disc;
+        max-height: 60vh;
+        overflow-y: auto;
+    }
+
+    .modal-content .error-list li {
+        margin-bottom: 8px;
+        padding: 5px 0;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 28px;
+        color: var(--text);
+        cursor: pointer;
+    }
+</style>
+
+<style>
+    .dashboard-section {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .dashboard-btn button {
+        background: var(--accent);
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+
+    .dashboard-btn button:hover {
+        background: darken(var(--accent), 10%);
+    }
+</style>
+<section class="dashboard-section">
+    <a href="/dashboard" class="dashboard-btn">
+        <button style="padding:10px; margin: 5px;">Dashboard</button>
+    </a>
+</section>
+
+<div class="support-container">
+    <!-- Liste des messages du support -->
+    <section class="support-list">
+        <h2>
+            <ion-icon name="mail-outline"></ion-icon> Messages du support
+        </h2>
+        <div id="support-messages">
+            <!-- Les messages seront insérés ici via JavaScript -->
+        </div>
+    </section>
+</div>
+
+<!-- Modal pour les erreurs -->
+<div id="error-modal" class="modal hidden">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Erreurs détectées</h2>
+        <ul class="error-list"></ul>
+    </div>
+</div>
+
+<script>
+    // Variable globale pour stocker les messages d'erreur
+    let errorMessages = {};
+
+    // Récupérer les messages d'erreur depuis l'API
+    async function fetchErrorMessages() {
+        try {
+            const response = await fetch('<%= API_URL %>/api/v1/errors');
+            if (response.ok) {
+                errorMessages = await response.json();
+            }
+        } catch (error) {
+            console.error("Erreur lors de la récupération des messages d'erreur :", error);
+        }
+    }
+
+    // Fonction d'affichage des erreurs
+    function showErrorModal(errors) {
+        const modal = document.getElementById('error-modal');
+        const errorList = modal.querySelector('.error-list');
+        errorList.innerHTML = '';
+
+        errors.forEach(error => {
+            const li = document.createElement('li');
+            let message = error;
+            if (typeof error === 'number') {
+                message = errorMessages[error] || `Erreur inconnue (code ${error})`;
+            }
+            li.textContent = message;
+            errorList.appendChild(li);
+        });
+
+        modal.classList.remove('hidden');
+    }
+
+    // Gestion de la fermeture du modal
+    document.querySelectorAll('#error-modal .close-btn, #error-modal').forEach(el => {
+        el.addEventListener('click', (e) => {
+            if (e.target === el || e.target.classList.contains('close-btn')) {
+                document.getElementById('error-modal').classList.add('hidden');
+            }
+        });
+    });
+
+    // Fonction pour récupérer les messages du support
+    async function getSupportMessages() {
+        try {
+            const response = await fetch("<%= API_URL %>/api/v1/supports/all", {
+                method: "GET",
+                credentials: "include",
+            });
+            return await response.json();
+        } catch (error) {
+            console.error("Erreur lors de la récupération des messages du support :", error);
+            return { status: 500, content: [] };
+        }
+    }
+
+    // Fonction pour récupérer les infos de l'utilisateur (username) via son ID
+    async function getUserInfo(userId) {
+        try {
+            const response = await fetch(`<%= API_URL %>/api/v1/users/infos/${userId}`, {
+                method: "GET",
+                credentials: "include",
+            });
+            const data = await response.json();
+            if (data.status === 200) {
+                return data.content.username;
+            }
+        } catch (error) {
+            console.error("Erreur lors de la récupération des infos utilisateur :", error);
+        }
+        return "Utilisateur inconnu";
+    }
+
+    // Fonction pour supprimer un message du support
+    async function deleteSupportMessage(messageId) {
+        try {
+            const response = await fetch(`<%= API_URL %>/api/v1/supports/delete/${messageId}`, {
+                method: "DELETE",
+                credentials: "include",
+            });
+            return await response.json();
+        } catch (error) {
+            console.error("Erreur lors de la suppression du message :", error);
+            return { status: 500 };
+        }
+    }
+
+    // Fonction pour afficher les messages du support dans le DOM
+    async function renderSupportMessages() {
+        const container = document.getElementById('support-messages');
+        container.innerHTML = '';
+        const result = await getSupportMessages();
+        const a = [];
+        if (result.status === 200 && result.content.length !== 0) {
+            const messages = result.content;
+            for (const message of messages) {
+                // Récupérer le username à partir de l'ID utilisateur
+                const username = await getUserInfo(message.user_id);
+
+                // Création de l'élément pour le message
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('support-item');
+                messageDiv.setAttribute('data-message-id', message.id);
+
+                // Informations du message
+                const infoDiv = document.createElement('div');
+                infoDiv.classList.add('support-info');
+
+                const userLabel = document.createElement('label');
+                userLabel.innerHTML = "Utilisateur : <span class='username'>" + username + "</span>";
+
+                const messageLabel = document.createElement('label');
+                messageLabel.classList.add('message');
+                messageLabel.innerHTML = "Message : " + message.message;
+
+                const dateLabel = document.createElement('label');
+                const createdAt = new Date(message.createdAt);
+                dateLabel.innerHTML = "Envoyé le : " + createdAt.toLocaleString();
+
+                infoDiv.appendChild(userLabel);
+                infoDiv.appendChild(messageLabel);
+                infoDiv.appendChild(dateLabel);
+
+                // Actions sur le message
+                const actionsDiv = document.createElement('div');
+                actionsDiv.classList.add('support-actions');
+
+                const deleteButton = document.createElement('button');
+                deleteButton.classList.add('delete-support');
+                deleteButton.innerHTML = '<ion-icon name="trash-outline"></ion-icon>';
+                deleteButton.addEventListener('click', async () => {
+                    if (confirm("Êtes-vous sûr de vouloir supprimer ce message ?")) {
+                        const deleteResult = await deleteSupportMessage(message.id);
+                        if (deleteResult.status === 200) {
+                            messageDiv.remove();
+                        } else {
+                            const errors = deleteResult.id?.codes || deleteResult.content || ['Erreur inconnue'];
+                            showErrorModal(errors);
+                        }
+                    }
+                });
+
+                actionsDiv.appendChild(deleteButton);
+
+                messageDiv.appendChild(infoDiv);
+                messageDiv.appendChild(actionsDiv);
+                container.appendChild(messageDiv);
+            }
+        } else {
+            container.innerHTML = "<p>Aucun message du support disponible pour le moment.</p>";
+        }
+    }
+
+    // Appel au chargement de la page
+    document.addEventListener('DOMContentLoaded', async () => {
+        await fetchErrorMessages();
+        renderSupportMessages();
+    });
+</script>

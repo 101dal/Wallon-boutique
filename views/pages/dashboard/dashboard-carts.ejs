@@ -345,6 +345,34 @@
     }
 </style>
 
+<style>
+    .dashboard-section {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .dashboard-btn button {
+        background: var(--accent);
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+
+    .dashboard-btn button:hover {
+        background: darken(var(--accent), 10%);
+    }
+</style>
+<section class="dashboard-section">
+    <a href="/dashboard" class="dashboard-btn">
+        <button style="padding:10px; margin: 5px;">Dashboard</button>
+    </a>
+</section>
+
 <!-- Formulaire d'ajout de panier -->
 <section class="add-cart">
     <h2>
@@ -464,7 +492,7 @@
     // Récupérer les messages d'erreur depuis l'API
     async function fetchErrorMessages() {
         try {
-            const response = await fetch('http://localhost:3000/api/v1/errors');
+            const response = await fetch('<%= API_URL %>/api/v1/errors');
             if (response.ok) {
                 errorMessages = await response.json();
             }
@@ -515,7 +543,7 @@
         formData.append("size", size);
         formData.append("quantity", quantity);
 
-        const response = await fetch(`http://localhost:3000/api/v1/carts/modify/${cartId}`, {
+        const response = await fetch(`<%= API_URL %>/api/v1/carts/modify/${cartId}`, {
             method: 'PATCH',
             credentials: 'include',
             body: formData
@@ -640,7 +668,7 @@
             formData.append("size", size);
             formData.append("quantity", quantity);
 
-            const response = await fetch(`http://localhost:3000/api/v1/carts/modify/${cartId}`, {
+            const response = await fetch(`<%= API_URL %>/api/v1/carts/modify/${cartId}`, {
                 method: "PATCH",
                 credentials: "include",
                 body: formData
@@ -649,7 +677,7 @@
         }
 
         async function deleteCart_request(cartId) {
-            const response = await fetch(`http://localhost:3000/api/v1/carts/delete/${cartId}`, {
+            const response = await fetch(`<%= API_URL %>/api/v1/carts/delete/${cartId}`, {
                 method: "DELETE",
                 credentials: "include",
             });

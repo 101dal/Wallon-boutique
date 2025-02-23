@@ -195,7 +195,7 @@
                     total += cart.price; // Calcul du sous-total pour chaque produit
                     %>
                     <div class="cart-item">
-                        <img src="http://localhost:3000/api/v1/images?product_id=<%= cart.product_id %>&image_id=0"
+                        <img src="<%= API_URL %>/api/v1/images?product_id=<%= cart.product_id %>&image_id=0"
                             alt="Produit" />
                         <div class="item-details">
                             <div class="item-header">
@@ -247,7 +247,7 @@
 <script>
     async function checkout_request() {
         const formData = new FormData();
-        const response = await fetch(`http://localhost:3000/api/v1/carts/checkout`, {
+        const response = await fetch(`<%= API_URL %>/api/v1/carts/checkout`, {
             method: 'POST',
             credentials: 'include',
             body: formData,
@@ -258,7 +258,7 @@
 
     async function removeFromCart_request(id) {
         const formData = new FormData();
-        const response = await fetch(`http://localhost:3000/api/v1/carts/remove/${id}`, {
+        const response = await fetch(`<%= API_URL %>/api/v1/carts/remove/${id}`, {
             method: 'DELETE',
             credentials: 'include',
             body: formData,

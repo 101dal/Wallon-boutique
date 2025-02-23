@@ -152,7 +152,7 @@
     <% if (products.status===200) { %>
         <% products.content.forEach(product=> { %>
             <div class="product-card visible" data-category="<%= product.type %>" data-product-id="<%= product.id %>">
-                <img src="http://localhost:3000/api/v1/images?product_id=<%= product.id %>&image_id=<%= product.url[0] %>"
+                <img src="<%= API_URL %>/api/v1/images?product_id=<%= product.id %>&image_id=<%= product.url[0] %>"
                     alt="<%= product.name %>" />
                 <h3>
                     <%= product.name %>

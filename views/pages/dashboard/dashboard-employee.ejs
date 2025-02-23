@@ -385,7 +385,7 @@
     // Récupérer les messages d'erreur depuis l'API
     async function fetchErrorMessages() {
         try {
-            const response = await fetch('http://localhost:3000/api/v1/errors');
+            const response = await fetch('<%= API_URL %>/api/v1/errors');
             if (response.ok) {
                 errorMessages = await response.json();
             }
@@ -485,7 +485,7 @@
             const formData = new FormData();
             formData.append("status", status);
 
-            const response = await fetch(`http://localhost:3000/api/v1/orders/update/status/${id}`, {
+            const response = await fetch(`<%= API_URL %>/api/v1/orders/update/status/${id}`, {
                 method: "PATCH",
                 credentials: "include",
                 body: formData
