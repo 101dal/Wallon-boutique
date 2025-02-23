@@ -37,10 +37,33 @@ app.use(async (req, res, next) => {
 
 
 // LISTE DE TOUTES LES ROUTES
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
     const registered = req.query.registered === 'true';
     const disconnected = req.query.disconnected === 'true';
-    res.render("pages/home", { active: "home", container: "home", registered, disconnected });
+
+    try {
+        // Appel à l'API pour récupérer tous les produits
+        const response = await fetch("http://localhost:3000/api/v1/products", {
+            method: 'GET',
+        });
+        const data = await response.json();
+
+        // Tri décroissant selon le nombre de produits vendus (champ sold)
+        let bestSellers = data.content
+            .sort((a, b) => b.sold - a.sold)
+            .slice(0, 3); // On garde uniquement les trois premiers
+
+        // Réordonner : échanger le 1er et le 2e éléments
+        if (bestSellers.length >= 2) {
+            [bestSellers[0], bestSellers[1]] = [bestSellers[1], bestSellers[0]];
+        }
+
+        // On passe bestSellers à la vue home.ejs
+        res.render("pages/home", { active: "home", container: "home", registered, disconnected, bestSellers });
+    } catch (error) {
+        console.error("Erreur lors de la récupération des produits :", error);
+        res.render("pages/home", { active: "home", container: "home", registered, disconnected, bestSellers: [] });
+    }
 });
 
 app.get("/charte-du-site", (req, res) => {

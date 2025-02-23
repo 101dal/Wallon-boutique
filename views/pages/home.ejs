@@ -441,27 +441,21 @@
                 <div class="best-sellers">
                     <h2>Nos best sellers</h2>
                     <div class="products">
-                        <div class="product">
-                            <img src="/images/home/product2.png" alt="T-shirt blanc" />
-                            <div class="product-info">
-                                <h3>T-shirt blanc</h3>
-                                <p>15.99€</p>
-                            </div>
-                        </div>
-                        <div class="product">
-                            <img src="/images/home/product1.png" alt="Mug du lycée" />
-                            <div class="product-info">
-                                <h3>Mug du lycée</h3>
-                                <p>9.99€</p>
-                            </div>
-                        </div>
-                        <div class="product">
-                            <img src="/images/home/product3.png" alt="Sweatshirt noir" />
-                            <div class="product-info">
-                                <h3>Sweatshirt noir</h3>
-                                <p>29.99€</p>
-                            </div>
-                        </div>
+                        <% if (bestSellers && bestSellers.length > 0) { %>
+                            <% bestSellers.forEach((product) => { %>
+                                <div class="product">
+                                    <!-- Ici, nous utilisons une image statique.
+                                         Vous pouvez adapter la logique pour utiliser le endpoint d'image si nécessaire -->
+                                    <img src="http://localhost:3000/api/v1/images?product_id=<%= product.id %>&image_id=<%= product.url[0] %>" alt="<%= product.name %>" />
+                                    <div class="product-info">
+                                        <h3><%= product.name %></h3>
+                                        <p><%= product.price %>€</p>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        <% } else { %>
+                            <p>Aucun produit vendu pour le moment.</p>
+                        <% } %>
                     </div>
                 </div>
 
