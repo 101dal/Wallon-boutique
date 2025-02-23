@@ -136,7 +136,6 @@ app.get("/register", async (req, res) => {
         method: 'GET',
     });
     const classes = await request.json();
-    console.log(classes);
 
     let classesMap = {};
 

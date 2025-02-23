@@ -657,6 +657,29 @@
         }
 
         updateThemeIcon(currentTheme);
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const burgerMenu = document.querySelector(".burger-menu");
+            const navLinks = document.querySelectorAll(".nav-links");
+            const overlay = document.querySelector(".menu-overlay");
+
+            burgerMenu.addEventListener("click", () => {
+                navLinks.forEach((nav) => nav.classList.toggle("active"));
+                overlay.classList.toggle("active");
+
+                const icon = burgerMenu.querySelector("ion-icon");
+                const isOpen = icon.getAttribute("name") === "menu-outline";
+                icon.setAttribute("name", isOpen ? "close-outline" : "menu-outline");
+            });
+
+            overlay.addEventListener("click", () => {
+                navLinks.forEach((nav) => nav.classList.remove("active"));
+                overlay.classList.remove("active");
+
+                const icon = burgerMenu.querySelector("ion-icon");
+                icon.setAttribute("name", "menu-outline");
+            });
+        })
     </script>
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

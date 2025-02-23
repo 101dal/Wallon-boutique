@@ -27,12 +27,20 @@
         justify-content: center;
     }
 
+    .product-images-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
     .product-images {
         display: flex;
         flex-direction: column;
         gap: 1rem;
         max-height: 400px;
         overflow-y: auto;
+        justify-content: space-evenly;
+        
     }
 
     .product-images .thumbnail {
@@ -357,6 +365,10 @@
             flex-wrap: wrap;
         }
 
+        .product-images-container {
+            flex-direction: column;
+        }
+
         .product-image {
             width: 100%;
             height: auto;
@@ -429,7 +441,7 @@
        Contenu Produit
   ============================= -->
 <div class="product-header">
-    <div style="display: flex; flex-direction: row;">
+    <div class="product-images-container">
         <div class="product-images">
             <% product.content.url.forEach((imageId, index)=> { %>
                 <img class="thumbnail <%= index === 0 ? 'active' : '' %>"
