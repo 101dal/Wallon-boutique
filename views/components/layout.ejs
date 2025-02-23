@@ -6,8 +6,547 @@
     <link rel="icon" type="image/svg+xml" href="/images/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lycée Henri Wallon</title>
-    <link rel="stylesheet" href="/css/style.css" />
-    <script src="/scripts/theme/theme_load.js"></script>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@600&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+        :root {
+            --background: #fffefc;
+            --text: #3e3e3e;
+            --accent: #f08080;
+            --border: #dddddd;
+            --card-bg: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --background: #3e3e3e;
+            --text: #fffefc;
+            /* #91f080 - C'est une belle couleur pour l'accent, 
+            dommage que ce ne soit pas la bonne, 
+            si tu vois ça tu peux essayer, 
+            perso j'aime bien :) */
+            --accent: #f08080;
+            --border: #ffffff;
+            --card-bg: #2d2d2d;
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            list-style: none;
+            text-decoration: none;
+            color: var(--text);
+            font-family: "Poppins", Arial, Helvetica, sans-serif;
+            font-size: 16px;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+
+        .auth-content,
+        .cart-items,
+        .product,
+        .contact-content {
+            background-color: var(--card-bg);
+            border-color: var(--border);
+        }
+
+        input,
+        textarea,
+        select {
+            background-color: var(--card-bg);
+            color: var(--text);
+            border-color: var(--border);
+        }
+
+        header,
+        footer {
+            background-color: var(--card-bg);
+            border-color: var(--border);
+        }
+
+        @media screen and (max-width: 480px) {
+            * {
+                font-size: 14px;
+            }
+        }
+
+        header {
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: var(--card-bg);
+            border-color: var(--border);
+        }
+
+        header .left {
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+        }
+
+        h2,
+        button.category-link {
+            color: var(--text);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-links li a,
+        .nav-links li ion-icon {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text);
+            transition: color 0.3s ease;
+        }
+
+        .nav-links li a:hover,
+        .nav-links li a:hover ion-icon {
+            color: var(--accent);
+        }
+
+        .nav-links li a.active,
+        .nav-links li a.active ion-icon {
+            color: var(--accent);
+        }
+
+        .burger-menu {
+            display: none;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .burger-menu ion-icon {
+            font-size: 2rem;
+            color: var(--text);
+        }
+
+        @media screen and (max-width: 768px) {
+            .burger-menu {
+                display: block;
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                z-index: 1001;
+                cursor: pointer;
+            }
+
+            .burger-menu ion-icon {
+                font-size: 2rem;
+                color: var(--text);
+            }
+
+            header .left {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                height: 100vh;
+                width: 70%;
+                background: var(--card-bg);
+                flex-direction: column;
+                padding: 80px 20px;
+                transition: left 0.3s ease;
+                box-shadow: 2px 0 10px var(--shadow);
+                z-index: 1000;
+                justify-content: flex-start;
+                gap: 1.5rem;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .nav-links li {
+                width: 100%;
+            }
+
+            .nav-links li a {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                gap: 8px;
+                padding: 0.75rem;
+                width: 100%;
+                transition: color 0.3s ease;
+            }
+
+            .nav-links li a:hover {
+                color: var(--accent);
+            }
+
+            .menu-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.5);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                z-index: 999;
+            }
+
+            .menu-overlay.active {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            header .right {
+                display: none;
+            }
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .burger-menu {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+        }
+
+        .nav-links {
+            z-index: 1000;
+            background: var(--card-bg);
+        }
+
+        .nav-links a,
+        .nav-links ion-icon {
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.3s ease;
+        }
+
+        .nav-links.active a,
+        .nav-links.active ion-icon {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .nav-links li:nth-child(1) a {
+            transition-delay: 0.1s;
+        }
+
+        .nav-links li:nth-child(2) a {
+            transition-delay: 0.2s;
+        }
+
+        .nav-links li:nth-child(3) a {
+            transition-delay: 0.3s;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .cart-icon {
+            position: relative;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: -10px;
+            background: red;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cart-icon .cart-badge:not(:empty) {
+            display: flex;
+        }
+
+
+        @media screen and (min-width: 769px) {
+
+            .burger-menu,
+            .menu-overlay {
+                display: none;
+            }
+
+            header {
+                padding: 20px 42px;
+                position: relative;
+                display: flex;
+                justify-content: center;
+            }
+
+            .nav-links {
+                position: static;
+                width: auto;
+                height: auto;
+                background: none;
+                padding: 0;
+                box-shadow: none;
+                opacity: 1;
+                transform: none;
+            }
+
+            .nav-links a,
+            .nav-links ion-icon {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+
+            header .left {
+                gap: 32px;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                height: 100vh;
+                width: 70%;
+                background: var(--card-bg);
+                flex-direction: column;
+                padding: 80px 20px;
+                transition: all 0.3s ease;
+                box-shadow: 2px 0 10px var(--shadow);
+                z-index: 1000;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            header .right {
+                gap: 20px;
+                display: none;
+            }
+
+            header .left img {
+                width: 80px;
+            }
+
+            header .left ul {
+                gap: 20px;
+            }
+
+            header .right.active {
+                display: flex;
+                position: fixed;
+                bottom: 20px;
+                left: 0;
+                width: 70%;
+                justify-content: center;
+                padding: 0 20px;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                height: 100vh;
+                width: 70%;
+                background: var(--card-bg);
+                flex-direction: column;
+                padding: 80px 20px;
+                transition: left 0.3s ease;
+                box-shadow: 2px 0 10px var(--shadow);
+                z-index: 1000;
+                justify-content: space-between;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .nav-links li {
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-links li a {
+                padding: 1rem;
+                width: 100%;
+                border-radius: 8px;
+                transition: background 0.3s ease, color 0.3s ease;
+                color: #333;
+            }
+
+            .nav-links li a:hover {
+                background: rgba(240, 128, 128, 0.1);
+                color: var(--accent);
+            }
+
+            .nav-links li:last-child {
+                margin-top: auto;
+                border-top: 1px solid var(--border);
+                padding-top: 20px;
+            }
+        }
+
+        @media screen and (max-width: 640px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: center;
+            }
+
+            header .left {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            header .left ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            header .right {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+        }
+
+        footer {
+            margin-top: 4rem;
+            padding: 3rem 2rem;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 2rem;
+        }
+
+        .footer-links h3 {
+            color: var(--accent);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            font-family: "Anton", Arial, Helvetica, sans-serif;
+        }
+
+        .footer-links ul {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .footer-links ul li a {
+            color: var(--text);
+            transition: color 0.3s ease;
+        }
+
+        .footer-links ul li a:hover {
+            color: var(--accent);
+        }
+
+        .footer-logo {
+            height: 120px;
+            object-fit: contain;
+            align-self: center;
+        }
+
+        .contact h3 {
+            color: var(--accent);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            font-family: "Anton", Arial, Helvetica, sans-serif;
+        }
+
+        .contact ul {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .contact ul li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .contact ul li ion-icon {
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        .contact ul li a,
+        .contact ul li span {
+            color: var(--text);
+            transition: color 0.3s ease;
+        }
+
+        .contact ul li a:hover {
+            color: var(--accent);
+        }
+
+        @media screen and (max-width: 640px) {
+            .footer-content {
+                flex-direction: column;
+                gap: 2rem;
+                text-align: center;
+            }
+
+            .contact ul {
+                align-items: center;
+            }
+        }
+    </style>
+    <script>
+        const currentTheme = localStorage.getItem("theme") || "light";
+        document.documentElement.setAttribute("data-theme", currentTheme);
+    </script>
 </head>
 
 <body>
@@ -26,8 +565,18 @@
                 <li><a href="/contact" <% if (active==="contact" ) { %>class="active"<% } %>><ion-icon
                                 name="call-outline"></ion-icon>Contact</a></li>
                 <% if (logged) { %>
-                    <li><a href="/panier" <% if (active==="panier" ) { %>class="active"<% } %>><ion-icon
-                                    name="bag-handle-outline"></ion-icon>Votre panier</a></li>
+                    <li class="cart-icon">
+                        <a href="/panier" <% if (active==="panier" ) { %>class="active"<% } %>>
+                                <ion-icon name="bag-handle-outline"></ion-icon>
+                                <% if (numberOfProducts> 0) { %>
+                                    <span class="cart-badge">
+                                        <%= numberOfProducts %>
+                                    </span>
+                                    <% } %>
+                                        Votre panier
+                        </a>
+                    </li>
+
                     <li><a href="/profile" <% if (active==="profile" ) { %>class="active"<% } %>><ion-icon
                                     name="person-outline"></ion-icon>
                                 <%= profile.username%></a></li>
@@ -53,27 +602,63 @@
                 <ul>
                     <li>
                         <ion-icon name="mail-outline"></ion-icon>
-                        <a href="mailto:maildulycee@gmail.com">maildulycee@gmail.com</a>
-                    </li>
-                    <li>
-                        <ion-icon name="logo-instagram"></ion-icon>
-                        <a href="https://instagram.com/insta">@insta</a>
-                    </li>
-                    <li>
-                        <ion-icon name="game-controller-outline"></ion-icon>
-                        <a href="#">nsicorp-lien</a>
+                        <a href="mailto:ce.0590221v@ac-lille.fr">ce.0590221v@ac-lille.fr</a>
                     </li>
                     <li>
                         <ion-icon name="call-outline"></ion-icon>
-                        <span>03 *****</span>
+                        <span>03 27 19 30 40</span>
                     </li>
+                    <li>
+                        <ion-icon name="location-outline"></ion-icon>
+                        <span>16 Place de la République, BP 435, 59322 Valenciennes Cedex</span>
+                    </li>
+                    <li>
+                        <ion-icon name="logo-facebook"></ion-icon>
+                        <a href="https://www.facebook.com/groups/lyceehenriwallon/">Facebook</a>
+                    </li>
+                    <li>
+                        <ion-icon name="logo-instagram"></ion-icon>
+                        <a href="https://www.instagram.com/lyceewallonvalenciennes/">Instagram</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h3>Liens utiles :</h3>
+                <ul>
+                    <li><a href="/charte-du-site">Charte du site</a></li>
                 </ul>
             </div>
             <img src="/images/logo-wallon.png" alt="Logo Henri Wallon" class="footer-logo" />
         </div>
     </footer>
 
-    <script src="/scripts/theme/theme_change.js"></script>
+    <script>
+        const themeToggle = document.querySelector('ion-icon[name="sunny-outline"]');
+
+
+        themeToggle.addEventListener("click", () => {
+            const currentTheme = document.documentElement.getAttribute("data-theme");
+            const newTheme = currentTheme === "light" ? "dark" : "light";
+
+            document.documentElement.setAttribute("data-theme", newTheme);
+            localStorage.setItem("theme", newTheme);
+
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            const icon = document.querySelector(
+                'ion-icon[name="sunny-outline"], ion-icon[name="moon-outline"]'
+            );
+            icon.setAttribute(
+                "name",
+                theme === "light" ? "moon-outline" : "sunny-outline"
+            );
+        }
+
+        updateThemeIcon(currentTheme);
+    </script>
+
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>

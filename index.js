@@ -28,6 +28,7 @@ app.use(async (req, res, next) => {
 
     res.locals.logged = data.status === 200;
     res.locals.profile = data.content;
+    res.locals.numberOfProducts = data.content.cart_amount || 0;
 
     next();
 })
@@ -41,6 +42,10 @@ app.get("/", (req, res) => {
     const disconnected = req.query.disconnected === 'true';
     res.render("pages/home", { active: "home", container: "home", registered, disconnected });
 });
+
+app.get("/charte-du-site", (req, res) => {
+    res.render("pages/charte", { active: "charte", container: "charte" })
+})
 
 app.use("/database", createProductsRouter);
 

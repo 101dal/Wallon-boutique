@@ -8,6 +8,7 @@
         margin: 0;
         padding: 0;
     }
+
     .product-detail-container {
         max-width: 1200px;
         margin: 2rem auto;
@@ -16,10 +17,14 @@
         border-radius: 8px;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     }
-    h1, h2, h3, p {
+
+    h1,
+    h2,
+    h3,
+    p {
         margin: 0 0 1rem 0;
     }
-  
+
     /* ========================
        Produit (Header, images, infos)
     ============================= */
@@ -30,6 +35,7 @@
         margin-bottom: 2rem;
         justify-content: center;
     }
+
     .product-images {
         display: flex;
         flex-direction: column;
@@ -37,6 +43,7 @@
         max-height: 400px;
         overflow-y: auto;
     }
+
     .product-images .thumbnail {
         width: 60px;
         height: 60px;
@@ -46,35 +53,42 @@
         cursor: pointer;
         transition: border-color 0.3s ease;
     }
+
     .product-images .thumbnail.active {
         border-color: #ff6f61;
     }
+
     .product-image {
         width: 500px;
         height: 500px;
         border-radius: 8px;
         object-fit: cover;
     }
+
     .product-infos {
         display: flex;
         flex-direction: column;
         gap: 1rem;
         justify-content: center;
     }
+
     .product-name {
         font-size: 2rem;
         font-weight: bold;
     }
+
     .product-description {
         font-size: 1rem;
         color: #555;
         line-height: 1.6;
     }
+
     .product-price {
         font-size: 1.5rem;
         font-weight: bold;
         color: #ff6f61;
     }
+
     .add-to-cart {
         padding: 0.75rem 1rem;
         font-size: 1rem;
@@ -88,22 +102,25 @@
         align-items: center;
         gap: 0.5rem;
     }
+
     .add-to-cart:hover {
         background-color: #e55a4d;
     }
-  
+
     /* ========================
        Section Avis / Reviews
     ============================= */
     .reviews-section {
         margin-top: 2rem;
     }
+
     .reviews-section h2 {
         font-size: 1.8rem;
         border-bottom: 2px solid #ff6f61;
         padding-bottom: 0.5rem;
         margin-bottom: 1.5rem;
     }
+
     .reviews-list {
         margin-bottom: 2rem;
         padding: 1rem;
@@ -111,29 +128,36 @@
         border-radius: 8px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
+
     .review {
         border-bottom: 1px solid #ddd;
         padding: 1rem 0;
     }
+
     .review:last-child {
         border-bottom: none;
     }
+
     .review-author {
         font-weight: bold;
         margin-bottom: 0.3rem;
     }
+
     .review-rating-display {
         margin-bottom: 0.5rem;
     }
+
     .review-content {
         font-style: italic;
         color: #444;
         margin-bottom: 0.5rem;
     }
+
     .review-date {
         font-size: 0.875rem;
         color: #999;
     }
+
     .review-actions button,
     .report-review {
         margin-right: 0.5rem;
@@ -146,14 +170,17 @@
         cursor: pointer;
         transition: background-color 0.3s;
     }
+
     .review-actions button:hover,
     .report-review:hover:not([disabled]) {
         background-color: #e55a4d;
     }
+
     .report-review[disabled] {
         background-color: #ccc;
         cursor: default;
     }
+
     .edit-review-form input.edit-review-text {
         width: 100%;
         padding: 0.5rem;
@@ -161,6 +188,7 @@
         border: 1px solid #ddd;
         border-radius: 4px;
     }
+
     .edit-review-form button {
         margin-right: 0.5rem;
         padding: 0.3rem 0.6rem;
@@ -172,10 +200,11 @@
         cursor: pointer;
         transition: background-color 0.3s;
     }
+
     .edit-review-form button:hover {
         background-color: #e55a4d;
     }
-  
+
     /* ========================
        Formulaire d'avis
     ============================= */
@@ -185,6 +214,7 @@
         gap: 1rem;
         margin-bottom: 2rem;
     }
+
     .review-form textarea {
         width: 100%;
         padding: 0.75rem;
@@ -193,6 +223,7 @@
         border-radius: 4px;
         resize: vertical;
     }
+
     .review-form button {
         align-self: flex-start;
         padding: 0.5rem 1rem;
@@ -204,10 +235,11 @@
         cursor: pointer;
         transition: background-color 0.3s;
     }
+
     .review-form button:hover {
         background-color: #e55a4d;
     }
-  
+
     /* ========================
        Sélecteur d'étoiles (Star Rating)
        Application aux conteneurs interactifs et en lecture seule
@@ -216,29 +248,33 @@
     .star-rating-readonly {
         display: inline-block;
     }
+
     .star-rating .star,
     .star-rating-readonly .star {
         font-size: 2.5rem;
         cursor: pointer;
         color: #e0e0e0;
         transition: color 0.2s ease, transform 0.2s ease;
-        text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
     }
+
     .star-rating .star.full,
     .star-rating-readonly .star.full {
         color: #ffcc00;
         transform: scale(1.1);
     }
+
     .star-rating .star.half,
     .star-rating-readonly .star.half {
         background: linear-gradient(90deg, #ffcc00 50%, #e0e0e0 50%);
         -webkit-background-clip: text;
         color: transparent;
     }
+
     .star-rating-readonly .star {
         cursor: default;
     }
-  
+
     /* ========================
        Modales
     ============================= */
@@ -254,20 +290,24 @@
         justify-content: center;
         z-index: 1000;
     }
+
     .modal.hidden {
         display: none;
     }
+
     .modal-content {
         background: #fff;
         padding: 20px;
         border-radius: 10px;
-        box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
         width: 80%;
         max-width: 400px;
         position: relative;
         text-align: center;
     }
-    .modal-close, .close-btn {
+
+    .modal-close,
+    .close-btn {
         position: absolute;
         top: 10px;
         right: 15px;
@@ -275,9 +315,11 @@
         color: #333;
         cursor: pointer;
     }
+
     .modal-actions {
         margin-top: 20px;
     }
+
     .modal-ok {
         background-color: #ff6f61;
         color: #fff;
@@ -287,23 +329,26 @@
         cursor: pointer;
         font-size: 1rem;
     }
+
     .modal-ok:hover {
         opacity: 0.9;
     }
+
     /* Modal d'erreur */
     .error-list {
-      color: #dc3545;
-      padding-left: 20px;
-      list-style-type: disc;
-      max-height: 60vh;
-      overflow-y: auto;
+        color: #dc3545;
+        padding-left: 20px;
+        list-style-type: disc;
+        max-height: 60vh;
+        overflow-y: auto;
     }
+
     .error-list li {
-      margin-bottom: 8px;
-      padding: 5px 0;
-      border-bottom: 1px solid #ddd;
+        margin-bottom: 8px;
+        padding: 5px 0;
+        border-bottom: 1px solid #ddd;
     }
-  
+
     /* ========================
        Responsive Design
     ============================= */
@@ -312,35 +357,40 @@
             flex-direction: column;
             align-items: center;
         }
+
         .product-image {
             width: 100%;
             height: auto;
         }
+
         .product-infos {
             align-items: center;
             text-align: center;
         }
+
         .add-to-cart {
             justify-content: center;
         }
+
         .product-images {
             flex-direction: row;
             gap: 0.5rem;
             max-height: auto;
             overflow-x: auto;
         }
+
         .product-images .thumbnail {
             width: 50px;
             height: 50px;
         }
     }
-  </style>
-  
-  <!-- ========================
+</style>
+
+<!-- ========================
        Modales HTML
   ============================= -->
-  <!-- Modal de confirmation (ajout au panier) -->
-  <div id="confirmation-modal" class="modal hidden">
+<!-- Modal de confirmation (ajout au panier) -->
+<div id="confirmation-modal" class="modal hidden">
     <div class="modal-content">
         <span class="modal-close">&times;</span>
         <h2>Produit ajouté au panier !</h2>
@@ -349,10 +399,10 @@
             <button class="modal-ok">OK</button>
         </div>
     </div>
-  </div>
-  
-  <!-- Modal d'erreur -->
-  <div id="error-modal" class="modal hidden">
+</div>
+
+<!-- Modal d'erreur -->
+<div id="error-modal" class="modal hidden">
     <div class="modal-content">
         <span class="close-btn">&times;</span>
         <h2>Erreurs détectées</h2>
@@ -361,10 +411,10 @@
             <button class="modal-ok">OK</button>
         </div>
     </div>
-  </div>
-  
-  <!-- Modal de confirmation pour suppression d'un avis -->
-  <div id="delete-review-modal" class="modal hidden">
+</div>
+
+<!-- Modal de confirmation pour suppression d'un avis -->
+<div id="delete-review-modal" class="modal hidden">
     <div class="modal-content">
         <span class="modal-close">&times;</span>
         <h2>Confirmer la suppression</h2>
@@ -374,63 +424,73 @@
             <button class="modal-ok cancel-delete">Annuler</button>
         </div>
     </div>
-  </div>
-  
-  <!-- ========================
+</div>
+
+<!-- ========================
        Contenu Produit
   ============================= -->
-  <div class="product-header">
+<div class="product-header">
     <div class="product-images">
-        <% product.content.url.forEach((imageId, index) => { %>
+        <% product.content.url.forEach((imageId, index)=> { %>
             <img class="thumbnail <%= index === 0 ? 'active' : '' %>"
-                 src="http://localhost:3000/api/v1/images?product_id=<%= product.content.id %>&image_id=<%= imageId %>"
-                 alt="<%= product.content.name %>" data-index="<%= index %>" />
-        <% }); %>
+                src="http://localhost:3000/api/v1/images?product_id=<%= product.content.id %>&image_id=<%= imageId %>"
+                alt="<%= product.content.name %>" data-index="<%= index %>" />
+            <% }); %>
     </div>
     <img class="product-image"
-         src="http://localhost:3000/api/v1/images?product_id=<%= product.content.id %>&image_id=<%= product.content.url[0] %>"
-         alt="<%= product.content.name %>" id="main-image" />
+        src="http://localhost:3000/api/v1/images?product_id=<%= product.content.id %>&image_id=<%= product.content.url[0] %>"
+        alt="<%= product.content.name %>" id="main-image" />
     <div class="product-infos">
-        <h1 class="product-name"><%= product.content.name %></h1>
-        <p class="product-description"><%= product.content.description %></p>
-        <p class="product-price"><%= product.content.price.toFixed(2) %>€</p>
-  
+        <h1 class="product-name">
+            <%= product.content.name %>
+        </h1>
+        <p class="product-description">
+            <%= product.content.description %>
+        </p>
+        <p class="product-price">
+            <%= product.content.price.toFixed(2) %>€
+        </p>
+
         <% if (logged) { %>
-            <% if (product.content.colors && product.content.colors.length > 0) { %>
+            <% if (product.content.colors && product.content.colors.length> 0) { %>
                 <label for="product-color">Couleur :</label>
                 <select id="product-color">
-                    <% product.content.colors.forEach(color => { %>
-                        <option value="<%= color %>"><%= color %></option>
-                    <% }); %>
+                    <% product.content.colors.forEach(color=> { %>
+                        <option value="<%= color %>">
+                            <%= color %>
+                        </option>
+                        <% }); %>
                 </select>
-            <% } %>
-  
-            <% if (product.content.sizes && product.content.sizes.length > 0) { %>
-                <label for="product-size">Taille :</label>
-                <select id="product-size">
-                    <% product.content.sizes.forEach(size => { %>
-                        <option value="<%= size %>"><%= size %></option>
-                    <% }); %>
-                </select>
-            <% } %>
-  
-            <label for="product-quantity">Quantité :</label>
-            <input type="number" id="product-quantity" name="quantity" value="1" min="1" />
-  
-            <button class="add-to-cart" id="product_<%= product.content.id %>"
-                    data-product-id="<%= product.content.id %>"
-                    data-product-price="<%= product.content.price %>">
-                <ion-icon name="cart-outline"></ion-icon>
-                Ajouter au panier
-            </button>
-        <% } %>
+                <% } %>
+
+                    <% if (product.content.sizes && product.content.sizes.length> 0) { %>
+                        <label for="product-size">Taille :</label>
+                        <select id="product-size">
+                            <% product.content.sizes.forEach(size=> { %>
+                                <option value="<%= size %>">
+                                    <%= size %>
+                                </option>
+                                <% }); %>
+                        </select>
+                        <% } %>
+
+                            <label for="product-quantity">Quantité :</label>
+                            <input type="number" id="product-quantity" name="quantity" value="1" min="1" />
+
+                            <button class="add-to-cart" id="product_<%= product.content.id %>"
+                                data-product-id="<%= product.content.id %>"
+                                data-product-price="<%= product.content.price %>">
+                                <ion-icon name="cart-outline"></ion-icon>
+                                Ajouter au panier
+                            </button>
+                            <% } %>
     </div>
-  </div>
-  
-  <!-- ========================
+</div>
+
+<!-- ========================
        Section Reviews
   ============================= -->
-  <div class="reviews-section">
+<div class="reviews-section">
     <h2>Laisser un avis</h2>
     <% if (logged) { %>
         <form class="review-form" action="/api/v1/reviews" method="POST">
@@ -447,58 +507,64 @@
             <input type="hidden" name="product_id" id="product_id" value="<%= product.content.id %>">
             <button type="submit" class="submit-review">Envoyer</button>
         </form>
-    <% } else { %>
-        <p>Veuillez vous connecter pour laisser un avis.</p>
-    <% } %>
-  
-    <br>
-    <h2>Avis des utilisateurs</h2>
-    <div class="reviews-list">
-        <% if (reviews.status === 200) { %>
-            <% reviews.content.forEach(review => { %>
-                <div class="review" data-review-id="<%= review.id %>">
-                    <p class="review-author">Par <%= review.username %>:</p>
-                    <!-- Affichage de la note au-dessus du commentaire -->
-                    <div class="review-rating-display star-rating-readonly" data-rating="<%= review.rating %>"></div>
-                    <% if (logged && profile && review.user_id === profile.id) { %>
-                        <p class="review-content" data-review-text><%= review.review %></p>
-                        <div class="review-actions">
-                            <button class="edit-review">Modifier</button>
-                            <button class="delete-review">Supprimer</button>
-                        </div>
-                        <div class="edit-review-form" style="display: none;">
-                            <input type="text" class="edit-review-text" value="<%= review.review %>" />
-                            <div class="edit-star-rating star-rating">
-                                <span class="star" data-index="0">&#9733;</span>
-                                <span class="star" data-index="1">&#9733;</span>
-                                <span class="star" data-index="2">&#9733;</span>
-                                <span class="star" data-index="3">&#9733;</span>
-                                <span class="star" data-index="4">&#9733;</span>
-                            </div>
-                            <input type="hidden" class="edit-review-rating" value="<%= review.rating %>">
-                            <button class="save-review">Enregistrer</button>
-                            <button class="cancel-edit">Annuler</button>
-                        </div>
-                    <% } else { %>
-                        <p class="review-content">"<%= review.review %>"</p>
-                    <% } %>
-                    <% if (logged && profile && review.user_id !== profile.id) { %>
-                        <% if (review.reportedByUsers.indexOf(profile.id) === -1) { %>
-                            <button class="report-review">Signaler</button>
-                        <% } else { %>
-                            <button class="report-review" disabled>Déjà signalé</button>
-                        <% } %>
-                    <% } %>
-                    <p class="review-date"><%= new Date(review.createdAt).toLocaleDateString() %></p>
-                </div>
-            <% }); %>
         <% } else { %>
-            <p>Aucun avis pour le moment.</p>
-        <% } %>
-    </div>
-  </div>
-  
-  <script>
+            <p>Veuillez vous connecter pour laisser un avis.</p>
+            <% } %>
+
+                <br>
+                <h2>Avis des utilisateurs</h2>
+                <div class="reviews-list">
+                    <% if (reviews.status===200) { %>
+                        <% reviews.content.forEach(review=> { %>
+                            <div class="review" data-review-id="<%= review.id %>">
+                                <p class="review-author">Par <%= review.username %>:</p>
+                                <!-- Affichage de la note au-dessus du commentaire -->
+                                <div class="review-rating-display star-rating-readonly"
+                                    data-rating="<%= review.rating %>"></div>
+                                <% if (logged && profile && review.user_id===profile.id) { %>
+                                    <p class="review-content" data-review-text>
+                                        <%= review.review %>
+                                    </p>
+                                    <div class="review-actions">
+                                        <button class="edit-review">Modifier</button>
+                                        <button class="delete-review">Supprimer</button>
+                                    </div>
+                                    <div class="edit-review-form" style="display: none;">
+                                        <input type="text" class="edit-review-text" value="<%= review.review %>" />
+                                        <div class="edit-star-rating star-rating">
+                                            <span class="star" data-index="0">&#9733;</span>
+                                            <span class="star" data-index="1">&#9733;</span>
+                                            <span class="star" data-index="2">&#9733;</span>
+                                            <span class="star" data-index="3">&#9733;</span>
+                                            <span class="star" data-index="4">&#9733;</span>
+                                        </div>
+                                        <input type="hidden" class="edit-review-rating" value="<%= review.rating %>">
+                                        <button class="save-review">Enregistrer</button>
+                                        <button class="cancel-edit">Annuler</button>
+                                    </div>
+                                    <% } else { %>
+                                        <p class="review-content">"<%= review.review %>"</p>
+                                        <% } %>
+                                            <% if (logged && profile && review.user_id !==profile.id) { %>
+                                                <% if (review.reportedByUsers.indexOf(profile.id)===-1) { %>
+                                                    <button class="report-review">Signaler</button>
+                                                    <% } else { %>
+                                                        <button class="report-review" disabled>Déjà signalé</button>
+                                                        <% } %>
+                                                            <% } %>
+                                                                <p class="review-date">
+                                                                    <%= new Date(review.createdAt).toLocaleDateString()
+                                                                        %>
+                                                                </p>
+                            </div>
+                            <% }); %>
+                                <% } else { %>
+                                    <p>Aucun avis pour le moment.</p>
+                                    <% } %>
+                </div>
+</div>
+
+<script>
     /*********************
      * Gestion des images
      *********************/
@@ -513,7 +579,7 @@
             });
         });
     });
-  
+
     /*********************
      * Fonction de gestion du Star Rating interactif
      *********************/
@@ -555,7 +621,7 @@
             updateStars(currentRating);
         });
     }
-  
+
     /*********************
      * Initialisation du star rating pour le formulaire d'avis
      *********************/
@@ -564,7 +630,7 @@
         const reviewRatingInput = document.getElementById('review-rating');
         setupStarRating(reviewStarContainer, reviewRatingInput);
     });
-  
+
     /*********************
      * Génération des étoiles en lecture seule
      *********************/
@@ -587,7 +653,7 @@
             container.innerHTML = generateReadonlyStars(rating);
         });
     });
-  
+
     /*********************
      * Création d'un avis
      *********************/
@@ -618,7 +684,7 @@
             }
         });
     });
-  
+
     /*********************
      * Modification et suppression d'un avis
      *********************/
@@ -640,7 +706,7 @@
         });
         return await response.json();
     }
-  
+
     /*********************
      * Report d'un avis
      *********************/
@@ -653,7 +719,7 @@
         });
         return await response.json();
     }
-  
+
     /*********************
      * Ajout au panier
      *********************/
@@ -670,7 +736,7 @@
         });
         return await response.json();
     }
-  
+
     /*********************
      * Gestion des modales (confirmation et erreurs)
      *********************/
@@ -705,6 +771,7 @@
                     const response = await addToCart_request(productId, color, size, quantity);
                     if (response.status === 200) {
                         document.getElementById('confirmation-modal').classList.remove('hidden');
+                        // document.getElementById("confirmation-modal .modal-ok");
                     } else {
                         showErrorModal([response.content || 'Erreur lors de l\'ajout au panier']);
                     }
@@ -714,7 +781,7 @@
             });
         });
     });
-  
+
     /*********************
      * Gestion de la modification/suppression et report des avis
      *********************/
@@ -803,7 +870,7 @@
             });
         });
     });
-  
+
     /*********************
      * Gestion des erreurs via modal
      *********************/
@@ -834,5 +901,4 @@
         modal.classList.remove('hidden');
     }
     document.addEventListener('DOMContentLoaded', fetchErrorMessages);
-  </script>
-  
+</script>
