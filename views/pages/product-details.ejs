@@ -1,19 +1,9 @@
 <style>
-    /* ========================
-       Styles Globaux
-    ============================= */
-    body {
-        font-family: Arial, sans-serif;
-        background: #f7f7f7;
-        margin: 0;
-        padding: 0;
-    }
-
     .product-detail-container {
         max-width: 1200px;
         margin: 2rem auto;
         padding: 2rem;
-        background: #fff;
+        background: var(--background);
         border-radius: 8px;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     }
@@ -30,7 +20,8 @@
     ============================= */
     .product-header {
         display: flex;
-        flex-wrap: wrap;
+        flex-direction: row;
+        flex-wrap: nowrap;
         gap: 2rem;
         margin-bottom: 2rem;
         justify-content: center;
@@ -77,9 +68,16 @@
         font-weight: bold;
     }
 
+    .product-quantity {
+        font-size: 1rem;
+        color: var(--text);
+        margin-bottom: 1rem;
+    }
+
+
     .product-description {
         font-size: 1rem;
-        color: #555;
+        color: var(--text);
         line-height: 1.6;
     }
 
@@ -124,7 +122,7 @@
     .reviews-list {
         margin-bottom: 2rem;
         padding: 1rem;
-        background: #fafafa;
+        background: var(--background);
         border-radius: 8px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
@@ -149,7 +147,7 @@
 
     .review-content {
         font-style: italic;
-        color: #444;
+        color: var(--text);
         margin-bottom: 0.5rem;
     }
 
@@ -356,6 +354,7 @@
         .product-header {
             flex-direction: column;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .product-image {
@@ -430,16 +429,19 @@
        Contenu Produit
   ============================= -->
 <div class="product-header">
-    <div class="product-images">
-        <% product.content.url.forEach((imageId, index)=> { %>
-            <img class="thumbnail <%= index === 0 ? 'active' : '' %>"
-                src="http://localhost:3000/api/v1/images?product_id=<%= product.content.id %>&image_id=<%= imageId %>"
-                alt="<%= product.content.name %>" data-index="<%= index %>" />
-            <% }); %>
+    <div style="display: flex; flex-direction: row;">
+        <div class="product-images">
+            <% product.content.url.forEach((imageId, index)=> { %>
+                <img class="thumbnail <%= index === 0 ? 'active' : '' %>"
+                    src="http://localhost:3000/api/v1/images?product_id=<%= product.content.id %>&image_id=<%= imageId %>"
+                    alt="<%= product.content.name %>" data-index="<%= index %>" />
+                <% }); %>
+        </div>
+        <img class="product-image"
+            src="http://localhost:3000/api/v1/images?product_id=<%= product.content.id %>&image_id=<%= product.content.url[0] %>"
+            alt="<%= product.content.name %>" id="main-image" />
     </div>
-    <img class="product-image"
-        src="http://localhost:3000/api/v1/images?product_id=<%= product.content.id %>&image_id=<%= product.content.url[0] %>"
-        alt="<%= product.content.name %>" id="main-image" />
+
     <div class="product-infos">
         <h1 class="product-name">
             <%= product.content.name %>
@@ -450,7 +452,11 @@
         <p class="product-price">
             <%= product.content.price.toFixed(2) %>€
         </p>
-
+        <p class="product-quantity">
+            Quantité disponible : <span id="product-quantity-display">
+                <%= product.content.inventory %>
+            </span>
+        </p>
         <% if (logged) { %>
             <% if (product.content.colors && product.content.colors.length> 0) { %>
                 <label for="product-color">Couleur :</label>
@@ -475,7 +481,8 @@
                         <% } %>
 
                             <label for="product-quantity">Quantité :</label>
-                            <input type="number" id="product-quantity" name="quantity" value="1" min="1" />
+                            <input type="number" id="product-quantity" name="quantity" value="1" min="1"
+                                max="<%= product.content.inventory %>" />
 
                             <button class="add-to-cart" id="product_<%= product.content.id %>"
                                 data-product-id="<%= product.content.id %>"
@@ -485,6 +492,7 @@
                             </button>
                             <% } %>
     </div>
+
 </div>
 
 <!-- ========================
@@ -770,8 +778,13 @@
                 try {
                     const response = await addToCart_request(productId, color, size, quantity);
                     if (response.status === 200) {
-                        document.getElementById('confirmation-modal').classList.remove('hidden');
-                        // document.getElementById("confirmation-modal .modal-ok");
+                        const confirmationModal = document.getElementById('confirmation-modal');
+                        confirmationModal.classList.remove('hidden');
+                        const okButton = confirmationModal.querySelector('.modal-ok');
+                        okButton.focus();
+                        okButton.addEventListener('click', () => {
+                            window.location.reload();
+                        });
                     } else {
                         showErrorModal([response.content || 'Erreur lors de l\'ajout au panier']);
                     }
