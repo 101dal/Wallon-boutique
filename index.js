@@ -17,23 +17,33 @@ app.use(cookieParser());
 
 const API_URL = Bun.env.API_URL;
 
+const errorMessages = await (await fetch(`${API_URL}/api/v1/errors`)).json();
+
 
 // Checks if the user is logged in for each request to the pages
 app.use(async (req, res, next) => {
-    const response = await fetch(`${API_URL}/api/v1/users/me`, {
+    const response_profile = await fetch(`${API_URL}/api/v1/users/me`, {
         method: 'GET',
         credentials: 'include',
         headers: { 'Cookie': `token_cookie=${req.cookies.token_cookie}` }
     });
-    const data = await response.json();
+    const data = await response_profile.json();
 
 
+
+    res.locals.errorMessages = JSON.stringify(errorMessages);
     res.locals.logged = data.status === 200;
     res.locals.profile = data.content;
     res.locals.numberOfProducts = data.content.cart_amount || 0;
     res.locals.API_URL = API_URL;
 
     next();
+});
+
+// Route de test
+
+app.get("/tests", async (req, res) => {
+    res.render(`pages/tests.ejs`, { active: "tests", container: "tests" })
 })
 
 

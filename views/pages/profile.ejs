@@ -269,7 +269,7 @@
                 <div class="orders-list">
                     <% orders.content.forEach(order=> { %>
                         <div class="order-item">
-                            <h4>Commande ID: <%= order.id %>
+                            <h4>Commande ID: <%= order.id %>x
                             </h4>
                             <p>Status: <%= order.status %>
                             </p>
@@ -330,7 +330,7 @@
         <form id="editProfileForm">
             <label for="username">Nom d'utilisateur</label>
             <input type="text" id="username" name="username" value="<%= profile.username %>" required>
-            <p class="modal-note">Pour modifier d'autres informations ou supprimer vôtre compte, veuillez contacter le <a href="/contact">support</a>.</p>
+            <p class="modal-note">Pour modifier d'autres informations ou supprimer votre compte, veuillez contacter le <a href="/contact">support</a>.</p>
             <div class="error-message" style="display: none; color: red;"></div>
             <button type="submit">Enregistrer</button>
         </form>

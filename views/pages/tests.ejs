@@ -1,0 +1,309 @@
+<h1>Cette page est exclusivement réservée pour essayer du code</h1>
+
+<style>
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    .modal.hidden {
+        display: none;
+    }
+
+    .modal-content {
+        background: var(--card-bg);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 8px 16px var(--shadow);
+        width: 80%;
+        max-width: 400px;
+        position: relative;
+        text-align: center;
+    }
+
+    .modal-content h2 {
+        margin-bottom: 20px;
+        color: var(--accent);
+    }
+
+    .modal-close,
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 28px;
+        color: var(--accent);
+        cursor: pointer;
+    }
+
+    .modal-actions {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    .modal-ok {
+        background-color: var(--accent);
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+    }
+
+    .modal-ok:hover {
+        opacity: 0.9;
+    }
+
+    .modal .error-list {
+        color: var(--accent);
+        padding-left: 20px;
+        list-style-type: disc;
+        max-height: 60vh;
+        overflow-y: auto;
+    }
+
+    .modal .error-list li {
+        margin-bottom: 8px;
+        padding: 5px 0;
+        border-bottom: 1px solid var(--border);
+    }
+</style>
+
+<dialog id="confirmation-modal" class="modal hidden">
+    <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <h2>Produit ajouté au panier !</h2>
+        <p>Votre produit a été ajouté avec succès à votre panier.</p>
+        <div class="modal-actions">
+            <button class="modal-ok">OK</button>
+        </div>
+    </div>
+</dialog>
+
+<div id="delete-review-modal" class="modal hidden">
+    <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <h2>Confirmer la suppression</h2>
+        <p>Voulez-vous vraiment supprimer cet avis ?</p>
+        <div class="modal-actions">
+            <button class="modal-ok confirm-delete">Confirmer</button>
+            <button class="modal-ok cancel-delete">Annuler</button>
+        </div>
+    </div>
+</div>
+
+<div id="error-modal" class="modal hidden">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Erreurs détectées</h2>
+        <ul class="error-list"></ul>
+        <div class="modal-actions">
+            <button class="modal-ok">OK</button>
+        </div>
+    </div>
+</div>
+
+<button id="create-modal-info">Create INFO modal</button><br>
+<button id="create-modal-reload">Create RELOAD modal</button><br>
+<button id="create-modal-confirm">Create CONFIRM modal</button><br>
+<button id="create-modal-error">Create ERROR modal</button><br>
+
+<div id="errorMessages" data="<%= errorMessages %>"></div>
+<script>
+    document.addEventListener("DOMContentLoaded", async () => {
+        await document.getElementById("create-modal-info").addEventListener("click", async () => {
+            const options = {
+                modal_id: "info",
+                title: "Ceci est une grande information",
+                text_contents: [
+                    "Bonjour",
+                    "Tout fonctionne parfaitement"
+                ],
+                type: "INFO"
+            }
+            await createModal(options);
+        });
+        await document.getElementById("create-modal-reload").addEventListener("click", async () => {
+            const options = {
+                modal_id: "reload",
+                title: "Ceci est une information à vous recharger la page",
+                text_contents: [
+                    "Bonjour",
+                    "Tout fonctionne parfaitement",
+                    "La page devrait de recharger normalement"
+                ],
+                type: "RELOAD"
+            }
+            await createModal(options);
+        });
+        await document.getElementById("create-modal-confirm").addEventListener("click", async () => {
+            const options = {
+                modal_id: "confirm",
+                title: "Validation",
+                text_contents: [
+                    "Avant de continuer, veuillez confirmer (ou pas)",
+                ],
+                type: "CONFIRM"
+            }
+            alert(await createModal(options));
+        });
+        await document.getElementById("create-modal-error").addEventListener("click", async () => {
+            const options = {
+                modal_id: "error",
+                text_contents: [
+                    1,
+                    2,
+                    42,
+                    69
+                ],
+                type: "ERROR"
+            }
+            await createModal(options);
+        });
+    });
+
+
+    // Fonction pour créer un nouveau modal. C'est une fonction en async
+    // Il y a 4 types:
+    //    - INFO: Un simple modal avec titre, texte et bouton OK
+    //    - RELOAD: Exactement comme INFO mais avec un trigger reload en plus sur le OK
+    //    - CONFIRM: Un modal INFO avec deux boutons:
+    //       - Confirmer: Ferme le modal et renvoie la valeur "true"
+    //       - Annuler: Ferme le modal et renvoie la valeur "false"
+    //    - ERROR: Un modal INFO mais avec une liste d'erreurs (pas besoin de mettre le titre). 
+    //             Si c'est ce type alors text_contents contient les codes d'erreurs.
+    async function createModal({ modal_id, title, text_contents, type }) {
+        if (!["INFO", "RELOAD", "CONFIRM", "ERROR"].includes(type)) {
+            return alert("Le modal est incorrect");
+        }
+        if (type === "ERROR") {
+            title = "Erreurs détectées"
+        }
+        return new Promise((resolve, reject) => {
+            // Remove all previous modals
+            document.querySelectorAll(".modal").forEach(modal => modal.remove());
+
+            // Creation of the new modal's elements
+            const modal = document.createElement("dialog");
+            modal.setAttribute("id", modal_id);
+            modal.classList.add("modal");
+            modal.addEventListener("mousedown", (e) => {
+                modal.addEventListener("mouseup", (e1) => {
+                    if (e1.target === modal) {
+                        modal.remove()
+                    } else {
+                        modal.removeEventListener("mouseup", () => { })
+                    }
+                });
+            });
+
+
+            const modal_content = document.createElement("div");
+            modal_content.classList.add("modal-content");
+
+
+            const modal_close_span = document.createElement("span");
+            modal_close_span.classList.add("modal-close");
+            modal_close_span.innerHTML = "&times;";
+            modal_close_span.addEventListener("click", () => {
+                modal.remove();
+            });
+            modal_content.appendChild(modal_close_span);
+
+
+
+            const modal_title = document.createElement("h2");
+            modal_title.innerText = title;
+            modal_content.appendChild(modal_title);
+
+
+            if (type === "ERROR") {
+                const errorMessages = JSON.parse(document.getElementById("errorMessages").getAttribute("data"));
+                const error_list = document.createElement("ul");
+                error_list.classList.add("error-list");
+                text_contents.forEach(error => {
+                    const li = document.createElement('li');
+                    let message = error;
+                    if (typeof error === 'number') {
+                        message = errorMessages[error] || `Erreur inconnue (code ${error})`;
+                    }
+                    li.textContent = message;
+                    error_list.appendChild(li);
+                });
+                modal_content.appendChild(error_list);
+            } else {
+                text_contents.map(text => {
+                    const element = document.createElement("p");
+                    element.innerText = text;
+                    modal_content.appendChild(element);
+                });
+            }
+
+
+            const modal_actions = document.createElement("div");
+            modal_actions.classList.add("modal-actions");
+
+            let modal_focused_element;
+
+            if (type === "CONFIRM") {
+                const modal_confirm = document.createElement("button");
+                modal_confirm.classList.add("modal-ok");
+                modal_confirm.classList.add("modal-confirm");
+                modal_confirm.innerText = "Confirmer";
+
+                const modal_cancel = document.createElement("button");
+                modal_cancel.classList.add("modal-ok");
+                modal_cancel.classList.add("modal-cancel");
+                modal_cancel.innerText = "Annuler";
+
+                modal_confirm.addEventListener("click", () => {
+                    modal.remove();
+                    return resolve(true);
+                });
+                modal_cancel.addEventListener("click", () => {
+                    modal.remove();
+                    return resolve(false);
+                });
+
+                modal_actions.appendChild(modal_cancel);
+                modal_actions.appendChild(modal_confirm);
+                modal_focused_element = modal_cancel;
+            } else {
+                const modal_ok = document.createElement("button");
+                modal_ok.classList.add("modal-ok");
+                modal_ok.innerText = "OK";
+                modal_ok.addEventListener("click", () => {
+                    if (type === "RELOAD") {
+                        window.location.reload();
+                    }
+                    modal.remove();
+                    return resolve(false);
+                });
+                modal_actions.appendChild(modal_ok);
+                modal_focused_element = modal_ok;
+            }
+
+            modal_content.appendChild(modal_actions);
+
+            modal.appendChild(modal_content);
+
+            document.querySelector("main").appendChild(modal);
+
+            modal_focused_element.focus();
+
+            if (type !== "CONFIRM") {
+                return resolve(true);
+            }
+        });
+    }
+</script>
