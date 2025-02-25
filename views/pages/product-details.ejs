@@ -67,55 +67,87 @@
     .product-infos {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
-        justify-content: center;
+        gap: 1.5rem;
+        padding: 1.5rem;
+        background: rgba(255, 111, 97, 0.05);
+        border-radius: 8px;
+        border-left: 4px solid #ff6f61;
+        max-width: 400px;
+        width: 100%;
     }
 
-    .product-name {
-        font-size: 2rem;
-        font-weight: bold;
+    .product-infos label {
+        display: block;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 0.5rem;
+    }
+
+    .product-infos select,
+    .product-infos input[type="number"] {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+        background: white;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .product-infos select:focus,
+    .product-infos input[type="number"]:focus {
+        outline: none;
+        border-color: #ff6f61;
+        box-shadow: 0 0 0 3px rgba(255, 111, 97, 0.1);
+    }
+
+    .product-infos .form-group {
+        margin-bottom: 1rem;
     }
 
     .product-quantity {
         font-size: 1rem;
-        color: var(--text);
-        margin-bottom: 1rem;
-    }
-
-
-    .product-description {
-        font-size: 1rem;
-        color: var(--text);
-        line-height: 1.6;
-    }
-
-    .product-price {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #ff6f61;
+        color: #666;
+        padding: 0.5rem 0;
+        border-top: 1px solid #eee;
+        border-bottom: 1px solid #eee;
     }
 
     .add-to-cart {
-        padding: 0.75rem 1rem;
-        font-size: 1rem;
-        background-color: #ff6f61;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s;
+        width: 100% !important;
+        padding: 1rem !important;
+        font-size: 1.1rem !important;
+        margin-top: 1rem !important;
+        transition: transform 0.2s ease, background-color 0.3s !important;
+        display: flex !important;
+        justify-content: center !important;
+        gap: 0.8rem !important;
+        border-radius: 6px !important;
+    }
+
+    .add-to-cart:hover {
+        transform: translateY(-2px) !important;
+        background-color: #e55a4d !important;
+    }
+
+    .product-price {
+        font-size: 2rem;
+        color: #ff6f61;
+        font-weight: 700;
         display: flex;
         align-items: center;
         gap: 0.5rem;
     }
 
-    .add-to-cart:hover {
-        background-color: #e55a4d;
+    .product-price::before {
+        content: "€";
+        font-size: 1.2rem;
+        color: currentColor;
     }
 
     /* ========================
-       Section Avis / Reviews
-    ============================= */
+Section Avis / Reviews
+============================= */
     .reviews-section {
         margin-top: 2rem;
     }
@@ -212,8 +244,8 @@
     }
 
     /* ========================
-       Formulaire d'avis
-    ============================= */
+Formulaire d'avis
+============================= */
     .review-form {
         display: flex;
         flex-direction: column;
@@ -247,9 +279,9 @@
     }
 
     /* ========================
-       Sélecteur d'étoiles (Star Rating)
-       Application aux conteneurs interactifs et en lecture seule
-    ============================= */
+Sélecteur d'étoiles (Star Rating)
+Application aux conteneurs interactifs et en lecture seule
+============================= */
     .star-rating,
     .star-rating-readonly {
         display: inline-block;
@@ -282,8 +314,8 @@
     }
 
     /* ========================
-       Responsive Design
-    ============================= */
+Responsive Design
+============================= */
     @media screen and (max-width: 768px) {
         .product-header {
             flex-direction: column;
@@ -300,15 +332,6 @@
             height: auto;
         }
 
-        .product-infos {
-            align-items: center;
-            text-align: center;
-        }
-
-        .add-to-cart {
-            justify-content: center;
-        }
-
         .product-images {
             flex-direction: row;
             gap: 0.5rem;
@@ -319,6 +342,29 @@
         .product-images .thumbnail {
             width: 50px;
             height: 50px;
+        }
+
+        .product-infos {
+            max-width: 100%;
+            border-left: none;
+            border-top: 4px solid #ff6f61;
+            padding: 1rem;
+        }
+
+        .product-price {
+            font-size: 1.75rem;
+            justify-content: center;
+        }
+
+        .add-to-cart {
+            padding: 0.85rem !important;
+            font-size: 1rem !important;
+            margin-top: 0.5rem !important;
+        }
+
+        .product-infos select,
+        .product-infos input[type="number"] {
+            font-size: 0.9rem;
         }
     }
 </style>

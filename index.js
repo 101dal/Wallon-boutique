@@ -40,15 +40,6 @@ app.use(async (req, res, next) => {
     next();
 });
 
-// Route de test
-
-app.get("/tests", async (req, res) => {
-    res.render(`pages/tests.ejs`, { active: "tests", container: "tests" })
-})
-
-
-
-
 // LISTE DE TOUTES LES ROUTES
 app.get("/", async (req, res) => {
     const registered = req.query.registered === 'true';
