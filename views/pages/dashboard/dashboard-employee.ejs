@@ -369,64 +369,7 @@
     </div>
 </section>
 
-<!-- Modal pour les erreurs -->
-<div id="error-modal" class="modal hidden">
-    <div class="modal-content">
-        <span class="close-btn">&times;</span>
-        <h2>Erreurs détectées</h2>
-        <ul class="error-list"></ul>
-    </div>
-</div>
-
 <script>
-    // Variable globale pour stocker les messages d'erreur
-    let errorMessages = {};
-
-    // Récupérer les messages d'erreur depuis l'API
-    async function fetchErrorMessages() {
-        try {
-            const response = await fetch('<%= API_URL %>/api/v1/errors');
-            if (response.ok) {
-                errorMessages = await response.json();
-            }
-        } catch (error) {
-            console.error('Erreur lors de la récupération des messages d\'erreur:', error);
-        }
-    }
-
-    // Fonction d'affichage des erreurs
-    function showErrorModal(errors) {
-        const modal = document.getElementById('error-modal');
-        const errorList = modal.querySelector('.error-list');
-        errorList.innerHTML = '';
-
-        errors.forEach(error => {
-            const li = document.createElement('li');
-            let message = error;
-
-            if (typeof error === 'number') {
-                message = errorMessages[error] || `Erreur inconnue (code ${error})`;
-            }
-
-            li.textContent = message;
-            errorList.appendChild(li);
-        });
-
-        modal.classList.remove('hidden');
-    }
-
-    // Gestion de la fermeture du modal
-    document.querySelectorAll('#error-modal .close-btn, #error-modal').forEach(el => {
-        el.addEventListener('click', (e) => {
-            if (e.target === el || e.target.classList.contains('close-btn')) {
-                document.getElementById('error-modal').classList.add('hidden');
-            }
-        });
-    });
-
-    // Appeler au chargement de la page
-    document.addEventListener('DOMContentLoaded', fetchErrorMessages);
-
     // Script : Gestion de la modal, modification et suppression
     document.addEventListener("DOMContentLoaded", () => {
         const modal = document.getElementById("modal");
@@ -474,8 +417,7 @@
                         button.classList.remove("saved");
                     }, 1000);
                 } else {
-                    const errors = response.id?.codes || response.content || ['Erreur inconnue'];
-                    showErrorModal(errors);
+                    await createModal(response.id.codes || ['Erreur lors de la modification de la commande'], "ERROR");
                 }
             }
         }

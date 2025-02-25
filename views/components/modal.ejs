@@ -88,14 +88,22 @@
     //       - Confirmer: Ferme le modal et renvoie la valeur "true"
     //       - Annuler: Ferme le modal et renvoie la valeur "false"
     //    - ERROR: Un modal INFO mais avec une liste d'erreurs (pas besoin de mettre le titre). 
-    //             Si c'est ce type alors text_contents contient les codes d'erreurs.
-    async function createModal({ modal_id, title, text_contents, type }) {
+    //             Si c'est ce type alors element_contents contient les codes d'erreurs.
+    async function createModal(element_contents, type, title = undefined) {
+        if (!(element_contents instanceof Array)) {
+            element_contents = [element_contents];
+        }
         if (!["INFO", "RELOAD", "CONFIRM", "ERROR"].includes(type)) {
             return alert("Le modal est incorrect");
         }
-        if (type === "ERROR") {
-            title = "Erreurs détectées"
+        if (!title) {
+            if (type === "ERROR") {
+                title = "Erreurs détectées";
+            } else {
+                title = "Information";
+            }
         }
+        const modal_id = type
         return new Promise((resolve, reject) => {
             // Remove all previous modals
             document.querySelectorAll(".modal").forEach(modal => modal.remove());
@@ -107,6 +115,9 @@
             modal.addEventListener("mousedown", (e) => {
                 modal.addEventListener("mouseup", (e1) => {
                     if (e1.target === modal) {
+                        if (type === "RELOAD") {
+                            window.location.reload();
+                        }
                         modal.remove()
                     } else {
                         modal.removeEventListener("mouseup", () => { })
@@ -138,7 +149,7 @@
                 const errorMessages = JSON.parse(document.getElementById("errorMessages").getAttribute("data"));
                 const error_list = document.createElement("ul");
                 error_list.classList.add("error-list");
-                text_contents.forEach(error => {
+                element_contents.forEach(error => {
                     const li = document.createElement('li');
                     let message = error;
                     if (typeof error === 'number') {
@@ -149,10 +160,14 @@
                 });
                 modal_content.appendChild(error_list);
             } else {
-                text_contents.map(text => {
-                    const element = document.createElement("p");
-                    element.innerText = text;
-                    modal_content.appendChild(element);
+                element_contents.map(el => {
+                    if (el instanceof Node) {
+                        modal_content.appendChild(el);
+                    } else {
+                        const element = document.createElement("p");
+                        element.innerText = el;
+                        modal_content.appendChild(element);
+                    }
                 });
             }
 

@@ -214,7 +214,7 @@
 
     document.addEventListener("DOMContentLoaded", async () => {
         await document.querySelector(".validate-order").addEventListener("click", async (event) => {
-            if (await createModal({ modal_id: "confirm", title: "Confirmation", text_contents: ["Veuillez confirmer la commande"], type: "CONFIRM" })) {
+            if (await createModal(["Veuillez confirmer la commande"], "CONFIRM" )) {
                 await checkout_request();
                 setTimeout(() => window.location.reload(), 200);
             }
@@ -224,7 +224,7 @@
     document.addEventListener("DOMContentLoaded", async () => {
         await document.querySelectorAll(".delete-btn").forEach(removeButton => {
             removeButton.addEventListener("click", async (event) => {
-                if (await createModal({ modal_id: "confirm", title: "Confirmation", text_contents: ["Veuillez confirmer la supression"], type: "CONFIRM" })) {
+                if (await createModal(["Veuillez confirmer la supression"], "CONFIRM")) {
                     await removeFromCart_request(removeButton.getAttribute("data-cart-id"));
                     setTimeout(() => window.location.reload(), 200);
                 }

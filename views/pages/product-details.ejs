@@ -653,14 +653,9 @@
                 const quantity = document.getElementById("product-quantity").value || 1;
                 const response = await addToCart_request(productId, color, size, quantity);
                 if (response.status === 200) {
-                    await createModal({
-                        modal_id: "success",
-                        title: "Produit ajouté au panier!",
-                        text_contents: ['Votre produit a bien été ajouté au panier!'],
-                        type: "RELOAD"
-                    });
+                    await createModal(['Votre produit a bien été ajouté au panier!'], "RELOAD");
                 } else {
-                    await createModal({ modal_id: "error", text_contents: response.id.codes || ['Erreur lors de l\'ajout au panier'], type: "ERROR" });
+                    await createModal(response.id.codes || ['Erreur lors de l\'ajout au panier'], "ERROR");
                 }
             });
         });
@@ -710,7 +705,7 @@
                     ratingDisplay.setAttribute('data-rating', newRating);
                     ratingDisplay.innerHTML = generateReadonlyStars(parseFloat(newRating));
                 } else {
-                    await createModal({ modal_id: "error", text_contents: modified.id.codes || ['Erreur lors de la modification de l\'avis'], type: "ERROR" });
+                    await createModal(modified.id.codes || ['Erreur lors de la modification de l\'avis'], "ERROR");
                 }
             });
         });
@@ -719,18 +714,18 @@
             await button.addEventListener('click', async (e) => {
                 const reviewToDelete = e.target.closest('.review');
                 const reviewId = reviewToDelete.getAttribute("data-review-id");
-                if (await createModal({ modal_id: "confirm", title: "Confirmation", text_contents: ["Veuillez confirmer la supression de l'avis"], type: "CONFIRM" })) {
+                if (await createModal(["Veuillez confirmer la supression de l'avis"], "CONFIRM")) {
                     const deleted = await deleteReview_request(reviewId);
                     if (deleted.status === 200) {
-                        await createModal({ modal_id: "sucess", title: "Avis supprimé!", text_contents: ['L\'avis a bien été supprimé.'], type: "RELOAD" });
+                        await createModal(['L\'avis a bien été supprimé.'], "RELOAD");
                         reviewToDelete.remove();
                     } else {
-                        await createModal({ modal_id: "error", text_contents: deleted.id.codes || ['Erreur lors de la supression de l\'avis'], type: "ERROR" });
+                        await createModal(deleted.id.codes || ['Erreur lors de la supression de l\'avis'], "ERROR");
                     }
                 }
             });
         });
-        
+
         // Report d'avis
         document.querySelectorAll('.report-review').forEach(button => {
             button.addEventListener('click', async (e) => {
@@ -741,7 +736,7 @@
                     button.disabled = true;
                     button.textContent = "Déjà signalé";
                 } else {
-                    await createModal({ modal_id: "error", text_contents: reported.id.codes || ['Erreur lors du signalement de l\'avis'], type: "ERROR" });
+                    await createModal(reported.id.codes || ['Erreur lors du signalement de l\'avis'], "ERROR");
                 }
             });
         });
