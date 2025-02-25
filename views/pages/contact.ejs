@@ -124,21 +124,18 @@
     <script>
         document.getElementById("supportForm").addEventListener("submit", async function (event) {
             event.preventDefault();
-            const message = document.getElementById("supportMessage").value;
-            if (message.trim() === "") {
-                alert("Veuillez entrer un message.");
-                return;
-            }
-            try {
+            if (await createModal(["Etes-vous sûr de vouloir envoyer un message au support.", "Vous ne devez le faire qu'en cas de problème ou de demande.", "Vous ne pourrez pas supprimer ce message."], "CONFIRM")) {
+                const message = document.getElementById("supportMessage").value;
+                if (message.trim() === "") {
+                    await createModal("Vauillez entrer un message.", "INFO");
+                    return;
+                }
                 const response = await createSupportMessage_request(message);
                 if (response.status === 200) {
-                    alert("Message envoyé avec succès !");
-                    document.getElementById("supportMessage").value = "";
+                    await createModal("Message envoyé avec succès !", "RELOAD");
                 } else {
-                    alert("Une erreur est survenue. Veuillez réessayer.");
+                    await createModal(response.id.codes || ["Erreur lors de l'envoi du message"], "ERROR");
                 }
-            } catch (error) {
-                alert("Erreur de connexion au serveur.");
             }
         });
 

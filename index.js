@@ -19,6 +19,11 @@ const API_URL = Bun.env.API_URL;
 
 const errorMessages = await (await fetch(`${API_URL}/api/v1/errors`)).json();
 
+// Robot.txt
+app.get("/robots.txt", (_, res) => {
+    res.send();
+})
+
 
 // Checks if the user is logged in for each request to the pages
 app.use(async (req, res, next) => {

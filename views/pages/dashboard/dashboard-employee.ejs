@@ -403,7 +403,7 @@
         }
 
         async function saveOrderChanges(orderId, button) {
-            if (confirm("Êtes-vous certain de vouloir modifier cette commande ?")) {
+            if (await createModal("Êtes-vous certain de vouloir modifier cette commande ?", "CONFIRM")) {
                 const orderItem = document.querySelector(`.order-item[data-order-id='${orderId}']`);
                 const status = orderItem.querySelector(".order-status").value;
 
