@@ -459,7 +459,7 @@
         document.querySelectorAll(".delete-order").forEach(async button => {
             await button.addEventListener("click", async () => {
                 const orderId = button.getAttribute("data-order-id");
-                if (await createModal(response.id.codes || ['Etes-vos sûr de vouloir supprimer cette commande?'], "CONFIRM")) {
+                if (await createModal('Etes-vos sûr de vouloir supprimer cette commande ?', "CONFIRM")) {
                     const response = await deleteOrder_request(orderId);
                     if (response.status === 200) {
                         await createModal(['La commande a bien été supprimée'], "RELOAD");
