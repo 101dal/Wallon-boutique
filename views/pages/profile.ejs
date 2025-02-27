@@ -269,9 +269,9 @@
                 <div class="orders-list">
                     <% orders.content.forEach(order=> { %>
                         <div class="order-item">
-                            <h4>Commande ID: <%= order.id %>x
+                            <h4>Commande ID: <%= order.id %>
                             </h4>
-                            <p>Status: <%= order.status %>
+                            <p>Status: <%= {"PENDING": "En attente", "CANCELLED": "Annulé", "COMPLETED": "Terminé"}[order.status] %>
                             </p>
                             <p>Date de création: <%= new Date(order.createdAt).toLocaleDateString() %>
                             </p>

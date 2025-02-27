@@ -1,0 +1,411 @@
+<style>
+    /* Style global */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: var(--background);
+        margin: 0;
+        padding: 0;
+    }
+
+    .types-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+
+    /* Sections d'ajout et de liste */
+    .add-type,
+    .type-list {
+        background: var(--card-bg);
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px var(--shadow);
+        margin-bottom: 2rem;
+    }
+
+    .add-type h2,
+    .type-list h2 {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--accent);
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid var(--accent);
+        padding-bottom: 0.5rem;
+    }
+
+    /* Formulaire d'ajout de type */
+    .add-type form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .add-type label {
+        font-weight: 600;
+        color: var(--text);
+    }
+
+    .add-type input,
+    .add-type select {
+        padding: 0.8rem;
+        border: 1px solid var(--border);
+        border-radius: 5px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+    }
+
+    .add-type input:focus,
+    .add-type select:focus {
+        outline: none;
+        border-color: var(--accent);
+    }
+
+    .add-type button {
+        padding: 1rem;
+        border: none;
+        background: var(--accent);
+        color: #fff;
+        font-size: 1.1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .add-type button:hover {
+        background: #0056b3;
+    }
+
+    /* Sélection du logo */
+    .logo-selection {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 0.5rem;
+    }
+
+    .logo-option {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        border: 2px solid transparent;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: border 0.3s;
+    }
+
+    .logo-option.selected {
+        border-color: var(--accent);
+    }
+
+    /* Gestion des types */
+    .type-management {
+        padding: 20px;
+    }
+
+    .type-management h2 {
+        color: var(--text);
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .type-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .type-item {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        border: 1px solid var(--border);
+        padding: 15px;
+        border-radius: 10px;
+        background-color: var(--card-bg);
+        box-shadow: 0 2px 4px var(--shadow);
+    }
+
+    .type-info {
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        flex: 1 1 auto;
+    }
+
+    .type-info label {
+        display: flex;
+        flex-direction: column;
+        font-size: 0.95rem;
+        color: var(--text);
+    }
+
+    .type-info input,
+    .type-info select {
+        padding: 5px;
+        border: 1px solid var(--border);
+        border-radius: 5px;
+        font-size: 0.95rem;
+        color: var(--text);
+    }
+
+    .current-logo {
+        margin: 0.3rem 0;
+    }
+
+    .type-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    button {
+        border: none;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: all 0.3s;
+    }
+
+    button.save-type {
+        background-color: #ffc107;
+        color: #fff;
+    }
+
+    button.save-type.saved {
+        background-color: #28a745;
+    }
+
+    button.delete-type {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+    button:hover {
+        opacity: 0.9;
+    }
+</style>
+
+<style>
+    .dashboard-section {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .dashboard-btn button {
+        background: var(--accent);
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+
+    .dashboard-btn button:hover {
+        background: darken(var(--accent), 10%);
+    }
+</style>
+
+<section class="dashboard-section">
+    <a href="/dashboard" class="dashboard-btn">
+        <button style="padding:10px; margin: 5px;">Dashboard</button>
+    </a>
+</section>
+
+<div class="types-container">
+    <!-- Formulaire d'ajout de type -->
+    <section class="add-type">
+        <h2>
+            <ion-icon name="add-circle-outline"></ion-icon> Ajouter un type
+        </h2>
+        <form id="add-type-form">
+            <label for="type-name">Nom du type :</label>
+            <input type="text" id="type-name" name="name" placeholder="Entrez le nom du type" required />
+
+            <label>Logo :</label>
+            <div class="logo-selection">
+                <% listOfTypesLogos.forEach(function(logo) { %>
+                    <div class="logo-option" data-logo="<%= logo %>">
+                        <ion-icon name="<%= logo %>"></ion-icon>
+                    </div>
+                    <% }); %>
+            </div>
+            <!-- Champ caché pour stocker le logo sélectionné -->
+            <input type="hidden" id="type-logoUrl" name="logoUrl" required />
+
+            <button type="submit">Ajouter le type</button>
+        </form>
+    </section>
+
+    <!-- Gestion des types -->
+    <section class="type-management">
+        <h2>Gestion des types</h2>
+        <div class="type-list">
+            <% if (types.status===200) { %>
+                <% types.content.forEach(function(type) { %>
+                    <div class="type-item" data-type-id="<%= type.id %>">
+                        <div class="type-info">
+                            <label>
+                                ID :
+                                <input type="number" value="<%= type.id %>" readonly />
+                            </label>
+                            <label>
+                                Nom :
+                                <input type="text" value="<%= type.name %>" class="type-name" />
+                            </label>
+                            <label>
+                                Logo :
+                                <div class="current-logo">
+                                    <ion-icon name="<%= type.logoUrl %>"></ion-icon>
+                                </div>
+                                <select class="type-logoUrl">
+                                    <% listOfTypesLogos.forEach(function(logo) { %>
+                                        <option value="<%= logo %>" <%=type.logoUrl===logo ? 'selected' : '' %>>
+                                            <%= logo %>
+                                        </option>
+                                        <% }); %>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="type-actions">
+                            <button class="save-type" data-type-id="<%= type.id %>">
+                                <ion-icon name="save-outline"></ion-icon>
+                            </button>
+                            <button class="delete-type" data-type-id="<%= type.id %>">
+                                <ion-icon name="trash-outline"></ion-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <% }); %>
+                        <% } else { %>
+                            <p>Aucun type disponible pour le moment.</p>
+                            <% } %>
+        </div>
+    </section>
+</div>
+
+<script>
+    // Récupérer la liste des types
+    async function getTypes_request() {
+        const response = await fetch("<%= API_URL %>/api/v1/types/all", {
+            method: "GET",
+            credentials: "include",
+        });
+        return await response.json();
+    }
+
+    // Création d'un type
+    async function createType_request(name, logoUrl) {
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("logoUrl", logoUrl);
+        const response = await fetch("<%= API_URL %>/api/v1/types/create", {
+            method: "POST",
+            credentials: "include",
+            body: formData
+        });
+        return await response.json();
+    }
+
+    // Modification d'un type
+    async function modifyType_request(typeId, name, logoUrl) {
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("logoUrl", logoUrl);
+        const response = await fetch(`<%= API_URL %>/api/v1/types/update/${typeId}`, {
+            method: "PATCH",
+            credentials: "include",
+            body: formData
+        });
+        return await response.json();
+    }
+
+    // Suppression d'un type
+    async function deleteType_request(typeId) {
+        const response = await fetch(`<%= API_URL %>/api/v1/types/delete/${typeId}`, {
+            method: "DELETE",
+            credentials: "include",
+        });
+        return await response.json();
+    }
+
+    // Gestion du formulaire d'ajout de type
+    document.getElementById("add-type-form").addEventListener("submit", async event => {
+        event.preventDefault();
+        const name = document.getElementById("type-name").value;
+        const logoUrl = document.getElementById("type-logoUrl").value;
+        const response = await createType_request(name, logoUrl);
+        if (response.status === 200) {
+            await createModal(["Type ajouté avec succès !"], "RELOAD");
+        } else {
+            await createModal(response.id.codes || ["Erreur lors de l'ajout du type"]);
+        }
+    });
+
+    // Gestion de la sélection des logos dans le formulaire d'ajout
+    document.querySelectorAll(".logo-option").forEach(option => {
+        option.addEventListener("click", function () {
+            document.querySelectorAll(".logo-option").forEach(opt => opt.classList.remove("selected"));
+            this.classList.add("selected");
+            document.getElementById("type-logoUrl").value = this.getAttribute("data-logo");
+        });
+    });
+
+    // Gestion des actions (modification et suppression) pour chaque type
+    document.addEventListener("DOMContentLoaded", () => {
+        // Modification d'un type
+        document.querySelectorAll(".save-type").forEach(button => {
+            button.addEventListener("click", async () => {
+                if (await createModal(["Êtes-vous certain de vouloir modifier ce type ?"], "CONFIRM")) {
+                    const typeId = button.getAttribute("data-type-id");
+                    const typeItem = document.querySelector(`.type-item[data-type-id='${typeId}']`);
+                    const name = typeItem.querySelector(".type-name").value;
+                    const logoUrl = typeItem.querySelector(".type-logoUrl").value;
+                    const response = await modifyType_request(typeId, name, logoUrl);
+                    if (response.status === 200) {
+                        updateTypeInDOM(response.content);
+                        button.classList.add("saved");
+                        button.querySelector("ion-icon").setAttribute("name", "checkmark-done-outline");
+                        setTimeout(() => {
+                            button.querySelector("ion-icon").setAttribute("name", "save-outline");
+                            button.classList.remove("saved");
+                        }, 1000);
+                    } else {
+                        await createModal(response.id.codes || ["Erreur lors de la modification du type"], "ERROR");
+                    }
+                }
+            });
+        });
+
+        // Suppression d'un type
+        document.querySelectorAll(".delete-type").forEach(button => {
+            button.addEventListener("click", async () => {
+                if (await createModal(["Êtes-vous sûr de vouloir supprimer ce type ?"], "CONFIRM")) {
+                    const typeId = button.getAttribute("data-type-id");
+                    const response = await deleteType_request(typeId);
+                    if (response.status === 200) {
+                        await createModal(["Le type a été supprimé avec succès !"], "RELOAD");
+                    } else {
+                        await createModal(response.id.codes || ["Erreur lors de la suppression du type"], "ERROR");
+                    }
+                }
+            });
+        });
+    });
+
+    function updateTypeInDOM(type) {
+        const typeItem = document.querySelector(`.type-item[data-type-id='${type.id}']`);
+        typeItem.querySelector(".type-name").value = type.name;
+        typeItem.querySelector(".current-logo ion-icon").setAttribute("name", type.logoUrl);
+        typeItem.querySelector(".type-logoUrl").value = type.logoUrl;
+    }
+</script>

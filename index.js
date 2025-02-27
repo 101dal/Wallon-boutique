@@ -22,8 +22,7 @@ const errorMessages = await (await fetch(`${API_URL}/api/v1/errors`)).json();
 // Robot.txt
 app.get("/robots.txt", (_, res) => {
     res.send();
-})
-
+});
 
 // Checks if the user is logged in for each request to the pages
 app.use(async (req, res, next) => {
@@ -43,6 +42,10 @@ app.use(async (req, res, next) => {
     res.locals.API_URL = API_URL;
 
     next();
+});
+
+app.get("/tests", async (req, res) => {
+    return res.render("pages/tests", { active: "tests", container: "tests" });
 });
 
 // LISTE DE TOUTES LES ROUTES
@@ -88,7 +91,7 @@ app.get("/products", async (req, res) => {
     const products = await productsResponse.json();
 
     // Récupère tous les types
-    const typesResponse = await fetch(`${API_URL}/api/v1/products/types`);
+    const typesResponse = await fetch(`${API_URL}/api/v1/types/all`);
     const typesData = await typesResponse.json();
 
     let filteredTypes = [];
@@ -212,11 +215,11 @@ app.get("/dashboard", async (req, res) => {
 
 app.get("/dashboard/:type", async (req, res) => {
     if (!res.locals.logged) {
-        res.render("pages/404", { active: "404", container: "404" });
+        return res.render("pages/404", { active: "404", container: "404" });
     }
 
     if (res.locals.profile.role !== "ADMIN") {
-        res.render("pages/404", { active: "404", container: "404" });
+        return res.render("pages/404", { active: "404", container: "404" });
     }
 
     if (req.params.type === "products") {
@@ -226,7 +229,14 @@ app.get("/dashboard/:type", async (req, res) => {
         });
         const products = await response.json();
 
-        const listOfTypeLogos = [
+        return res.render("pages/dashboard/dashboard-products", { active: "dashboard-admin", container: "products", products });
+    } else if (req.params.type === "types") {
+        // Get a list of all the types
+        const response = await fetch(`${API_URL}/api/v1/types/all`, {
+            method: 'GET',
+        });
+        const types = await response.json();
+        const listOfTypesLogos = [
             "phone-portrait-outline",
             "shirt-outline",
             "book-outline",
@@ -240,10 +250,9 @@ app.get("/dashboard/:type", async (req, res) => {
             "game-controller-outline"
         ];
 
-        res.render("pages/dashboard/dashboard-products", { active: "dashboard-admin", container: "products", products, listOfTypeLogos });
-    }
+        return res.render("pages/dashboard/dashboard-types", { active: "dashboard-admin", container: "types", types, listOfTypesLogos });
 
-    if (req.params.type === "users") {
+    } else if (req.params.type === "users") {
         // Get a list of all the products
         const response = await fetch(`${API_URL}/api/v1/users/all`, {
             method: 'GET',
@@ -251,10 +260,8 @@ app.get("/dashboard/:type", async (req, res) => {
         });
         const users = await response.json();
 
-        res.render("pages/dashboard/dashboard-users", { active: "dashboard-admin", container: "users", users });
-    }
-
-    if (req.params.type === "orders") {
+        return res.render("pages/dashboard/dashboard-users", { active: "dashboard-admin", container: "users", users });
+    } else if (req.params.type === "orders") {
         // Get a list of all the products
         const response = await fetch(`${API_URL}/api/v1/orders/all`, {
             method: 'GET',
@@ -262,10 +269,8 @@ app.get("/dashboard/:type", async (req, res) => {
         });
         const orders = await response.json();
 
-        res.render("pages/dashboard/dashboard-orders", { active: "dashboard-admin", container: "orders", orders });
-    }
-
-    if (req.params.type === "carts") {
+        return res.render("pages/dashboard/dashboard-orders", { active: "dashboard-admin", container: "orders", orders });
+    } else if (req.params.type === "carts") {
         // Get a list of all the products
         const response = await fetch(`${API_URL}/api/v1/carts/all`, {
             method: 'GET',
@@ -273,10 +278,8 @@ app.get("/dashboard/:type", async (req, res) => {
         });
         const carts = await response.json();
 
-        res.render("pages/dashboard/dashboard-carts", { active: "dashboard-admin", container: "carts", carts });
-    }
-
-    if (req.params.type === "reviews") {
+        return res.render("pages/dashboard/dashboard-carts", { active: "dashboard-admin", container: "carts", carts });
+    } else if (req.params.type === "reviews") {
         // Get a list of all the products
         const response = await fetch(`${API_URL}/api/v1/reviews/all`, {
             method: 'GET',
@@ -284,11 +287,9 @@ app.get("/dashboard/:type", async (req, res) => {
         });
         const reviews = await response.json();
 
-        res.render("pages/dashboard/dashboard-reviews", { active: "dashboard-admin", container: "reviews", reviews });
-    }
-
-    if (req.params.type === "supports") {
-        res.render("pages/dashboard/dashboard-supports", { active: "dashboard-admin", container: "supports" });
+        return res.render("pages/dashboard/dashboard-reviews", { active: "dashboard-admin", container: "reviews", reviews });
+    } else if (req.params.type === "supports") {
+        return res.render("pages/dashboard/dashboard-supports", { active: "dashboard-admin", container: "supports" });
     }
 });
 

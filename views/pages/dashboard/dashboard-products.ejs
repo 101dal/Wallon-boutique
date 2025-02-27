@@ -143,6 +143,7 @@
         flex-wrap: wrap;
         gap: 1rem;
         align-items: center;
+        justify-content: center;
     }
 
     .product-filters label {
@@ -192,7 +193,7 @@
     .product-item {
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-between;
+        justify-content: center;
         border: 1px solid var(--border);
         padding: 15px;
         border-radius: 10px;
@@ -203,7 +204,7 @@
     .products-info {
         display: grid;
         gap: 10px;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         flex: 1 1 auto;
     }
 
@@ -321,30 +322,11 @@
 
         <!-- Zone de sélection du type -->
         <div id="type-selection">
-            <div>
-                <input type="checkbox" id="new-type-checkbox" name="new-type-checkbox" />
-                <label for="new-type-checkbox">Créer un nouveau type</label>
-            </div>
             <div id="existing-type-container">
-                <label for="product-type-select">Type existant :</label>
+                <label for="product-type-select">Type :</label>
                 <select id="product-type-select" name="product-type" required>
                     <!-- Options chargées dynamiquement -->
                 </select>
-            </div>
-            <!-- Nouveau type avec sélecteur d'icônes -->
-            <div id="new-type-container" style="display: none;">
-                <label for="new-type-name">Nouveau nom du type :</label>
-                <input type="text" id="new-type-name" name="new-type-name" placeholder="Entrez le nouveau type" />
-
-                <label for="new-type-logo">Sélectionnez une icône :</label>
-                <div id="icon-selector">
-                    <% listOfTypeLogos.forEach(icon=> { %>
-                        <div class="icon-option" data-icon="<%= icon %>">
-                            <ion-icon name="<%= icon %>"></ion-icon>
-                        </div>
-                        <% }); %>
-                </div>
-                <input type="hidden" id="new-type-logo" name="new-type-logo" />
             </div>
         </div>
 
@@ -358,11 +340,11 @@
         <input type="number" min="0" id="product-inventory" name="product-inventory"
             placeholder="Entrez la quantité disponible" required />
 
-        <label for="product-colors">Couleurs du produit (optionnel) :</label>
+        <label for="product-colors">Couleurs du produit (à séparer par des virgules, optionnel) :</label>
         <input type="text" id="product-colors" name="product-colors"
             placeholder="Entrez les couleurs séparées par des virgules" />
 
-        <label for="product-sizes">Tailles du produit (optionnel) :</label>
+        <label for="product-sizes">Tailles du produit (à séparer par des virgules,optionnel) :</label>
         <input type="text" id="product-sizes" name="product-sizes"
             placeholder="Entrez les tailles séparées par des virgules" />
 
@@ -439,22 +421,6 @@
                                 Type :
                                 <!-- Zone de sélection pour la modification du type -->
                                 <select class="existing-product-type"></select>
-                                <input type="checkbox" class="new-type-checkbox"
-                                    id="new-type-checkbox-<%= product.id %>" />
-                                <label for="new-type-checkbox-<%= product.id %>">Créer un nouveau type</label>
-                                <!-- Modification dans la section product-item -->
-                                <div class="new-type-container" id="new-type-container-<%= product.id %>"
-                                    style="display: none;">
-                                    <input type="text" class="new-type-name" placeholder="Nouveau nom du type" />
-                                    <div class="icon-selector-update">
-                                        <% listOfTypeLogos.forEach(icon=> { %>
-                                            <div class="icon-option" data-icon="<%= icon %>">
-                                                <ion-icon name="<%= icon %>"></ion-icon>
-                                            </div>
-                                            <% }); %>
-                                    </div>
-                                    <input type="hidden" class="new-type-logo" />
-                                </div>
                             </label>
                         </div>
                         <div class="product-actions">
@@ -494,7 +460,7 @@
 <script>
     // Fonction pour récupérer la liste des types existants
     async function getProductTypes_request() {
-        const response = await fetch("<%= API_URL %>/api/v1/products/types", {
+        const response = await fetch("<%= API_URL %>/api/v1/types/all", {
             method: "GET",
             credentials: "include",
         });
@@ -504,23 +470,9 @@
     // Gestion de l'affichage des options de type
     document.addEventListener("DOMContentLoaded", async () => {
         /* Pour le formulaire de création */
-        const newTypeCheckbox = document.getElementById("new-type-checkbox");
         const existingTypeContainer = document.getElementById("existing-type-container");
         const newTypeContainer = document.getElementById("new-type-container");
         const productTypeSelect = document.getElementById("product-type-select");
-
-        // Toggle d'affichage selon le choix
-        newTypeCheckbox.addEventListener("change", () => {
-            if (newTypeCheckbox.checked) {
-                existingTypeContainer.style.display = "none";
-                newTypeContainer.style.display = "block";
-                productTypeSelect.required = false;
-            } else {
-                existingTypeContainer.style.display = "block";
-                newTypeContainer.style.display = "none";
-                productTypeSelect.required = true;
-            }
-        });
 
         // Récupération et affichage des types existants
         const typesData = await getProductTypes_request();
@@ -567,19 +519,6 @@
                         });
                     });
                 }
-
-                // Gestion du toggle pour création d'un nouveau type
-                const newTypeCheckboxMod = item.querySelector(".new-type-checkbox");
-                const newTypeContainerMod = item.querySelector(".new-type-container");
-                newTypeCheckboxMod.addEventListener("change", () => {
-                    if (newTypeCheckboxMod.checked) {
-                        selectElem.style.display = "none";
-                        newTypeContainerMod.style.display = "block";
-                    } else {
-                        selectElem.style.display = "block";
-                        newTypeContainerMod.style.display = "none";
-                    }
-                });
             });
         }
 
@@ -661,9 +600,12 @@
                                 { method: "DELETE", credentials: "include" }
                             );
 
-                            if (response.ok) {
+                            const response_data = await response.json();
+
+                            if (response.status === 200) {
                                 imageWrapper.remove();
-                                await createModal(["Image supprimée avec succès"], "RELOAD");
+                                button.setAttribute("data-images-ids", JSON.stringify(response_data.content.url));
+                                await createModal(["Image supprimée avec succès"], "INFO");
                             }
                         }
                     });
@@ -730,53 +672,55 @@
 
                         const result = await response.json();
                         if (result.status === 200) {
-                            result.content.url.forEach(newId => {
-                                const newImageWrapper = document.createElement("div");
-                                newImageWrapper.style.cssText = `
-                                    position: relative;
-                                    width: 120px;
-                                    height: 120px;
-                                    border-radius: 8px;
-                                    overflow: hidden;
-                                    cursor: pointer;
-                                    transition: transform 0.2s;
-                                `;
+                            // result.content.url.forEach(newId => {
+                            //     const newImageWrapper = document.createElement("div");
+                            //     newImageWrapper.style.cssText = `
+                            //         position: relative;
+                            //         width: 120px;
+                            //         height: 120px;
+                            //         border-radius: 8px;
+                            //         overflow: hidden;
+                            //         cursor: pointer;
+                            //         transition: transform 0.2s;
+                            //     `;
 
-                                const newImg = document.createElement("img");
-                                newImg.style.cssText = `
-                                    width: 100%;
-                                    height: 100%;
-                                    object-fit: cover;
-                                `;
-                                newImg.src = `<%= API_URL %>/api/v1/images?product_id=${productId}&image_id=${newId}`;
+                            //     const newImg = document.createElement("img");
+                            //     newImg.style.cssText = `
+                            //         width: 100%;
+                            //         height: 100%;
+                            //         object-fit: cover;
+                            //     `;
+                            //     newImg.src = `<%= API_URL %>/api/v1/images?product_id=${productId}&image_id=${newId}`;
 
-                                const newDeleteOverlay = document.createElement("div");
-                                newDeleteOverlay.style.cssText = `
-                                    position: absolute;
-                                    top: 0;
-                                    left: 0;
-                                    width: 100%;
-                                    height: 100%;
-                                    background: rgba(220, 53, 69, 0.7);
-                                    display: flex;
-                                    align-items: center;
-                                    justify-content: center;
-                                    opacity: 0;
-                                    transition: opacity 0.25s ease;
-                                `;
+                            //     const newDeleteOverlay = document.createElement("div");
+                            //     newDeleteOverlay.style.cssText = `
+                            //         position: absolute;
+                            //         top: 0;
+                            //         left: 0;
+                            //         width: 100%;
+                            //         height: 100%;
+                            //         background: rgba(220, 53, 69, 0.7);
+                            //         display: flex;
+                            //         align-items: center;
+                            //         justify-content: center;
+                            //         opacity: 0;
+                            //         transition: opacity 0.25s ease;
+                            //     `;
 
-                                newDeleteOverlay.innerHTML = `
-                                    <ion-icon name="trash-outline" 
-                                        style="color: white; font-size: 28px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));">
-                                    </ion-icon>
-                                `;
+                            //     newDeleteOverlay.innerHTML = `
+                            //         <ion-icon name="trash-outline" 
+                            //             style="color: white; font-size: 28px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));">
+                            //         </ion-icon>
+                            //     `;
 
-                                newImageWrapper.appendChild(newImg);
-                                newImageWrapper.appendChild(newDeleteOverlay);
-                                imageList.appendChild(newImageWrapper);
-                            });
+                            //     newImageWrapper.appendChild(newImg);
+                            //     newImageWrapper.appendChild(newDeleteOverlay);
+                            //     imageList.appendChild(newImageWrapper);
+                            // });
 
-                            await createModal([`${added_images_count} images ajoutées`], "RELOAD");
+                            button.setAttribute("data-images-ids", JSON.stringify(result.content.url));
+
+                            await createModal([`${added_images_count} images ajoutées`], "INFO");
                         }
                     } finally {
                         uploadBtn.disabled = false;
@@ -797,7 +741,7 @@
     });
 
     // Script : Création d'un produit
-    async function createProduct_request(name, description, colors, sizes, price, inventory, typeValue, isNewType, newTypeLogo, imagesFiles) {
+    async function createProduct_request(name, description, colors, sizes, price, inventory, typeId, imagesFiles) {
         const formData = new FormData();
         formData.append('name', name);
         formData.append('description', description);
@@ -805,12 +749,7 @@
         formData.append('sizes', sizes);
         formData.append('price', price);
         formData.append('inventory', inventory);
-
-        if (isNewType) {
-            formData.append('type', JSON.stringify({ name: typeValue, logoUrl: newTypeLogo }));
-        } else {
-            formData.append('type', typeValue);
-        }
+        formData.append('type_id', typeId);
 
         for (const fileItem of imagesFiles.files) {
             formData.append('images', fileItem);
@@ -828,6 +767,7 @@
         event.preventDefault();
 
         const name = document.getElementById("product-name").value;
+        const typeId = document.getElementById("product-type-select").value;
         const description = document.getElementById("product-description").value;
         const colors = document.getElementById("product-colors").value;
         const sizes = document.getElementById("product-sizes").value;
@@ -835,17 +775,7 @@
         const inventory = document.getElementById("product-inventory").value;
         const images = document.getElementById("product-images");
 
-        const isNewType = document.getElementById("new-type-checkbox").checked;
-        let typeValue = "";
-        let newTypeLogo = "";
-        if (isNewType) {
-            typeValue = document.getElementById("new-type-name").value;
-            newTypeLogo = document.getElementById("new-type-logo").value;
-        } else {
-            typeValue = document.getElementById("product-type-select").value;
-        }
-
-        const response = await createProduct_request(name, description, colors, sizes, price, inventory, typeValue, isNewType, newTypeLogo, images);
+        const response = await createProduct_request(name, description, colors, sizes, price, inventory, typeId, images);
         if (response.status === 200) {
             await createModal(["Produit ajouté avec succès !"], "RELOAD");
         } else {
@@ -863,7 +793,8 @@
         document.querySelectorAll(".delete-product").forEach(button => {
             button.addEventListener("click", () => {
                 const productId = button.getAttribute("data-product-id");
-                confirmDeletion(productId);
+                const product_section = button.parentNode.parentNode;
+                confirmDeletion(productId, product_section);
             });
         });
     });
@@ -889,22 +820,16 @@
             const colors = productItem.querySelector(".product-colors").value;
             const sizes = productItem.querySelector(".product-sizes").value;
             const price = parseFloat(productItem.querySelector(".product-price").value);
-            const inventory = parseInt(productItem.querySelector(".product-inventory").value, 10);
+            const inventory = parseInt(productItem.querySelector(".product-inventory").value, 10);  
 
-            const newTypeCheckbox = productItem.querySelector(".new-type-checkbox");
-            let typeValue = "";
-            if (newTypeCheckbox.checked) {
-                const newTypeName = productItem.querySelector(".new-type-name").value;
-                const newTypeLogo = productItem.querySelector(".new-type-logo").value; // Récupère la valeur du sélecteur
-                typeValue = JSON.stringify({ name: newTypeName, logoUrl: newTypeLogo });
-            } else {
-                const existingTypeSelect = productItem.querySelector(".existing-product-type");
-                typeValue = existingTypeSelect.value;
-            }
 
-            const response = await updateProduct_request(name, description, colors, sizes, price, inventory, typeValue, productId);
+            const existingTypeSelect = productItem.querySelector(".existing-product-type");
+            const typeId = existingTypeSelect.value;
+
+            const response = await updateProduct_request(name, description, colors, sizes, price, inventory, typeId, productId);
             if (response.status === 200) {
                 updateProductInDOM(response.content);
+                await createModal("Produit modifié avec succès", "INFO");
                 button.classList.add("saved");
                 button.querySelector("ion-icon").setAttribute("name", "checkmark-done-outline");
                 setTimeout(() => {
@@ -917,11 +842,12 @@
         }
     }
 
-    async function confirmDeletion(productId) {
+    async function confirmDeletion(productId, product_section) {
         if (await createModal(["Êtes-vous sûr de vouloir supprimer ce produit ?"], "CONFIRM")) {
             const response = await deleteProduct_request(productId);
             if (response.status === 200) {
-                await createModal("Produit supprimé avec succès", "RELOAD");
+                await createModal("Produit supprimé avec succès", "INFO");
+                product_section.remove();
             } else {
                 await createModal(response.id.codes || ["Erreur lors de la suppression du produit"], "ERROR");
             }
@@ -929,7 +855,7 @@
     }
 
     // Fonctions de communication avec le backend
-    async function updateProduct_request(name, description, colors, sizes, price, inventory, type, id) {
+    async function updateProduct_request(name, description, colors, sizes, price, inventory, typeId, id) {
         const formData = new FormData();
         formData.append("name", name);
         formData.append("description", description);
@@ -937,7 +863,7 @@
         formData.append("sizes", sizes);
         formData.append("price", price);
         formData.append("inventory", inventory);
-        formData.append("type", type);
+        formData.append("type_id", typeId);
 
         const response = await fetch(`<%= API_URL %>/api/v1/products/update/${id}`, {
             method: "PATCH",
