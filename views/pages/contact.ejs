@@ -127,7 +127,7 @@
             if (await createModal(["Etes-vous sûr de vouloir envoyer un message au support.", "Vous ne devez le faire qu'en cas de problème ou de demande.", "Vous ne pourrez pas supprimer ce message."], "CONFIRM")) {
                 const message = document.getElementById("supportMessage").value;
                 if (message.trim() === "") {
-                    await createModal("Vauillez entrer un message.", "INFO");
+                    await createModal("Veuillez entrer un message.", "INFO");
                     return;
                 }
                 const response = await createSupportMessage_request(message);

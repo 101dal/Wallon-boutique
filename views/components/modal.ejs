@@ -92,7 +92,9 @@
     //       - Annuler: Ferme le modal et renvoie la valeur "false"
     //    - ERROR: Un modal INFO mais avec une liste d'erreurs (pas besoin de mettre le titre). 
     //             Si c'est ce type alors element_contents contient les codes d'erreurs.
-    async function createModal(element_contents, type, title = undefined) {
+    // Champ facultatif pour définir le contenu html des boutons (1 pour INFO, RELOAD et 2 pour ERROR)
+    // Champ facultatif pour définir les actions à effectuer lors du click des boutons
+    async function createModal(element_contents, type, { title = undefined, button_content = {}, button_action = {} }) {
         if (!(element_contents instanceof Array)) {
             element_contents = [element_contents];
         }
@@ -184,12 +186,12 @@
                 const modal_confirm = document.createElement("button");
                 modal_confirm.classList.add("modal-ok");
                 modal_confirm.classList.add("modal-confirm");
-                modal_confirm.innerText = "Confirmer";
+                modal_confirm.innerText = button_content.CONFIRM || "Confirmer";
 
                 const modal_cancel = document.createElement("button");
                 modal_cancel.classList.add("modal-ok");
                 modal_cancel.classList.add("modal-cancel");
-                modal_cancel.innerText = "Annuler";
+                modal_cancel.innerText = button_content.CANCEL || "Annuler";
 
                 modal_confirm.addEventListener("click", () => {
                     modal.remove();
@@ -206,14 +208,19 @@
             } else {
                 const modal_ok = document.createElement("button");
                 modal_ok.classList.add("modal-ok");
-                modal_ok.innerText = "OK";
-                modal_ok.addEventListener("click", () => {
-                    if (type === "RELOAD") {
-                        window.location.reload();
-                    }
-                    modal.remove();
-                    return resolve(false);
-                });
+                modal_ok.innerText = button_content.OK || "OK";
+
+                if (button_action.OK) {
+                    modal_ok.addEventListener("click", event => button_action.OK({ event, modal }));
+                } else {
+                    modal_ok.addEventListener("click", () => {
+                        if (type === "RELOAD") {
+                            window.location.reload();
+                        }
+                        modal.remove();
+                        return resolve(false);
+                    });
+                }
                 modal_actions.appendChild(modal_ok);
                 modal_focused_element = modal_ok;
             }

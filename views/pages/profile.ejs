@@ -100,7 +100,8 @@
         color: var(--text);
     }
 
-    .generate-pdf-btn button, .dashboard-btn button {
+    .generate-pdf-btn button,
+    .dashboard-btn button {
         background: var(--accent);
         color: white;
         border: none;
@@ -111,7 +112,8 @@
         font-size: 1rem;
     }
 
-    .generate-pdf-btn button:hover, .dashboard-btn button:hover {
+    .generate-pdf-btn button:hover,
+    .dashboard-btn button:hover {
         background: darken(var(--accent), 10%);
     }
 
@@ -271,7 +273,8 @@
                         <div class="order-item">
                             <h4>Commande ID: <%= order.id %>
                             </h4>
-                            <p>Status: <%= {"PENDING": "En attente", "CANCELLED": "Annulé", "COMPLETED": "Terminé"}[order.status] %>
+                            <p>Status: <%= {"PENDING": "En attente" , "CANCELLED" : "Annulé" , "COMPLETED" : "Terminé"
+                                    }[order.status] %>
                             </p>
                             <p>Date de création: <%= new Date(order.createdAt).toLocaleDateString() %>
                             </p>
@@ -322,21 +325,6 @@
     </div>
 </div>
 
-<!-- Modal pour modifier le profil -->
-<div id="editProfileModal" class="modal hidden">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Modifier le profil</h2>
-        <form id="editProfileForm">
-            <label for="username">Nom d'utilisateur</label>
-            <input type="text" id="username" name="username" value="<%= profile.username %>" required>
-            <p class="modal-note">Pour modifier d'autres informations ou supprimer votre compte, veuillez contacter le <a href="/contact">support</a>.</p>
-            <div class="error-message" style="display: none; color: red;"></div>
-            <button type="submit">Enregistrer</button>
-        </form>
-    </div>
-</div>
-
 <script>
     async function logout_request() {
         const response = await fetch('<%= API_URL %>/api/v1/auth/logout', {
@@ -354,66 +342,9 @@
 
     // Gestion du modal
     const editProfileBtn = document.getElementById('editProfileBtn');
-    const modal = document.getElementById('editProfileModal');
-    const closeModal = modal.querySelector('.close');
-    const editProfileForm = document.getElementById('editProfileForm');
-    const errorMessageDiv = modal.querySelector('.error-message');
 
-    editProfileBtn.addEventListener('click', () => {
-        modal.style.display = 'block';
-        editProfileForm.querySelector("button").focus();
-    });
-
-    closeModal.addEventListener('click', () => {
-        modal.style.display = 'none';
-        errorMessageDiv.style.display = 'none';
-    });
-
-    window.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            modal.style.display = 'none';
-            errorMessageDiv.style.display = 'none';
-        }
-    });
-
-    editProfileForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const username = document.getElementById('username').value;
-
-        const formData = new FormData();
-        formData.append("username", username)
-
-        const response = await fetch('<%= API_URL %>/api/v1/users/update', {
-            method: 'PATCH',
-            credentials: 'include',
-            body: formData
-        });
-
-        const data = await response.json();
-        if (response.ok) {
-            // Fermer le modal et rediriger vers l'URL avec ?changed=true
-            modal.style.display = 'none';
-            window.location.href = window.location.pathname + '?changed=true';
-        } else {
-            // Gestion des erreurs selon les codes d'erreur
-            if (data.id && data.id.codes && data.id.codes.length > 0) {
-                try {
-                    const errorsResponse = await fetch('<%= API_URL %>/api/v1/errors');
-                    if (errorsResponse.ok) {
-                        const errorMapping = await errorsResponse.json();
-                        const errorMessages = data.id.codes.map(code => errorMapping[code] || `Erreur inconnue (code ${code})`);
-                        errorMessageDiv.textContent = errorMessages.join(', ');
-                    } else {
-                        errorMessageDiv.textContent = "Erreur lors de la récupération des messages d'erreur.";
-                    }
-                } catch (err) {
-                    errorMessageDiv.textContent = "Erreur lors de la récupération des messages d'erreur.";
-                }
-            } else {
-                errorMessageDiv.textContent = Array.isArray(data.content) ? data.content.join(', ') : data.content;
-            }
-            errorMessageDiv.style.display = 'block';
-        }
+    editProfileBtn.addEventListener('click', async () => {
+        await settingsModal()
     });
 
     // Au chargement de la page, afficher le message de succès si l'URL contient ?changed=true et retirer le paramètre
@@ -439,4 +370,96 @@
             window.history.replaceState({}, document.title, window.location.pathname);
         }
     });
+
+    async function settingsModal() {
+        const form = document.createElement("form");
+        form.setAttribute("id", "editProfileForm");
+
+        const usernameLabel = document.createElement("label");
+        usernameLabel.setAttribute("for", "username");
+        usernameLabel.textContent = "Nom d'utilisateur";
+        usernameLabel.style.cssText = `
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        `
+
+        const usernameInput = document.createElement("input");
+        usernameInput.id = "username";
+        usernameInput.type = "text";
+        usernameInput.value = "<%= profile.username %>";
+        usernameInput.required = true;
+        usernameInput.style.cssText = `
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        `
+
+        const modalNote = document.createElement("p");
+        modalNote.innerHTML = "Pour modifier d'autres informations ou supprimer votre compte, veuillez contacter le <a href='/contact'>support</a>";
+        modalNote.style.cssText = `
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+        `
+
+        const errorMessage = document.createElement("div");
+        errorMessage.style.cssText = `
+            margin-bottom: 1rem;
+            display: none;
+            color: red;
+        `
+
+        form.appendChild(usernameLabel);
+        form.appendChild(usernameInput);
+        form.appendChild(modalNote);
+        form.appendChild(errorMessage);
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+
+            const formData = new FormData();
+            formData.append("username", username)
+
+            const response = await fetch('<%= API_URL %>/api/v1/users/update', {
+                method: 'PATCH',
+                credentials: 'include',
+                body: formData
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                window.location.href = window.location.pathname + '?changed=true';
+            } else {
+                if (data.id && data.id.codes && data.id.codes.length > 0) {
+                    try {
+                        const errorsResponse = await fetch('<%= API_URL %>/api/v1/errors');
+                        if (errorsResponse.ok) {
+                            const errorMapping = await errorsResponse.json();
+                            const errorMessages = data.id.codes.map(code => errorMapping[code] || `Erreur inconnue (code ${code})`);
+                            errorMessage.textContent = errorMessages.join(', ');
+                        } else {
+                            errorMessage.textContent = "Erreur lors de la récupération des messages d'erreur.";
+                        }
+                    } catch (err) {
+                        errorMessage.textContent = "Erreur lors de la récupération des messages d'erreur.";
+                    }
+                } else {
+                    errorMessage.textContent = Array.isArray(data.content) ? data.content.join(', ') : data.content;
+                }
+                errorMessage.style.display = 'block';
+            }
+        });
+
+        function test({ event, modal }) {
+            // Utilisez requestSubmit() pour déclencher l'événement "submit"
+            form.requestSubmit();
+        }
+
+        await createModal([form], "INFO", { button_content: { OK: "Enregister" }, button_action: { OK: test } });
+
+    }
 </script>
